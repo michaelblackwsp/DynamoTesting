@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "DynamoTesting": {
+      "commandName": "Project",
+      "remoteDebugEnabled": false
+    },
+    "Profile 1": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Program Files\\Autodesk\\AutoCAD 2022\\acad.exe"
+    }
+  }
+}
