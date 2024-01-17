@@ -1,0 +1,15 @@
+*.suo
+*.ide
+*.ide-shm
+*.ide-wal
+*.pdb
+*.cache
+*.resources
+*.lock
+*.resx
+#below this comment are extensions that may need to be untracked later if there are problems
+*.sln
+*.csproj
+*.user
+*.dll
+DynamoTesting/obj/Debug/

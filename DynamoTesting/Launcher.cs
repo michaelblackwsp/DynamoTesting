@@ -15,6 +15,7 @@ namespace DynamoTesting
         {   
             // Path to program
             string pathToProgram = "C:\\Program Files\\Autodesk\\AutoCAD 2022\\acad.exe";
+           // string pathToProgram = "W:\\1_service\\2_environments\\MTQ\\english_software\\c3d_2020_en_mtq.lnk";
 
             // Make sure the file exists before starting the process
             if (System.IO.File.Exists(pathToProgram))
