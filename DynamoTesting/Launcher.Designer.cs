@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             this.launchButton = new System.Windows.Forms.Button();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.environmentName = new System.Windows.Forms.Label();
-            this.softwareYear = new System.Windows.Forms.Label();
-            this.language = new System.Windows.Forms.Label();
-            this.languageChoice = new System.Windows.Forms.ComboBox();
+            this.environtmentDropdownMenu = new System.Windows.Forms.ComboBox();
+            this.versionDropdownMenu = new System.Windows.Forms.ComboBox();
+            this.clientLabel = new System.Windows.Forms.Label();
+            this.versionLabel = new System.Windows.Forms.Label();
+            this.languageLabel = new System.Windows.Forms.Label();
+            this.languageDropdownMenu = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // launchButton
@@ -45,12 +45,12 @@
             this.launchButton.TabIndex = 0;
             this.launchButton.Text = "Launch";
             this.launchButton.UseVisualStyleBackColor = true;
-            this.launchButton.Click += new System.EventHandler(this.button1_Click);
+            this.launchButton.Click += new System.EventHandler(this.launchButton_Click);
             // 
-            // comboBox1
+            // environtmentDropdownMenu
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
+            this.environtmentDropdownMenu.FormattingEnabled = true;
+            this.environtmentDropdownMenu.Items.AddRange(new object[] {
             "CofC",
             "MTO",
             "MTQ",
@@ -58,78 +58,83 @@
             "MX",
             "WSP_EN",
             "WSP_FR"});
-            this.comboBox1.Location = new System.Drawing.Point(99, 12);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 23);
-            this.comboBox1.TabIndex = 1;
+            this.environtmentDropdownMenu.Location = new System.Drawing.Point(99, 12);
+            this.environtmentDropdownMenu.Name = "environtmentDropdownMenu";
+            this.environtmentDropdownMenu.Size = new System.Drawing.Size(121, 23);
+            this.environtmentDropdownMenu.TabIndex = 1;
+            this.environtmentDropdownMenu.SelectedIndexChanged += new System.EventHandler(this.environmentDropdownMenu_Selected);
             // 
-            // comboBox2
+            // versionDropdownMenu
             // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Items.AddRange(new object[] {
+            this.versionDropdownMenu.FormattingEnabled = true;
+            this.versionDropdownMenu.Items.AddRange(new object[] {
+            "2020",
             "2021",
             "2022",
             "2023"});
-            this.comboBox2.Location = new System.Drawing.Point(99, 41);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(121, 23);
-            this.comboBox2.TabIndex = 2;
+            this.versionDropdownMenu.Location = new System.Drawing.Point(99, 75);
+            this.versionDropdownMenu.Name = "versionDropdownMenu";
+            this.versionDropdownMenu.Size = new System.Drawing.Size(121, 23);
+            this.versionDropdownMenu.TabIndex = 2;
+            this.versionDropdownMenu.SelectedIndexChanged += new System.EventHandler(this.versionDropdownMenu_Selected);
             // 
-            // environmentName
+            // clientLabel
             // 
-            this.environmentName.AutoSize = true;
-            this.environmentName.Location = new System.Drawing.Point(20, 16);
-            this.environmentName.Name = "environmentName";
-            this.environmentName.Size = new System.Drawing.Size(75, 15);
-            this.environmentName.TabIndex = 3;
-            this.environmentName.Text = "Environment";
-            this.environmentName.Click += new System.EventHandler(this.label1_Click);
+            this.clientLabel.AutoSize = true;
+            this.clientLabel.Location = new System.Drawing.Point(55, 15);
+            this.clientLabel.Name = "clientLabel";
+            this.clientLabel.Size = new System.Drawing.Size(38, 15);
+            this.clientLabel.TabIndex = 3;
+            this.clientLabel.Text = "Client";
+            this.clientLabel.Click += new System.EventHandler(this.clientLabel_Click);
             // 
-            // softwareYear
+            // versionLabel
             // 
-            this.softwareYear.AutoSize = true;
-            this.softwareYear.Location = new System.Drawing.Point(48, 45);
-            this.softwareYear.Name = "softwareYear";
-            this.softwareYear.Size = new System.Drawing.Size(45, 15);
-            this.softwareYear.TabIndex = 4;
-            this.softwareYear.Text = "Version";
-            this.softwareYear.Click += new System.EventHandler(this.label1_Click_1);
+            this.versionLabel.AutoSize = true;
+            this.versionLabel.Location = new System.Drawing.Point(48, 78);
+            this.versionLabel.Name = "versionLabel";
+            this.versionLabel.Size = new System.Drawing.Size(45, 15);
+            this.versionLabel.TabIndex = 4;
+            this.versionLabel.Text = "Version";
+            this.versionLabel.Click += new System.EventHandler(this.versionLabel_Click);
             // 
-            // language
+            // languageLabel
             // 
-            this.language.AutoSize = true;
-            this.language.Location = new System.Drawing.Point(34, 75);
-            this.language.Name = "language";
-            this.language.Size = new System.Drawing.Size(59, 15);
-            this.language.TabIndex = 5;
-            this.language.Text = "Language";
-            this.language.Click += new System.EventHandler(this.label1_Click_2);
+            this.languageLabel.AutoSize = true;
+            this.languageLabel.Location = new System.Drawing.Point(34, 44);
+            this.languageLabel.Name = "languageLabel";
+            this.languageLabel.Size = new System.Drawing.Size(59, 15);
+            this.languageLabel.TabIndex = 5;
+            this.languageLabel.Text = "Language";
+            this.languageLabel.Click += new System.EventHandler(this.languageLabel_Click);
             // 
-            // languageChoice
+            // languageDropdownMenu
             // 
-            this.languageChoice.FormattingEnabled = true;
-            this.languageChoice.Items.AddRange(new object[] {
+            this.languageDropdownMenu.FormattingEnabled = true;
+            this.languageDropdownMenu.Items.AddRange(new object[] {
             "English",
             "French"});
-            this.languageChoice.Location = new System.Drawing.Point(99, 72);
-            this.languageChoice.Name = "languageChoice";
-            this.languageChoice.Size = new System.Drawing.Size(121, 23);
-            this.languageChoice.TabIndex = 6;
+            this.languageDropdownMenu.Location = new System.Drawing.Point(99, 41);
+            this.languageDropdownMenu.Name = "languageDropdownMenu";
+            this.languageDropdownMenu.Size = new System.Drawing.Size(121, 23);
+            this.languageDropdownMenu.TabIndex = 6;
+            this.languageDropdownMenu.SelectedIndexChanged += new System.EventHandler(this.languageDropdownMenu_Selected);
             // 
             // repconLauncher
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(232, 181);
-            this.Controls.Add(this.languageChoice);
-            this.Controls.Add(this.language);
-            this.Controls.Add(this.softwareYear);
-            this.Controls.Add(this.environmentName);
-            this.Controls.Add(this.comboBox2);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.languageDropdownMenu);
+            this.Controls.Add(this.languageLabel);
+            this.Controls.Add(this.versionLabel);
+            this.Controls.Add(this.clientLabel);
+            this.Controls.Add(this.versionDropdownMenu);
+            this.Controls.Add(this.environtmentDropdownMenu);
             this.Controls.Add(this.launchButton);
             this.Name = "repconLauncher";
             this.Text = "REPCON Launcher";
+            this.Load += new System.EventHandler(this.repconLauncher_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -138,11 +143,11 @@
         #endregion
 
         private Button launchButton;
-        private ComboBox comboBox1;
-        private ComboBox comboBox2;
-        private Label environmentName;
-        private Label softwareYear;
-        private Label language;
-        private ComboBox languageChoice;
+        private ComboBox environtmentDropdownMenu;
+        private ComboBox versionDropdownMenu;
+        private Label clientLabel;
+        private Label versionLabel;
+        private Label languageLabel;
+        private ComboBox languageDropdownMenu;
     }
 }
