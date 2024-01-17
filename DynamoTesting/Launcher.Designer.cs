@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.launchButton = new System.Windows.Forms.Button();
-            this.environtmentDropdownMenu = new System.Windows.Forms.ComboBox();
+            this.clientDropdownMenu = new System.Windows.Forms.ComboBox();
             this.versionDropdownMenu = new System.Windows.Forms.ComboBox();
             this.clientLabel = new System.Windows.Forms.Label();
             this.versionLabel = new System.Windows.Forms.Label();
@@ -47,10 +47,10 @@
             this.launchButton.UseVisualStyleBackColor = true;
             this.launchButton.Click += new System.EventHandler(this.launchButton_Click);
             // 
-            // environtmentDropdownMenu
+            // clientDropdownMenu
             // 
-            this.environtmentDropdownMenu.FormattingEnabled = true;
-            this.environtmentDropdownMenu.Items.AddRange(new object[] {
+            this.clientDropdownMenu.FormattingEnabled = true;
+            this.clientDropdownMenu.Items.AddRange(new object[] {
             "CofC",
             "MTO",
             "MTQ",
@@ -58,11 +58,11 @@
             "MX",
             "WSP_EN",
             "WSP_FR"});
-            this.environtmentDropdownMenu.Location = new System.Drawing.Point(99, 12);
-            this.environtmentDropdownMenu.Name = "environtmentDropdownMenu";
-            this.environtmentDropdownMenu.Size = new System.Drawing.Size(121, 23);
-            this.environtmentDropdownMenu.TabIndex = 1;
-            this.environtmentDropdownMenu.SelectedIndexChanged += new System.EventHandler(this.environmentDropdownMenu_Selected);
+            this.clientDropdownMenu.Location = new System.Drawing.Point(99, 12);
+            this.clientDropdownMenu.Name = "clientDropdownMenu";
+            this.clientDropdownMenu.Size = new System.Drawing.Size(121, 23);
+            this.clientDropdownMenu.TabIndex = 1;
+            this.clientDropdownMenu.SelectedIndexChanged += new System.EventHandler(this.clientDropdownMenu_Selected);
             // 
             // versionDropdownMenu
             // 
@@ -124,13 +124,13 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(232, 181);
+            this.ClientSize = new System.Drawing.Size(239, 181);
             this.Controls.Add(this.languageDropdownMenu);
             this.Controls.Add(this.languageLabel);
             this.Controls.Add(this.versionLabel);
             this.Controls.Add(this.clientLabel);
             this.Controls.Add(this.versionDropdownMenu);
-            this.Controls.Add(this.environtmentDropdownMenu);
+            this.Controls.Add(this.clientDropdownMenu);
             this.Controls.Add(this.launchButton);
             this.Name = "repconLauncher";
             this.Text = "REPCON Launcher";
@@ -143,7 +143,7 @@
         #endregion
 
         private Button launchButton;
-        private ComboBox environtmentDropdownMenu;
+        private ComboBox clientDropdownMenu;
         private ComboBox versionDropdownMenu;
         private Label clientLabel;
         private Label versionLabel;

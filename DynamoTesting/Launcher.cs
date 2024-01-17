@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 
 namespace DynamoTesting
@@ -29,12 +30,7 @@ namespace DynamoTesting
         }
 
 
-        private void environmentDropdownMenu_Selected(object sender, EventArgs e)
-        {
-
-        }
-
-        private void versionDropdownMenu_Selected(object sender, EventArgs e)
+        private void clientDropdownMenu_Selected(object sender, EventArgs e)
         {
 
         }
@@ -44,21 +40,27 @@ namespace DynamoTesting
 
         }
 
+        private void versionDropdownMenu_Selected(object sender, EventArgs e)
+        {
+
+        }
+
         private void launchButton_Click(object sender, EventArgs e)
         {
-            // Path to shortcut file
-            string pathToShortcut = "W:\\1_service\\2_environments\\MTQ\\english_software\\c3d_2020_en_mtq.lnk";
+            string client = clientDropdownMenu.SelectedItem.ToString();
+            string language = languageDropdownMenu.SelectedItem.ToString();
+            string version = versionDropdownMenu.SelectedItem.ToString();
 
-            // Make sure the file exists before starting the process
+            ShortcutsModel shortcutsModel = new ShortcutsModel();
+            string pathToShortcut = shortcutsModel.getShortcut(client, language, version);
+
             if (System.IO.File.Exists(pathToShortcut))
             {
-                // Create a new process start info
                 ProcessStartInfo processStartInfo = new ProcessStartInfo
                 {
                     FileName = pathToShortcut,
                     UseShellExecute = true  // Set this to true to use the default shell verb (open) for shortcuts
                 };
-
                 try
                 {
                     // Start the process
@@ -74,5 +76,6 @@ namespace DynamoTesting
                 MessageBox.Show("Shortcut file not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
     }
 }
