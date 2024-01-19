@@ -10,12 +10,16 @@ namespace DynamoTesting
         public repconLauncher()
         {
             InitializeComponent();
+            clientDropdownMenu.Items.AddRange(ShortcutsModel.clientOptions);
+            languageDropdownMenu.Items.AddRange(ShortcutsModel.languageOptions);
+            versionDropdownMenu.Items.AddRange(ShortcutsModel.versionOptions);
         }
 
         private void repconLauncher_Load(object sender, EventArgs e)
         {
 
         }
+
         private void clientLabel_Click(object sender, EventArgs e)
         {
 
@@ -26,23 +30,20 @@ namespace DynamoTesting
         }
         private void languageLabel_Click(object sender, EventArgs e)
         {
-
+            
         }
-
 
         private void clientDropdownMenu_Selected(object sender, EventArgs e)
         {
 
         }
-
         private void languageDropdownMenu_Selected(object sender, EventArgs e)
         {
-
+            languageDropdownMenu.DataSource = ShortcutsModel.languageOptions;
         }
-
         private void versionDropdownMenu_Selected(object sender, EventArgs e)
         {
-
+            versionDropdownMenu.DataSource = ShortcutsModel.versionOptions;
         }
 
         private void launchButton_Click(object sender, EventArgs e)
