@@ -13,43 +13,28 @@ namespace DynamoTesting
         public static string[] languageOptions = { "English", "French" };
         public static string[] versionOptions = { "2018", "2019", "2020", "2021", "2022", "2023" };
 
-        public string getShortcut(string client, string language, string version)
+        public string createShortcut(string client, string language, string version)
         {
-            string shortcut = client + language + version;
+            string shortFormLanguage = null;
+            string modifiedVersionShortcut = null;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*            if (client == "CofC" && language == "English" && version == "2022")
+            if (language == "English")
             {
-                shortcut = @"W:\1_service\2_environments\CofC\english_software\c3d_2022_en_cofc.lnk";
+                language = "english_software";
+                shortFormLanguage = "en";
             }
-            else if (client == "MTQ" && language == "French" && version == "2020")
-            {
-                shortcut = @"W:\1_service\2_environments\MTQ\logiciel_francais\c3d_2020_fr_mtq.lnk";
-            }*/
 
-            
-            Console.WriteLine(shortcut);
+            if (language == "French")
+            {
+                language = "logiciel_francais";
+                shortFormLanguage = "fr";
+            }
+           
+            modifiedVersionShortcut = "c3d" + "_" + version + "_" + shortFormLanguage + "_" + client.ToLower() + ".lnk";
+           
+            string shortcut = "W:\\1_service\\2_environments\\" + client + "\\" + language + "\\" + modifiedVersionShortcut;
+
             return shortcut;
         }
-
     }
 }
-
-
-
-
-//shortcutMappings["CofC"]["English"]["2022"] = "W:\\1_service\\2_environments\\MTQ\\logiciel_francais\\c3d_2020_fr_mtq.lnk";
-//shortcutMappings["MTQ"]["French"]["2020"] = "W:\\1_service\\2_environments\\CofC\\english_software\\c3d_2022_en_cofc.lnk";

@@ -28,18 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.launchButton = new System.Windows.Forms.Button();
             this.clientDropdownMenu = new System.Windows.Forms.ComboBox();
+            this.shortcutsModelBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.versionDropdownMenu = new System.Windows.Forms.ComboBox();
             this.clientLabel = new System.Windows.Forms.Label();
             this.versionLabel = new System.Windows.Forms.Label();
             this.languageLabel = new System.Windows.Forms.Label();
             this.languageDropdownMenu = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.shortcutsModelBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // launchButton
             // 
-            this.launchButton.Location = new System.Drawing.Point(72, 134);
+            this.launchButton.Location = new System.Drawing.Point(12, 146);
             this.launchButton.Name = "launchButton";
             this.launchButton.Size = new System.Drawing.Size(75, 23);
             this.launchButton.TabIndex = 0;
@@ -50,28 +54,19 @@
             // clientDropdownMenu
             // 
             this.clientDropdownMenu.FormattingEnabled = true;
-            this.clientDropdownMenu.Items.AddRange(new object[] {
-            "CofC",
-            "MTO",
-            "MTQ",
-            "MVRD",
-            "MX",
-            "WSP_EN",
-            "WSP_FR"});
             this.clientDropdownMenu.Location = new System.Drawing.Point(99, 12);
             this.clientDropdownMenu.Name = "clientDropdownMenu";
             this.clientDropdownMenu.Size = new System.Drawing.Size(121, 23);
             this.clientDropdownMenu.TabIndex = 1;
             this.clientDropdownMenu.SelectedIndexChanged += new System.EventHandler(this.clientDropdownMenu_Selected);
             // 
+            // shortcutsModelBindingSource
+            // 
+            this.shortcutsModelBindingSource.DataSource = typeof(DynamoTesting.ShortcutsModel);
+            // 
             // versionDropdownMenu
             // 
             this.versionDropdownMenu.FormattingEnabled = true;
-            this.versionDropdownMenu.Items.AddRange(new object[] {
-            "2020",
-            "2021",
-            "2022",
-            "2023"});
             this.versionDropdownMenu.Location = new System.Drawing.Point(99, 75);
             this.versionDropdownMenu.Name = "versionDropdownMenu";
             this.versionDropdownMenu.Size = new System.Drawing.Size(121, 23);
@@ -111,20 +106,28 @@
             // languageDropdownMenu
             // 
             this.languageDropdownMenu.FormattingEnabled = true;
-            this.languageDropdownMenu.Items.AddRange(new object[] {
-            "English",
-            "French"});
             this.languageDropdownMenu.Location = new System.Drawing.Point(99, 41);
             this.languageDropdownMenu.Name = "languageDropdownMenu";
             this.languageDropdownMenu.Size = new System.Drawing.Size(121, 23);
             this.languageDropdownMenu.TabIndex = 6;
             this.languageDropdownMenu.SelectedIndexChanged += new System.EventHandler(this.languageDropdownMenu_Selected);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(114, 150);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(26, 15);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "test";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
+            // 
             // repconLauncher
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(239, 181);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.languageDropdownMenu);
             this.Controls.Add(this.languageLabel);
             this.Controls.Add(this.versionLabel);
@@ -135,6 +138,7 @@
             this.Name = "repconLauncher";
             this.Text = "REPCON Launcher";
             this.Load += new System.EventHandler(this.repconLauncher_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.shortcutsModelBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -149,5 +153,7 @@
         private Label versionLabel;
         private Label languageLabel;
         private ComboBox languageDropdownMenu;
+        private BindingSource shortcutsModelBindingSource;
+        private Label label1;
     }
 }

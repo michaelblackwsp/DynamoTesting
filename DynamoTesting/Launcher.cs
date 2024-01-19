@@ -53,7 +53,7 @@ namespace DynamoTesting
             string version = versionDropdownMenu.SelectedItem.ToString();
 
             ShortcutsModel shortcutsModel = new ShortcutsModel();
-            string pathToShortcut = shortcutsModel.getShortcut(client, language, version);
+            string pathToShortcut = shortcutsModel.createShortcut(client, language, version);
 
             if (System.IO.File.Exists(pathToShortcut))
             {
@@ -78,5 +78,14 @@ namespace DynamoTesting
             }
         }
 
+        private void label1_Click(object sender, EventArgs e)
+        {
+            string client = clientDropdownMenu.SelectedItem.ToString();
+            string language = languageDropdownMenu.SelectedItem.ToString();
+            string version = versionDropdownMenu.SelectedItem.ToString();
+            ShortcutsModel shortcutsModel = new ShortcutsModel();
+            string pathToShortcut = shortcutsModel.createShortcut(client, language, version);
+            label1.Text = pathToShortcut;
+        }
     }
 }
