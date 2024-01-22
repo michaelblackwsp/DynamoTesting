@@ -13,9 +13,15 @@
 *.dll
 *.vsidx
 *.vs
-DynamoTesting/obj/Debug/
+*.user
+*.datasource
+*.json
+DynamoTesting/obj/
 DynamoTesting/.vs/
 Dynamotesting/bin/
 DynamoTesting/obj/Debug/
+DynamoTesting/obj/Properties/
+DynamoTesting/Program.cs
+DynamoTesting/Properties/Resources.Designer.cs
 
 
