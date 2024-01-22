@@ -7,9 +7,12 @@
 *.resources
 *.lock
 *.resx
-#below this comment are extensions that may need to be untracked later if there are problems
 *.sln
 *.csproj
-*.user
+*.user1
 *.dll
+*.vsidx
+*.vs
 DynamoTesting/obj/Debug/
+DynamoTesting/.vs
+Dynamotesting/bin
