@@ -40,10 +40,12 @@ namespace DynamoTesting
         private void languageDropdownMenu_Selected(object sender, EventArgs e)
         {
             languageDropdownMenu.DataSource = ShortcutsModel.languageOptions;
+            languageDropdownMenu.Enabled = false;
         }
         private void versionDropdownMenu_Selected(object sender, EventArgs e)
         {
             versionDropdownMenu.DataSource = ShortcutsModel.versionOptions;
+            versionDropdownMenu.Enabled = false;
         }
 
         private void launchButton_Click(object sender, EventArgs e)

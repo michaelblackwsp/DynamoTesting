@@ -16,24 +16,23 @@ namespace DynamoTesting
         public string createShortcut(string client, string language, string version)
         {
             string shortFormLanguage = null;
-            string modifiedVersionShortcut = null;
+            string languageForPath = null;
+            string concatenatedVersionShortcut = null;
 
             if (language == "English")
             {
-                language = "english_software";
+                languageForPath = "english_software";
                 shortFormLanguage = "en";
             }
 
             if (language == "French")
             {
-                language = "logiciel_francais";
+                languageForPath = "logiciel_francais";
                 shortFormLanguage = "fr";
             }
            
-            modifiedVersionShortcut = "c3d" + "_" + version + "_" + shortFormLanguage + "_" + client.ToLower() + ".lnk";
-           
-            string shortcut = "W:\\1_service\\2_environments\\" + client + "\\" + language + "\\" + modifiedVersionShortcut;
-
+            concatenatedVersionShortcut = "c3d_" + version + "_" + shortFormLanguage + "_" + client.ToLower() + ".lnk";
+            string shortcut = "W:\\1_service\\2_environments\\" + client + "\\" + languageForPath + "\\" + concatenatedVersionShortcut;
             return shortcut;
         }
     }

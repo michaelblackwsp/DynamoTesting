@@ -11,8 +11,14 @@
 *.csproj
 *.user1
 *.dll
+<<<<<<< Updated upstream
 *.vsidx
 *.vs
 DynamoTesting/obj/Debug/
 DynamoTesting/.vs
 Dynamotesting/bin
+=======
+DynamoTesting/obj/Debug/
+DynamoTesting/.vs
+DynamoTesting/bin
+>>>>>>> Stashed changes
