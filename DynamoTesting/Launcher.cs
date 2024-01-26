@@ -7,6 +7,8 @@ namespace DynamoTesting
 {
     public partial class repconLauncher : Form
     {
+        ShortcutsModel model = new ShortcutsModel();
+
         public repconLauncher()
         {
             InitializeComponent();
@@ -39,7 +41,7 @@ namespace DynamoTesting
         }
         private void languageDropdownMenu_Selected(object sender, EventArgs e)
         {
-            languageDropdownMenu.DataSource = ShortcutsModel.languageOptions;
+            languageDropdownMenu.DataSource = model.languageOptions;
         }
         private void versionDropdownMenu_Selected(object sender, EventArgs e)
         {
@@ -87,5 +89,13 @@ namespace DynamoTesting
             string pathToShortcut = shortcutsModel.createShortcut(client, language, version);
             label1.Text = pathToShortcut;
         }
+
+        private void addRegistryButton_Click(object sender, EventArgs e)
+        {
+            model.updateRegistry();
+
+        }
+
+
     }
 }

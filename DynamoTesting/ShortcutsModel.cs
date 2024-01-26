@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,6 +36,38 @@ namespace DynamoTesting
             string shortcut = "W:\\1_service\\2_environments\\" + client + "\\" + language + "\\" + modifiedVersionShortcut;
 
             return shortcut;
+        }
+
+        public void updateRegistry()
+        {
+            try
+            {
+                // Specify the path to your .reg file
+                string regFilePath = @"C:\Users\CAMB075971\Downloads\c3d_2021_fr_wsp_fr.reg";
+
+                // Create a new process start info
+                ProcessStartInfo psi = new ProcessStartInfo
+                {
+                    FileName = "regedit.exe",
+                    Arguments = "/s " + regFilePath,  // /s option to run silently without user prompts
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    CreateNoWindow = true
+                };
+
+                // Start the process
+                using (Process regeditProcess = new Process { StartInfo = psi })
+                {
+                    regeditProcess.Start();
+                    regeditProcess.WaitForExit();
+
+                    MessageBox.Show("Registry keys successfully added.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
