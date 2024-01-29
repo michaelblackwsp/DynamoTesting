@@ -1,13 +1,6 @@
 ﻿using Microsoft.Win32;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Net.NetworkInformation;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace DynamoTesting
 {
@@ -35,7 +28,6 @@ namespace DynamoTesting
             }
 
             modifiedVersionShortcut = "c3d" + "_" + version + "_" + shortFormLanguage + "_" + client.ToLower() + ".lnk";
-
             string shortcut = "W:\\1_service\\2_environments\\" + client + "\\" + language + "\\" + modifiedVersionShortcut;
 
             return shortcut;
@@ -73,9 +65,8 @@ namespace DynamoTesting
             }
         }
 
-        public bool RegistryExists(string path)
+        public bool registryExists(string path)
         {
-           
             try
             {
                 RegistryKey key = Registry.CurrentUser.OpenSubKey(path);
@@ -86,12 +77,10 @@ namespace DynamoTesting
                 // Handle exceptions if necessary
                 return false;
             }
-
         }
 
-        public bool SoftwareExists(string path)
+        public bool softwareExists(string path)
         {
-
             try
             {
                 return File.Exists(path);
@@ -101,8 +90,8 @@ namespace DynamoTesting
                 // Handle exceptions if necessary
                 return false;
             }
-
         }
+
 
     }
 
