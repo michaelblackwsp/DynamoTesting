@@ -39,16 +39,20 @@
             this.languageDropdownMenu = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.addRegistryButton = new System.Windows.Forms.Button();
+            this.checkRegistryButton = new System.Windows.Forms.Button();
+            this.checkCivil3DinRegistry = new System.Windows.Forms.Button();
+            this.usernameLabel = new System.Windows.Forms.Label();
+            this.checkCivil3DinDirectory = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.shortcutsModelBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // launchButton
             // 
-            this.launchButton.Location = new System.Drawing.Point(12, 128);
+            this.launchButton.Location = new System.Drawing.Point(266, 75);
             this.launchButton.Name = "launchButton";
-            this.launchButton.Size = new System.Drawing.Size(75, 23);
+            this.launchButton.Size = new System.Drawing.Size(114, 23);
             this.launchButton.TabIndex = 0;
-            this.launchButton.Text = "Launch";
+            this.launchButton.Text = "Launch Civil 3D";
             this.launchButton.UseVisualStyleBackColor = true;
             this.launchButton.Click += new System.EventHandler(this.launchButton_Click);
             // 
@@ -116,7 +120,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 110);
+            this.label1.Location = new System.Drawing.Point(266, 110);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(26, 15);
             this.label1.TabIndex = 7;
@@ -125,19 +129,63 @@
             // 
             // addRegistryButton
             // 
-            this.addRegistryButton.Location = new System.Drawing.Point(121, 128);
+            this.addRegistryButton.Location = new System.Drawing.Point(11, 195);
             this.addRegistryButton.Name = "addRegistryButton";
-            this.addRegistryButton.Size = new System.Drawing.Size(99, 23);
+            this.addRegistryButton.Size = new System.Drawing.Size(171, 23);
             this.addRegistryButton.TabIndex = 8;
-            this.addRegistryButton.Text = "Update Registry";
+            this.addRegistryButton.Text = "Update Profile (in Registry)";
             this.addRegistryButton.UseVisualStyleBackColor = true;
             this.addRegistryButton.Click += new System.EventHandler(this.addRegistryButton_Click);
+            // 
+            // checkRegistryButton
+            // 
+            this.checkRegistryButton.Location = new System.Drawing.Point(11, 166);
+            this.checkRegistryButton.Name = "checkRegistryButton";
+            this.checkRegistryButton.Size = new System.Drawing.Size(172, 23);
+            this.checkRegistryButton.TabIndex = 9;
+            this.checkRegistryButton.Text = "Check Profile (in Registry)";
+            this.checkRegistryButton.UseVisualStyleBackColor = true;
+            this.checkRegistryButton.Click += new System.EventHandler(this.checkRegistryButton_Click);
+            // 
+            // checkCivil3DinRegistry
+            // 
+            this.checkCivil3DinRegistry.Location = new System.Drawing.Point(266, 12);
+            this.checkCivil3DinRegistry.Name = "checkCivil3DinRegistry";
+            this.checkCivil3DinRegistry.Size = new System.Drawing.Size(208, 23);
+            this.checkCivil3DinRegistry.TabIndex = 10;
+            this.checkCivil3DinRegistry.Text = "Check Civil 3D (in registry)";
+            this.checkCivil3DinRegistry.UseVisualStyleBackColor = true;
+            this.checkCivil3DinRegistry.Click += new System.EventHandler(this.checkCivil3DinRegistry_Click);
+            // 
+            // usernameLabel
+            // 
+            this.usernameLabel.AutoSize = true;
+            this.usernameLabel.Location = new System.Drawing.Point(396, 203);
+            this.usernameLabel.Name = "usernameLabel";
+            this.usernameLabel.Size = new System.Drawing.Size(60, 15);
+            this.usernameLabel.TabIndex = 11;
+            this.usernameLabel.Text = "Username";
+            this.usernameLabel.Click += new System.EventHandler(this.usernameLabel_Click);
+            // 
+            // checkCivil3DinDirectory
+            // 
+            this.checkCivil3DinDirectory.Location = new System.Drawing.Point(266, 41);
+            this.checkCivil3DinDirectory.Name = "checkCivil3DinDirectory";
+            this.checkCivil3DinDirectory.Size = new System.Drawing.Size(208, 23);
+            this.checkCivil3DinDirectory.TabIndex = 12;
+            this.checkCivil3DinDirectory.Text = "Check Civil 3D (in directory)";
+            this.checkCivil3DinDirectory.UseVisualStyleBackColor = true;
+            this.checkCivil3DinDirectory.Click += new System.EventHandler(this.checkCivil3DinDirectory_Click);
             // 
             // repconLauncher
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(239, 181);
+            this.ClientSize = new System.Drawing.Size(486, 228);
+            this.Controls.Add(this.checkCivil3DinDirectory);
+            this.Controls.Add(this.usernameLabel);
+            this.Controls.Add(this.checkCivil3DinRegistry);
+            this.Controls.Add(this.checkRegistryButton);
             this.Controls.Add(this.addRegistryButton);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.languageDropdownMenu);
@@ -168,5 +216,9 @@
         private BindingSource shortcutsModelBindingSource;
         private Label label1;
         private Button addRegistryButton;
+        private Button checkRegistryButton;
+        private Button checkCivil3DinRegistry;
+        private Label usernameLabel;
+        private Button checkCivil3DinDirectory;
     }
 }

@@ -1,8 +1,11 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.NetworkInformation;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -30,9 +33,9 @@ namespace DynamoTesting
                 language = "logiciel_francais";
                 shortFormLanguage = "fr";
             }
-           
+
             modifiedVersionShortcut = "c3d" + "_" + version + "_" + shortFormLanguage + "_" + client.ToLower() + ".lnk";
-           
+
             string shortcut = "W:\\1_service\\2_environments\\" + client + "\\" + language + "\\" + modifiedVersionShortcut;
 
             return shortcut;
@@ -69,5 +72,38 @@ namespace DynamoTesting
                 MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        public bool RegistryExists(string path)
+        {
+           
+            try
+            {
+                RegistryKey key = Registry.CurrentUser.OpenSubKey(path);
+                return key != null;
+            }
+            catch (Exception)
+            {
+                // Handle exceptions if necessary
+                return false;
+            }
+
+        }
+
+        public bool SoftwareExists(string path)
+        {
+
+            try
+            {
+                return File.Exists(path);
+            }
+            catch (Exception)
+            {
+                // Handle exceptions if necessary
+                return false;
+            }
+
+        }
+
     }
+
 }

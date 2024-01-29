@@ -41,7 +41,7 @@ namespace DynamoTesting
         }
         private void languageDropdownMenu_Selected(object sender, EventArgs e)
         {
-            languageDropdownMenu.DataSource = model.languageOptions;
+            languageDropdownMenu.DataSource = ShortcutsModel.languageOptions;
         }
         private void versionDropdownMenu_Selected(object sender, EventArgs e)
         {
@@ -54,8 +54,7 @@ namespace DynamoTesting
             string language = languageDropdownMenu.SelectedItem.ToString();
             string version = versionDropdownMenu.SelectedItem.ToString();
 
-            ShortcutsModel shortcutsModel = new ShortcutsModel();
-            string pathToShortcut = shortcutsModel.createShortcut(client, language, version);
+            string pathToShortcut = model.createShortcut(client, language, version);
 
             if (System.IO.File.Exists(pathToShortcut))
             {
@@ -85,17 +84,64 @@ namespace DynamoTesting
             string client = clientDropdownMenu.SelectedItem.ToString();
             string language = languageDropdownMenu.SelectedItem.ToString();
             string version = versionDropdownMenu.SelectedItem.ToString();
-            ShortcutsModel shortcutsModel = new ShortcutsModel();
-            string pathToShortcut = shortcutsModel.createShortcut(client, language, version);
+
+            string pathToShortcut = model.createShortcut(client, language, version);
             label1.Text = pathToShortcut;
         }
 
         private void addRegistryButton_Click(object sender, EventArgs e)
         {
             model.updateRegistry();
-
         }
 
+        private void checkRegistryButton_Click(object sender, EventArgs e)
+        {
+            string path = @"SOFTWARE\Autodesk\AutoCAD\R24.0\ACAD-4100:40C\Profiles\c3d_2021_fr_wsp_fr";
+            model.RegistryExists(path);
 
+            if (model.RegistryExists(path))
+            {
+                MessageBox.Show($"Registry key '{path}' exists.");
+            }
+            else
+            {
+                MessageBox.Show($"Registry key '{path}' does not exist.");
+            }
+        }
+
+        private void checkCivil3DinRegistry_Click(object sender, EventArgs e)
+        {
+            string path = @"SOFTWARE\Autodesk\AutoCAD\R24.0\ACAD-4100:40C";
+            model.RegistryExists(path);
+
+            if (model.RegistryExists(path))
+            {
+                MessageBox.Show($"Civil 3D '{path}' exists.");
+            }
+            else
+            {
+                MessageBox.Show($"Civil 3D '{path} does not exist.");
+            }
+        }
+
+        private void usernameLabel_Click(object sender, EventArgs e)
+        {
+            usernameLabel.Text = Environment.UserName;
+        }
+
+        private void checkCivil3DinDirectory_Click(object sender, EventArgs e)
+        {
+            string path = @"C:\Program Files\Autodesk\AutoCAD 2023\acad.exe";
+            model.SoftwareExists(path);
+
+            if (model.SoftwareExists(path))
+            {
+                MessageBox.Show($"Civil 3D '{path}' exists.");
+            }
+            else
+            {
+                MessageBox.Show($"Civil 3D '{path} does not exist.");
+            }
+        }
     }
 }
