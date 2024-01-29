@@ -37,15 +37,18 @@ namespace DynamoTesting
 
         private void clientDropdownMenu_Selected(object sender, EventArgs e)
         {
-
+            // TO DO: Where is the data coming from if it works when this is commented out?
+            //clientDropdownMenu.DataSource = ShortcutsModel.clientOptions;
         }
         private void languageDropdownMenu_Selected(object sender, EventArgs e)
         {
-            languageDropdownMenu.DataSource = ShortcutsModel.languageOptions;
+            // TO DO: Where is the data coming from if it works when this is commented out?
+            //languageDropdownMenu.DataSource = ShortcutsModel.languageOptions;
         }
         private void versionDropdownMenu_Selected(object sender, EventArgs e)
         {
-            versionDropdownMenu.DataSource = ShortcutsModel.versionOptions;
+            // TO DO: Where is the data coming from if it works when this is commented out?
+            //versionDropdownMenu.DataSource = ShortcutsModel.versionOptions;
         }
 
         private void launchButton_Click(object sender, EventArgs e)
@@ -81,6 +84,7 @@ namespace DynamoTesting
 
         private void label1_Click(object sender, EventArgs e)
         {
+            // TO DO: handle when one or all choices is still empty
             string client = clientDropdownMenu.SelectedItem.ToString();
             string language = languageDropdownMenu.SelectedItem.ToString();
             string version = versionDropdownMenu.SelectedItem.ToString();
