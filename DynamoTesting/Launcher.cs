@@ -47,9 +47,32 @@ namespace DynamoTesting
 
         public Color setVersionColour(string choice)
         {
-            // TO DO: Why does I need to add the 2nd backslack in front of acad.exe? Why does it go purple?
-            string path = (@"C:\Program Files\Autodesk\AutoCAD " + choice + "\\acad.exe");
-            bool softwareVersion = model.softwareExists(path);
+            string path = "";
+
+            Dictionary<string, Tuple<string, string>> yearToRNumberMap = new Dictionary<string, Tuple<string, string>>
+            {
+                { "2018", Tuple.Create("R22.0", "1000") },
+                { "2019", Tuple.Create("R23.0", "2000") },
+                { "2020", Tuple.Create("R23.1", "3000") },
+                { "2021", Tuple.Create("R24.0", "4100") },
+                { "2022", Tuple.Create("R24.1", "5100") },
+                { "2023", Tuple.Create("R24.2", "6100") },
+            };
+
+            if (yearToRNumberMap.ContainsKey(choice))
+            {
+                Tuple<string, string> values = yearToRNumberMap[choice];
+                string rNumber = values.Item1;
+                string productId = values.Item2;
+
+                path = $@"SOFTWARE\Autodesk\AutoCAD\{rNumber}\ACAD-{productId}:40C\Profiles\<<C3D_Metric>>";
+            }
+            else
+            {
+                MessageBox.Show("Problem looping through the versions");
+            }
+
+            bool softwareVersion = model.registryExists(path);
 
             Color colour = Color.Black;
             if (softwareVersion == true)
@@ -149,7 +172,7 @@ namespace DynamoTesting
 
         private void checkCivil3DinRegistry_Click(object sender, EventArgs e)
         {
-            string path = @"SOFTWARE\Autodesk\AutoCAD\R24.0\ACAD-4100:40C";
+            string path = @"SOFTWARE\Autodesk\AutoCAD\R24.0\ACAD-4100:40C\Profiles\<<C3D_Metric>>";
             model.registryExists(path);
 
             if (model.registryExists(path))

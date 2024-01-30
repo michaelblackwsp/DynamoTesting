@@ -69,7 +69,7 @@ namespace DynamoTesting
         {
             try
             {
-                RegistryKey key = Registry.CurrentUser.OpenSubKey(path);
+                RegistryKey key = Registry.CurrentUser.OpenSubKey(path); // Set to Current User, not Local Machine
                 return key != null;
             }
             catch (Exception)
