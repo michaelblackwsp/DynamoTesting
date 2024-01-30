@@ -49,6 +49,8 @@ namespace DynamoTesting
         {
             string path = "";
 
+            string language = languageDropdownMenu.Text;
+
             Dictionary<string, Tuple<string, string>> yearToRNumberMap = new Dictionary<string, Tuple<string, string>>
             {
                 { "2018", Tuple.Create("R22.0", "1000") },
@@ -59,13 +61,22 @@ namespace DynamoTesting
                 { "2023", Tuple.Create("R24.2", "6100") },
             };
 
+            Dictionary<string, string> languageToRegionMap = new Dictionary<string, string>
+            {
+                { "English", "409" },
+                { "French", "40C" },
+
+            };
+
             if (yearToRNumberMap.ContainsKey(choice))
             {
                 Tuple<string, string> values = yearToRNumberMap[choice];
                 string rNumber = values.Item1;
                 string productId = values.Item2;
+                string regionValue = languageToRegionMap[language];
 
-                path = $@"SOFTWARE\Autodesk\AutoCAD\{rNumber}\ACAD-{productId}:40C\Profiles\<<C3D_Metric>>";
+                path = $@"SOFTWARE\Autodesk\AutoCAD\{rNumber}\ACAD-{productId}:{regionValue}\Profiles\<<C3D_Metric>>";
+
             }
             else
             {
