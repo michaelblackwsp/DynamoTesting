@@ -40,9 +40,7 @@
             this.pathLabel = new System.Windows.Forms.Label();
             this.addRegistryButton = new System.Windows.Forms.Button();
             this.checkRegistryButton = new System.Windows.Forms.Button();
-            this.checkCivil3DinRegistry = new System.Windows.Forms.Button();
             this.usernameLabel = new System.Windows.Forms.Label();
-            this.checkCivil3DinDirectory = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.shortcutsModelBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -68,7 +66,7 @@
             // 
             // shortcutsModelBindingSource
             // 
-            this.shortcutsModelBindingSource.DataSource = typeof(DynamoTesting.ShortcutsModel);
+            this.shortcutsModelBindingSource.DataSource = typeof(DynamoTesting.Model);
             // 
             // versionDropdownMenu
             // 
@@ -121,71 +119,49 @@
             // pathLabel
             // 
             this.pathLabel.AutoSize = true;
-            this.pathLabel.Location = new System.Drawing.Point(205, 116);
+            this.pathLabel.Location = new System.Drawing.Point(86, 138);
             this.pathLabel.Name = "pathLabel";
-            this.pathLabel.Size = new System.Drawing.Size(26, 15);
+            this.pathLabel.Size = new System.Drawing.Size(105, 15);
             this.pathLabel.TabIndex = 7;
-            this.pathLabel.Text = "test";
+            this.pathLabel.Text = "Click to show path";
             this.pathLabel.Click += new System.EventHandler(this.pathLabel_Click);
             // 
             // addRegistryButton
             // 
-            this.addRegistryButton.Location = new System.Drawing.Point(278, 40);
+            this.addRegistryButton.Location = new System.Drawing.Point(138, 204);
             this.addRegistryButton.Name = "addRegistryButton";
-            this.addRegistryButton.Size = new System.Drawing.Size(162, 23);
+            this.addRegistryButton.Size = new System.Drawing.Size(105, 23);
             this.addRegistryButton.TabIndex = 8;
-            this.addRegistryButton.Text = "Update Profile (in Registry)";
+            this.addRegistryButton.Text = "Update Profile";
             this.addRegistryButton.UseVisualStyleBackColor = true;
             this.addRegistryButton.Click += new System.EventHandler(this.updateRegistryButton_Click);
             // 
             // checkRegistryButton
             // 
-            this.checkRegistryButton.Location = new System.Drawing.Point(278, 11);
+            this.checkRegistryButton.Location = new System.Drawing.Point(27, 204);
             this.checkRegistryButton.Name = "checkRegistryButton";
-            this.checkRegistryButton.Size = new System.Drawing.Size(162, 23);
+            this.checkRegistryButton.Size = new System.Drawing.Size(105, 23);
             this.checkRegistryButton.TabIndex = 9;
-            this.checkRegistryButton.Text = "Check Profile (in Registry)";
+            this.checkRegistryButton.Text = "Check Profile";
             this.checkRegistryButton.UseVisualStyleBackColor = true;
             this.checkRegistryButton.Click += new System.EventHandler(this.checkRegistryButton_Click);
-            // 
-            // checkCivil3DinRegistry
-            // 
-            this.checkCivil3DinRegistry.Location = new System.Drawing.Point(456, 11);
-            this.checkCivil3DinRegistry.Name = "checkCivil3DinRegistry";
-            this.checkCivil3DinRegistry.Size = new System.Drawing.Size(172, 23);
-            this.checkCivil3DinRegistry.TabIndex = 10;
-            this.checkCivil3DinRegistry.Text = "Check Civil 3D (in registry)";
-            this.checkCivil3DinRegistry.UseVisualStyleBackColor = true;
-            this.checkCivil3DinRegistry.Click += new System.EventHandler(this.checkCivil3DinRegistry_Click);
             // 
             // usernameLabel
             // 
             this.usernameLabel.AutoSize = true;
-            this.usernameLabel.Location = new System.Drawing.Point(541, 141);
+            this.usernameLabel.Location = new System.Drawing.Point(1, 265);
             this.usernameLabel.Name = "usernameLabel";
-            this.usernameLabel.Size = new System.Drawing.Size(60, 15);
+            this.usernameLabel.Size = new System.Drawing.Size(134, 15);
             this.usernameLabel.TabIndex = 11;
-            this.usernameLabel.Text = "Username";
+            this.usernameLabel.Text = "Click to show Username";
             this.usernameLabel.Click += new System.EventHandler(this.usernameLabel_Click);
-            // 
-            // checkCivil3DinDirectory
-            // 
-            this.checkCivil3DinDirectory.Location = new System.Drawing.Point(457, 40);
-            this.checkCivil3DinDirectory.Name = "checkCivil3DinDirectory";
-            this.checkCivil3DinDirectory.Size = new System.Drawing.Size(171, 23);
-            this.checkCivil3DinDirectory.TabIndex = 12;
-            this.checkCivil3DinDirectory.Text = "Check Civil 3D (in directory)";
-            this.checkCivil3DinDirectory.UseVisualStyleBackColor = true;
-            this.checkCivil3DinDirectory.Click += new System.EventHandler(this.checkCivil3DinDirectory_Click);
             // 
             // repconLauncher
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(640, 168);
-            this.Controls.Add(this.checkCivil3DinDirectory);
+            this.ClientSize = new System.Drawing.Size(263, 284);
             this.Controls.Add(this.usernameLabel);
-            this.Controls.Add(this.checkCivil3DinRegistry);
             this.Controls.Add(this.checkRegistryButton);
             this.Controls.Add(this.addRegistryButton);
             this.Controls.Add(this.pathLabel);
@@ -218,8 +194,6 @@
         private Label pathLabel;
         private Button addRegistryButton;
         private Button checkRegistryButton;
-        private Button checkCivil3DinRegistry;
         private Label usernameLabel;
-        private Button checkCivil3DinDirectory;
     }
 }

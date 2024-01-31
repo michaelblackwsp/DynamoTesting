@@ -8,25 +8,84 @@ namespace DynamoTesting
 {
     public partial class repconLauncher : Form
     {
-        ShortcutsModel model = new ShortcutsModel();
+        Model model = new Model();
 
         public repconLauncher()
         {
             InitializeComponent();
 
-            clientDropdownMenu.Items.AddRange(ShortcutsModel.clientOptions);
-            languageDropdownMenu.Items.AddRange(ShortcutsModel.languageOptions);
-            versionDropdownMenu.Items.AddRange(ShortcutsModel.versionOptions);
+            clientDropdownMenu.Items.AddRange(Model.clientOptions);
+            languageDropdownMenu.Items.AddRange(Model.languageOptions);
+            versionDropdownMenu.Items.AddRange(Model.versionOptions);
 
-            // TO DO: Why can this come after? The order doesn't matter
-            string[] versionOptions = ShortcutsModel.versionOptions;
-            versionDropdownMenu.DrawMode = DrawMode.OwnerDrawFixed;
-            versionDropdownMenu.DrawItem += VersionDropdownMenu_DrawItem;
+            // QUESTION: Why can this come after AddRange? The order doesn't matter
+            string[] versionOptions = Model.versionOptions;
+            versionDropdownMenu.DrawMode = DrawMode.OwnerDrawFixed;         // Set drawing mode to Manual, each item at a time
+            versionDropdownMenu.DrawItem += VersionDropdownMenu_DrawItem;   // Call this Method to handle the colour coding
+
+            versionDropdownMenu.Enabled = false;
+            clientDropdownMenu.SelectedIndexChanged += ClientDropdownMenu_SelectedIndexChanged;
+            languageDropdownMenu.SelectedIndexChanged += LanguageDropdownMenu_SelectedIndexChanged;
+            versionDropdownMenu.SelectedIndexChanged += VersionDropdownMenu_SelectedIndexChanged;
+
+            launchButton.Enabled = false;
+
+            clientDropdownMenu.DropDownStyle = ComboBoxStyle.DropDownList;
+            languageDropdownMenu.DropDownStyle = ComboBoxStyle.DropDownList;
+            // BUG: the style of the Version dropdown isn't applied because it is overruled by the disabling logic
+            versionDropdownMenu.DropDownStyle = ComboBoxStyle.DropDownList;
         }
 
+        
         private void repconLauncher_Load(object sender, EventArgs e)
         {
-            // TO DO: Move logic into the Load method?
+            // TO DO(?): Move logic above into the Load method?
+        }
+
+        private void ClientDropdownMenu_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (clientDropdownMenu.SelectedIndex != -1 && languageDropdownMenu.SelectedIndex != -1)
+            {
+                versionDropdownMenu.Enabled = true;
+            } 
+            else
+            {
+                versionDropdownMenu.Enabled = false;
+            }
+            UpdateLaunchButtonState();
+        }
+
+        private void LanguageDropdownMenu_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (clientDropdownMenu.SelectedIndex != -1 && languageDropdownMenu.SelectedIndex != -1)
+            {
+                versionDropdownMenu.Enabled = true;
+            }
+            else
+            {
+                versionDropdownMenu.Enabled = false;
+            }
+            UpdateLaunchButtonState();
+        }
+
+        private void VersionDropdownMenu_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // TO DO: Add in hover over tooltip "Please select a Client and Language first."
+            UpdateLaunchButtonState();
+        }
+
+        private void UpdateLaunchButtonState()
+        {
+            if (clientDropdownMenu.SelectedIndex != -1 &&
+                languageDropdownMenu.SelectedIndex != -1 &&
+                versionDropdownMenu.SelectedIndex != -1)
+            {
+                launchButton.Enabled = true;
+            }
+            else
+            {
+                launchButton.Enabled = false;
+            }
         }
 
         private void VersionDropdownMenu_DrawItem(object? sender, DrawItemEventArgs e)
@@ -47,33 +106,16 @@ namespace DynamoTesting
 
         public Color setVersionColour(string choice)
         {
+            Model model = new Model();
             string path = "";
-
             string language = languageDropdownMenu.Text;
 
-            Dictionary<string, Tuple<string, string>> yearToRNumberMap = new Dictionary<string, Tuple<string, string>>
+            if (model.yearToRNumberMap.ContainsKey(choice))
             {
-                { "2018", Tuple.Create("R22.0", "1000") },
-                { "2019", Tuple.Create("R23.0", "2000") },
-                { "2020", Tuple.Create("R23.1", "3000") },
-                { "2021", Tuple.Create("R24.0", "4100") },
-                { "2022", Tuple.Create("R24.1", "5100") },
-                { "2023", Tuple.Create("R24.2", "6100") },
-            };
-
-            Dictionary<string, string> languageToRegionMap = new Dictionary<string, string>
-            {
-                { "English", "409" },
-                { "French", "40C" },
-
-            };
-
-            if (yearToRNumberMap.ContainsKey(choice))
-            {
-                Tuple<string, string> values = yearToRNumberMap[choice];
+                Tuple<string, string> values = model.yearToRNumberMap[choice];
                 string rNumber = values.Item1;
                 string productId = values.Item2;
-                string regionValue = languageToRegionMap[language];
+                string regionValue = model.languageToRegionMap[language];
 
                 path = $@"SOFTWARE\Autodesk\AutoCAD\{rNumber}\ACAD-{productId}:{regionValue}\Profiles\<<C3D_Metric>>";
 
@@ -95,22 +137,24 @@ namespace DynamoTesting
                 colour =  Color.Red;
             }
 
-            return colour; 
+            return colour;
+            // TO DO(?): Change to greyed out and not selectable, or put (NOT AVAILABLE) next to it?
+            // TO DO: After making the selection, tab out so the field is visible
         }
 
 
 
         private void clientDropdownMenu_Selected(object sender, EventArgs e)
         {
-            // TO DO: The colour changes back to black after a selection is made
+            
         }
         private void languageDropdownMenu_Selected(object sender, EventArgs e)
         {
-            // TO DO: The colour changes back to black after a selection is made
+
         }
         private void versionDropdownMenu_Selected(object sender, EventArgs e)
         {
-            // TO DO: The colour changes back to black after a selection is made
+
         }
 
 
@@ -132,8 +176,7 @@ namespace DynamoTesting
                 };
                 try
                 {
-                    // Start the process
-                    Process.Start(processStartInfo);
+                    Process.Start(processStartInfo);    // Start the process
                 }
                 catch (Exception ex)
                 {
@@ -148,7 +191,7 @@ namespace DynamoTesting
 
         private void pathLabel_Click(object sender, EventArgs e)
         {
-            // TO DO: handle when one or all choices is still empty
+            // BUG: handle when one or all choices is still empty
             string client = clientDropdownMenu.SelectedItem.ToString();
             string language = languageDropdownMenu.SelectedItem.ToString();
             string version = versionDropdownMenu.SelectedItem.ToString();
@@ -177,38 +220,6 @@ namespace DynamoTesting
         private void updateRegistryButton_Click(object sender, EventArgs e)
         {
             model.updateRegistry();
-        }
-
-
-
-        private void checkCivil3DinRegistry_Click(object sender, EventArgs e)
-        {
-            string path = @"SOFTWARE\Autodesk\AutoCAD\R24.0\ACAD-4100:40C\Profiles\<<C3D_Metric>>";
-            model.registryExists(path);
-
-            if (model.registryExists(path))
-            {
-                MessageBox.Show($"Civil 3D '{path}' exists.");
-            }
-            else
-            {
-                MessageBox.Show($"Civil 3D '{path} does not exist.");
-            }
-        }
-
-        private void checkCivil3DinDirectory_Click(object sender, EventArgs e)
-        {
-            string path = @"C:\Program Files\Autodesk\AutoCAD 2023\acad.exe";
-            model.softwareExists(path);
-
-            if (model.softwareExists(path))
-            {
-                MessageBox.Show($"Civil 3D '{path}' exists.");
-            }
-            else
-            {
-                MessageBox.Show($"Civil 3D '{path} does not exist.");
-            }
         }
 
 
