@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 
@@ -9,10 +10,14 @@ namespace DynamoTesting
     public partial class repconLauncher : Form
     {
         Model model = new Model();
-
+        
         public repconLauncher()
         {
             InitializeComponent();
+
+            // TO DO: Why do I need the (string[]) in front, when in the model file I don't?
+            string[] civil3DInstallations = (string[])model.checkCivil3DInstallations(model.yearToRNumberMap, model.languageToRegionMap);
+            PopulateDataGridView(civil3DInstallations);
 
             clientDropdownMenu.Items.AddRange(Model.clientOptions);
             languageDropdownMenu.Items.AddRange(Model.languageOptions);
@@ -36,10 +41,12 @@ namespace DynamoTesting
             versionDropdownMenu.DropDownStyle = ComboBoxStyle.DropDownList;
         }
 
-        
         private void repconLauncher_Load(object sender, EventArgs e)
         {
             // TO DO(?): Move logic above into the Load method?
+            MessageBox.Show("The form is loading!");
+            Model model = new Model();
+            model.checkCivil3DInstallations(model.yearToRNumberMap, model.languageToRegionMap);
         }
 
         private void ClientDropdownMenu_SelectedIndexChanged(object sender, EventArgs e)
@@ -104,7 +111,8 @@ namespace DynamoTesting
             }
         }
 
-        public Color setVersionColour(string choice)
+        //TO DO: Recycle this to be a generic method that checks for good/bad and assigns colour accordingly
+/*        public Color setVersionColour(string choice)
         {
             Model model = new Model();
             string path = "";
@@ -140,8 +148,7 @@ namespace DynamoTesting
             return colour;
             // TO DO(?): Change to greyed out and not selectable, or put (NOT AVAILABLE) next to it?
             // TO DO: After making the selection, tab out so the field is visible
-        }
-
+        }*/
 
 
         private void clientDropdownMenu_Selected(object sender, EventArgs e)
@@ -157,15 +164,13 @@ namespace DynamoTesting
 
         }
 
-
-
         private void launchButton_Click(object sender, EventArgs e)
         {
             string client = clientDropdownMenu.SelectedItem.ToString();
             string language = languageDropdownMenu.SelectedItem.ToString();
             string version = versionDropdownMenu.SelectedItem.ToString();
 
-            string pathToShortcut = model.createShortcut(client, language, version);
+            string pathToShortcut = model.buildShortcut(client, language, version);
 
             if (System.IO.File.Exists(pathToShortcut))
             {
@@ -196,39 +201,14 @@ namespace DynamoTesting
             string language = languageDropdownMenu.SelectedItem.ToString();
             string version = versionDropdownMenu.SelectedItem.ToString();
 
-            string pathToShortcut = model.createShortcut(client, language, version);
+            string pathToShortcut = model.buildShortcut(client, language, version);
             pathLabel.Text = pathToShortcut;
         }
-
-
-
-        private void checkRegistryButton_Click(object sender, EventArgs e)
-        {
-            string path = @"SOFTWARE\Autodesk\AutoCAD\R24.0\ACAD-4100:40C\Profiles\c3d_2021_fr_wsp_fr";
-            model.registryExists(path);
-
-            if (model.registryExists(path))
-            {
-                MessageBox.Show($"Registry key '{path}' exists.");
-            }
-            else
-            {
-                MessageBox.Show($"Registry key '{path}' does not exist.");
-            }
-        }
-
-        private void updateRegistryButton_Click(object sender, EventArgs e)
-        {
-            model.updateRegistry();
-        }
-
-
 
         private void usernameLabel_Click(object sender, EventArgs e)
         {
             usernameLabel.Text = Environment.UserName;
         }
-
 
 
         private void clientLabel_Click(object sender, EventArgs e)
@@ -242,6 +222,31 @@ namespace DynamoTesting
         private void languageLabel_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void myCivil3D_Click(object sender, EventArgs e)
+        {
+            
+
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void PopulateDataGridView(string[] paths)
+        {
+            dataGridView1.ColumnCount = 3; // One column for the paths
+            dataGridView1.Columns[0].Name = "Civil 3D Version";
+            dataGridView1.Columns[0].Width = 100;
+            dataGridView1.Columns[1].Name = "Language";
+            dataGridView1.Columns[1].Width = 50;
+
+            foreach (string path in paths)
+            {
+                dataGridView1.Rows.Add(path);
+            }
         }
 
     }

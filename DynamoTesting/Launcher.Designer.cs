@@ -38,10 +38,12 @@
             this.languageLabel = new System.Windows.Forms.Label();
             this.languageDropdownMenu = new System.Windows.Forms.ComboBox();
             this.pathLabel = new System.Windows.Forms.Label();
-            this.addRegistryButton = new System.Windows.Forms.Button();
-            this.checkRegistryButton = new System.Windows.Forms.Button();
             this.usernameLabel = new System.Windows.Forms.Label();
+            this.myCivil3D = new System.Windows.Forms.Label();
+            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.shortcutsModelBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // launchButton
@@ -126,26 +128,6 @@
             this.pathLabel.Text = "Click to show path";
             this.pathLabel.Click += new System.EventHandler(this.pathLabel_Click);
             // 
-            // addRegistryButton
-            // 
-            this.addRegistryButton.Location = new System.Drawing.Point(138, 204);
-            this.addRegistryButton.Name = "addRegistryButton";
-            this.addRegistryButton.Size = new System.Drawing.Size(105, 23);
-            this.addRegistryButton.TabIndex = 8;
-            this.addRegistryButton.Text = "Update Profile";
-            this.addRegistryButton.UseVisualStyleBackColor = true;
-            this.addRegistryButton.Click += new System.EventHandler(this.updateRegistryButton_Click);
-            // 
-            // checkRegistryButton
-            // 
-            this.checkRegistryButton.Location = new System.Drawing.Point(27, 204);
-            this.checkRegistryButton.Name = "checkRegistryButton";
-            this.checkRegistryButton.Size = new System.Drawing.Size(105, 23);
-            this.checkRegistryButton.TabIndex = 9;
-            this.checkRegistryButton.Text = "Check Profile";
-            this.checkRegistryButton.UseVisualStyleBackColor = true;
-            this.checkRegistryButton.Click += new System.EventHandler(this.checkRegistryButton_Click);
-            // 
             // usernameLabel
             // 
             this.usernameLabel.AutoSize = true;
@@ -156,14 +138,33 @@
             this.usernameLabel.Text = "Click to show Username";
             this.usernameLabel.Click += new System.EventHandler(this.usernameLabel_Click);
             // 
+            // myCivil3D
+            // 
+            this.myCivil3D.AutoSize = true;
+            this.myCivil3D.Location = new System.Drawing.Point(43, 178);
+            this.myCivil3D.Name = "myCivil3D";
+            this.myCivil3D.Size = new System.Drawing.Size(165, 15);
+            this.myCivil3D.TabIndex = 12;
+            this.myCivil3D.Text = "Show my Civil 3D Installations";
+            this.myCivil3D.Click += new System.EventHandler(this.myCivil3D_Click);
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(238, 12);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(515, 330);
+            this.dataGridView1.TabIndex = 13;
+            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
+            // 
             // repconLauncher
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(263, 284);
+            this.ClientSize = new System.Drawing.Size(767, 354);
+            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.myCivil3D);
             this.Controls.Add(this.usernameLabel);
-            this.Controls.Add(this.checkRegistryButton);
-            this.Controls.Add(this.addRegistryButton);
             this.Controls.Add(this.pathLabel);
             this.Controls.Add(this.languageDropdownMenu);
             this.Controls.Add(this.languageLabel);
@@ -176,6 +177,7 @@
             this.Text = "REPCON Launcher";
             this.Load += new System.EventHandler(this.repconLauncher_Load);
             ((System.ComponentModel.ISupportInitialize)(this.shortcutsModelBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -192,8 +194,9 @@
         private ComboBox languageDropdownMenu;
         private BindingSource shortcutsModelBindingSource;
         private Label pathLabel;
-        private Button addRegistryButton;
-        private Button checkRegistryButton;
         private Label usernameLabel;
+        private Label myCivil3D;
+        private ColorDialog colorDialog1;
+        private DataGridView dataGridView1;
     }
 }

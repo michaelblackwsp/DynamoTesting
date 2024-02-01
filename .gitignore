@@ -1,4 +1,3 @@
-*.suo
 *.ide
 *.ide-shm
 *.ide-wal
@@ -11,4 +10,8 @@
 *.csproj
 *.user
 *.dll
+*.vsidx
+*.metadata.v5.2
+*.suo
 DynamoTesting/obj/Debug/
+DynamoTesting/.vs/

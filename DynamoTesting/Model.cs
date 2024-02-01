@@ -1,5 +1,8 @@
-﻿using Microsoft.Win32;
+﻿using Microsoft.VisualBasic;
+using Microsoft.Win32;
 using System.Diagnostics;
+using System.IO;
+using System.Reflection;
 
 
 namespace DynamoTesting
@@ -26,7 +29,31 @@ namespace DynamoTesting
             { "French", "40C" },
         };
 
-        public string createShortcut(string client, string language, string version)
+        public Dictionary<string, string[]> clientOptions_basedOnVersion = new Dictionary<string, string[]>
+        {
+            { "2019", new string[] {"BCMoT", "MTQ", "VDG", "VDQ", "VIA", "WSP_FR"} },
+            { "2020", new string[] {"CofC", "MTQ", "MVRD", "MX", "VDG", "WSP_EN", "WSP_FR"} },
+            { "2021", new string[] {"WSP_EN", "WSP_FR" } },
+            { "2022", new string[] {"CofC", "MVRD", "MX", "WSP_EN", "WSP_FR" } },
+            { "2023", new string[] { "VDM" } },
+        };
+
+        public Dictionary<string, string[]> versionOptions_basedOnClient = new Dictionary<string, string[]>
+        {
+            { "BCMoT", new string[] { "2019" } },
+            { "CofC", new string[] { "2020", "2022" } },
+            { "MTQ", new string[] { "2019", "2020" } },
+            { "MVRD", new string[] { "2020", "2022" } },
+            { "MX", new string[] { "2020", "2022" } },
+            { "VDG", new string[] {"2019", "2020" } },
+            { "VDM", new string[] { "2023" } },
+            { "VDQ", new string[] { "2019" } },
+            { "VIA", new string[] { "2019" } },
+            { "WSP_EN", new string[] { "2020", "2021", "2022" } },
+
+        };
+
+        public string buildShortcut(string client, string language, string version)
         {
             string shortFormLanguage = null;
             string modifiedVersionShortcut = null;
@@ -49,38 +76,7 @@ namespace DynamoTesting
             return shortcut;
         }
 
-        public void updateRegistry()
-        {
-            try
-            {
-                // Specify the path to your .reg file
-                string regFilePath = @"C:\Users\CAMB075971\Downloads\c3d_2021_fr_wsp_fr.reg";
-
-                // Create a new process start info
-                ProcessStartInfo psi = new ProcessStartInfo
-                {
-                    FileName = "regedit.exe",
-                    Arguments = "/s " + regFilePath,  // /s option to run silently without user prompts
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    CreateNoWindow = true
-                };
-
-                // Start the process
-                using (Process regeditProcess = new Process { StartInfo = psi })
-                {
-                    regeditProcess.Start();
-                    regeditProcess.WaitForExit();
-
-                    MessageBox.Show("Registry keys successfully added.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
+        // QUESTION: Can this be static, as in a part of this class, not an instance of the class?
         public bool registryExists(string path)
         {
             try
@@ -95,20 +91,36 @@ namespace DynamoTesting
             }
         }
 
-        public bool softwareExists(string path)
+        public Array checkCivil3DInstallations(Dictionary<string, Tuple<string, string>> installations, Dictionary<string, string> languages)
         {
-            try
+            string singlePath = null;
+            List<string> listOfPaths = new List<string>();
+
+            List<string> listOfInstalls = new List<string>();
+
+            foreach (var version in installations.Keys)
             {
-                return File.Exists(path);
+                Tuple<string, string> rNumber_productID = installations[version];
+                string rNumber = rNumber_productID.Item1;
+                string productId = rNumber_productID.Item2;
+
+                foreach (var language in languages.Keys)
+                {
+                    string regionValue = languages[language];
+
+                singlePath = $@"SOFTWARE\Autodesk\AutoCAD\{rNumber}\ACAD-{productId}:{regionValue}\Profiles\<<C3D_Metric>>";
+                listOfPaths.Add(singlePath);
+
+                bool softwareExists = registryExists(singlePath);
+                listOfInstalls.Add(rNumber + ": " + softwareExists);
+                }
+
             }
-            catch (Exception)
-            {
-                // Handle exceptions if necessary
-                return false;
-            }
+
+            return listOfInstalls.ToArray();
         }
 
-
+        
     }
 
 }
