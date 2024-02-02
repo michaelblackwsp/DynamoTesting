@@ -3,6 +3,7 @@ using Microsoft.Win32;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Net.Http.Headers;
 using System.Reflection;
 
 
@@ -40,6 +41,21 @@ namespace DynamoTesting
             { "2023", new string[] { "VDM" } },
         };
 
+        public Dictionary<string, List<String>> languageBasedOnClient = new Dictionary<string, List<String>>
+        {
+            { "BCMoT", new List<string> { "English", "French" } },
+            { "CofC", new List<string> { "English" } },
+            { "MTQ", new List<string> { "English", "French" } },
+            { "MVRD", new List<string> { "English" } },
+            { "MX", new List<string> { "English" } },
+            { "VDG", new List<string> { "French" } },
+            { "VDM", new List<string> { "English" } },
+            { "VDQ", new List<string> { "English", "French" } },
+            { "VIA", new List<string> { "English" } },
+            { "WSP_EN", new List<string> { "English", "French" } },
+            { "WSP_FR", new List<string> { "English", "French" } },
+        };
+
 
 
         public Dictionary<string, Tuple<string, string>> yearToRNumber = new Dictionary<string, Tuple<string, string>>
@@ -56,6 +72,7 @@ namespace DynamoTesting
             { "English", "409" },
             { "French", "40C" },
         };
+
 
 
 
@@ -84,6 +101,21 @@ namespace DynamoTesting
             }
 
             return listOfInstalls.ToArray();
+        }
+
+        public List<string> GetLanguagesForSelectedClient(string selectedClient)
+        {
+            List<string> result = new List<string>();
+
+            if (selectedClient != null && languageBasedOnClient.ContainsKey(selectedClient))
+            {
+                List<string> languages = languageBasedOnClient[selectedClient];
+
+                // Include all languages in the result
+                result.AddRange(languages);
+            }
+
+            return result;
         }
 
         public string BuildRegistryPath(string selectedVersion, string selectedLanguage, Dictionary<string, Tuple<string, string>> installations, Dictionary<string, string> languages)

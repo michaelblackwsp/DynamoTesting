@@ -94,8 +94,8 @@ namespace DynamoTesting
 
 
         private bool isUpdatingDropdowns = false;
-        private bool initialSelectionMade = false;
-        private bool bothDropdownsSelected = false;
+        private string selectedClient = null;
+        private string selectedVersion = null;
 
         private void toggleVersions()
         {
@@ -103,19 +103,17 @@ namespace DynamoTesting
 
             if (!isUpdatingDropdowns)
             {
-                isUpdatingDropdowns = true;
 
                 if (selected != null)
                 {
+                    selectedClient = selected;
+
                     string[] filteredVersions = model.versionBasedOnClient[selected];
                     versionDropdownMenu.Items.Clear();
                     versionDropdownMenu.Items.AddRange(filteredVersions);
-                    versionDropdownMenu.SelectedIndex = 0;
-
-                    initialSelectionMade = true; // Set the flag after the initial selection
+                    versionDropdownMenu.SelectedIndex = -1;
                 }
-
-                isUpdatingDropdowns = false;
+                isUpdatingDropdowns = true;
                 UpdateLaunchButtonState();
             }
         }
@@ -124,27 +122,29 @@ namespace DynamoTesting
         {
             string selected = versionDropdownMenu.SelectedItem?.ToString();
 
-            if (!isUpdatingDropdowns && initialSelectionMade && !bothDropdownsSelected)
+            if (!isUpdatingDropdowns)
             {
-                isUpdatingDropdowns = true;
+
 
                 if (selected != null)
                 {
+                    selectedVersion = selected;
+
                     string[] filteredClients = model.clientBasedOnVersion[selected];
                     clientDropdownMenu.Items.Clear();
                     clientDropdownMenu.Items.AddRange(filteredClients);
-                    clientDropdownMenu.SelectedIndex = 0;
+                    clientDropdownMenu.SelectedIndex = -1;
 
-                    bothDropdownsSelected = true; // Set the flag when both dropdowns have been selected
+
                 }
-
-                isUpdatingDropdowns = false;
+                isUpdatingDropdowns = true;
                 UpdateLaunchButtonState();
             }
         }
 
         private void UpdateLaunchButtonState()
         {
+
             string[] installedCivil3D = (string[])model.getCivil3DInstallations(model.yearToRNumber, model.languageToRegion);
 
             if (clientDropdownMenu.Items.Count > 0
@@ -154,22 +154,28 @@ namespace DynamoTesting
             {
 
                 string version = versionDropdownMenu.SelectedItem.ToString();
-                string language = "English"; // TO DO: Add logic for allowable languages based on client/version
+                string client = clientDropdownMenu.SelectedItem.ToString();
+                List<string> languages = model.GetLanguagesForSelectedClient(client);
 
-                string path = model.BuildRegistryPath(version, language, model.yearToRNumber, model.languageToRegion);
-
-                if (model.stringExists(path, installedCivil3D))
+                foreach (string language in languages)
                 {
-                    launchButton.Enabled = true;
-                    MessageBox.Show(path);
+                    string path = model.BuildRegistryPath(version, language, model.yearToRNumber, model.languageToRegion);
+
+                    if (model.stringExists(path, installedCivil3D))
+                    {
+                        launchButton.Enabled = true;
+                        MessageBox.Show(path);
+                        break;
+                    }
+
+                    else
+                    {
+                        launchButton.Enabled = false;
+                    }
                 }
-            }
-            else
-            {
-                launchButton.Enabled = false;
+                isUpdatingDropdowns = false;
             }
         }
-
 
 
         private void resetButton_Click(object sender, EventArgs e)
