@@ -9,11 +9,13 @@ namespace DynamoTesting
 {
     public class Model
     {
-        public static string[] clientOptions = { "BCMoT", "CofC", "DND", "MTQ", "MVRD", "MX", "VDG", "VDM", "VDQ", "VIA", "WSP_EN", "WSP_FR" };
+        public static string[] clientOptions = { "BCMoT", "CofC", "MTQ", "MVRD", "MX", "VDG", "VDM", "VDQ", "VIA", "WSP_EN", "WSP_FR" };
         public static string[] languageOptions = { "English", "French" };
         public static string[] versionOptions = { "2018", "2019", "2020", "2021", "2022", "2023" };
 
-        public Dictionary<string, Tuple<string, string>> yearToRNumberMap = new Dictionary<string, Tuple<string, string>>
+
+
+        public Dictionary<string, Tuple<string, string>> yearToRNumber = new Dictionary<string, Tuple<string, string>>
         {
             { "2018", Tuple.Create("R22.0", "1000") },
             { "2019", Tuple.Create("R23.0", "2000") },
@@ -23,22 +25,14 @@ namespace DynamoTesting
             { "2023", Tuple.Create("R24.2", "6100") },
         };
 
-        public Dictionary<string, string> languageToRegionMap = new Dictionary<string, string>
+        public Dictionary<string, string> languageToRegion = new Dictionary<string, string>
         {
             { "English", "409" },
             { "French", "40C" },
         };
 
-        public Dictionary<string, string[]> clientOptions_basedOnVersion = new Dictionary<string, string[]>
-        {
-            { "2019", new string[] {"BCMoT", "MTQ", "VDG", "VDQ", "VIA", "WSP_FR"} },
-            { "2020", new string[] {"CofC", "MTQ", "MVRD", "MX", "VDG", "WSP_EN", "WSP_FR"} },
-            { "2021", new string[] {"WSP_EN", "WSP_FR" } },
-            { "2022", new string[] {"CofC", "MVRD", "MX", "WSP_EN", "WSP_FR" } },
-            { "2023", new string[] { "VDM" } },
-        };
 
-        public Dictionary<string, string[]> versionOptions_basedOnClient = new Dictionary<string, string[]>
+        public Dictionary<string, string[]> versionBasedOnClient = new Dictionary<string, string[]>
         {
             { "BCMoT", new string[] { "2019" } },
             { "CofC", new string[] { "2020", "2022" } },
@@ -52,6 +46,59 @@ namespace DynamoTesting
             { "WSP_EN", new string[] { "2020", "2021", "2022" } },
 
         };
+
+        public Dictionary<string, string[]> clientBasedOnVersion = new Dictionary<string, string[]>
+        {
+            { "2019", new string[] {"BCMoT", "MTQ", "VDG", "VDQ", "VIA", "WSP_FR"} },
+            { "2020", new string[] {"CofC", "MTQ", "MVRD", "MX", "VDG", "WSP_EN", "WSP_FR"} },
+            { "2021", new string[] {"WSP_EN", "WSP_FR" } },
+            { "2022", new string[] {"CofC", "MVRD", "MX", "WSP_EN", "WSP_FR" } },
+            { "2023", new string[] { "VDM" } },
+        };
+
+
+
+        public Array checkCivil3DInstallations(Dictionary<string, Tuple<string, string>> installations, Dictionary<string, string> languages)
+        {
+            string singlePath = null;
+            List<string> listOfPaths = new List<string>();
+
+            List<string> listOfInstalls = new List<string>();
+
+            foreach (var version in installations.Keys)
+            {
+                Tuple<string, string> rNumber_productID = installations[version];
+                string rNumber = rNumber_productID.Item1;
+                string productId = rNumber_productID.Item2;
+
+                foreach (var language in languages.Keys)
+                {
+                    string regionValue = languages[language];
+
+                    singlePath = $@"SOFTWARE\Autodesk\AutoCAD\{rNumber}\ACAD-{productId}:{regionValue}\Profiles\<<C3D_Metric>>";
+                    listOfPaths.Add(singlePath);
+
+                    bool softwareExists = registryExists(singlePath);
+                    listOfInstalls.Add(rNumber + ": " + softwareExists);
+                }
+
+            }
+
+            return listOfInstalls.ToArray();
+        }
+
+        public bool registryExists(string path)
+        { // Can this be static, as in a part of this class, not an instance of the class?
+            try
+            {
+                RegistryKey key = Registry.CurrentUser.OpenSubKey(path);
+                return key != null;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
 
         public string buildShortcut(string client, string language, string version)
         {
@@ -76,49 +123,6 @@ namespace DynamoTesting
             return shortcut;
         }
 
-        // QUESTION: Can this be static, as in a part of this class, not an instance of the class?
-        public bool registryExists(string path)
-        {
-            try
-            {
-                RegistryKey key = Registry.CurrentUser.OpenSubKey(path); // Set to Current User, not Local Machine
-                return key != null;
-            }
-            catch (Exception)
-            {
-                // Handle exceptions if necessary
-                return false;
-            }
-        }
-
-        public Array checkCivil3DInstallations(Dictionary<string, Tuple<string, string>> installations, Dictionary<string, string> languages)
-        {
-            string singlePath = null;
-            List<string> listOfPaths = new List<string>();
-
-            List<string> listOfInstalls = new List<string>();
-
-            foreach (var version in installations.Keys)
-            {
-                Tuple<string, string> rNumber_productID = installations[version];
-                string rNumber = rNumber_productID.Item1;
-                string productId = rNumber_productID.Item2;
-
-                foreach (var language in languages.Keys)
-                {
-                    string regionValue = languages[language];
-
-                singlePath = $@"SOFTWARE\Autodesk\AutoCAD\{rNumber}\ACAD-{productId}:{regionValue}\Profiles\<<C3D_Metric>>";
-                listOfPaths.Add(singlePath);
-
-                bool softwareExists = registryExists(singlePath);
-                listOfInstalls.Add(rNumber + ": " + softwareExists);
-                }
-
-            }
-
-            return listOfInstalls.ToArray();
-        }
 
         
     }
