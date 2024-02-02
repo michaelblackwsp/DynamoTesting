@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualBasic;
 using Microsoft.Win32;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -11,25 +12,8 @@ namespace DynamoTesting
     {
         public static string[] clientOptions = { "BCMoT", "CofC", "MTQ", "MVRD", "MX", "VDG", "VDM", "VDQ", "VIA", "WSP_EN", "WSP_FR" };
         public static string[] languageOptions = { "English", "French" };
-        public static string[] versionOptions = { "2018", "2019", "2020", "2021", "2022", "2023" };
+        public static string[] versionOptions = { "2019", "2020", "2021", "2022", "2023" };
 
-
-
-        public Dictionary<string, Tuple<string, string>> yearToRNumber = new Dictionary<string, Tuple<string, string>>
-        {
-            { "2018", Tuple.Create("R22.0", "1000") },
-            { "2019", Tuple.Create("R23.0", "2000") },
-            { "2020", Tuple.Create("R23.1", "3000") },
-            { "2021", Tuple.Create("R24.0", "4100") },
-            { "2022", Tuple.Create("R24.1", "5100") },
-            { "2023", Tuple.Create("R24.2", "6100") },
-        };
-
-        public Dictionary<string, string> languageToRegion = new Dictionary<string, string>
-        {
-            { "English", "409" },
-            { "French", "40C" },
-        };
 
 
         public Dictionary<string, string[]> versionBasedOnClient = new Dictionary<string, string[]>
@@ -44,7 +28,7 @@ namespace DynamoTesting
             { "VDQ", new string[] { "2019" } },
             { "VIA", new string[] { "2019" } },
             { "WSP_EN", new string[] { "2020", "2021", "2022" } },
-
+            { "WSP_FR", new string[] { "2019", "2020", "2021", "2022" } },
         };
 
         public Dictionary<string, string[]> clientBasedOnVersion = new Dictionary<string, string[]>
@@ -58,11 +42,26 @@ namespace DynamoTesting
 
 
 
-        public Array checkCivil3DInstallations(Dictionary<string, Tuple<string, string>> installations, Dictionary<string, string> languages)
+        public Dictionary<string, Tuple<string, string>> yearToRNumber = new Dictionary<string, Tuple<string, string>>
         {
-            string singlePath = null;
-            List<string> listOfPaths = new List<string>();
+            { "2019", Tuple.Create("R23.0", "2000") },
+            { "2020", Tuple.Create("R23.1", "3000") },
+            { "2021", Tuple.Create("R24.0", "4100") },
+            { "2022", Tuple.Create("R24.1", "5100") },
+            { "2023", Tuple.Create("R24.2", "6100") },
+        };
 
+        public Dictionary<string, string> languageToRegion = new Dictionary<string, string>
+        {
+            { "English", "409" },
+            { "French", "40C" },
+        };
+
+
+
+        public Array getCivil3DInstallations(Dictionary<string, Tuple<string, string>> installations, Dictionary<string, string> languages)
+        {
+            string registryPath = null;
             List<string> listOfInstalls = new List<string>();
 
             foreach (var version in installations.Keys)
@@ -74,18 +73,35 @@ namespace DynamoTesting
                 foreach (var language in languages.Keys)
                 {
                     string regionValue = languages[language];
+                    registryPath = $@"SOFTWARE\Autodesk\AutoCAD\{rNumber}\ACAD-{productId}:{regionValue}\Profiles\<<C3D_Metric>>";
 
-                    singlePath = $@"SOFTWARE\Autodesk\AutoCAD\{rNumber}\ACAD-{productId}:{regionValue}\Profiles\<<C3D_Metric>>";
-                    listOfPaths.Add(singlePath);
-
-                    bool softwareExists = registryExists(singlePath);
-                    listOfInstalls.Add(rNumber + ": " + softwareExists);
+                    bool softwareExists = registryExists(registryPath);
+                    if (softwareExists)
+                    {
+                        listOfInstalls.Add(registryPath.ToString());
+                    } 
                 }
-
             }
 
             return listOfInstalls.ToArray();
         }
+
+        public string BuildRegistryPath(string selectedVersion, string selectedLanguage, Dictionary<string, Tuple<string, string>> installations, Dictionary<string, string> languages)
+        {
+            string registryPath = null;
+
+            Tuple<string, string> rNumber_productID = installations[selectedVersion];
+            string rNumber = rNumber_productID.Item1;
+            string productId = rNumber_productID.Item2;
+
+            string regionValue = languages[selectedLanguage];
+
+            registryPath = $@"SOFTWARE\Autodesk\AutoCAD\{rNumber}\ACAD-{productId}:{regionValue}\Profiles\<<C3D_Metric>>";
+
+            return registryPath;
+        }
+
+
 
         public bool registryExists(string path)
         { // Can this be static, as in a part of this class, not an instance of the class?
@@ -99,6 +115,15 @@ namespace DynamoTesting
                 return false;
             }
         }
+
+        public bool stringExists(string path, Array array)
+        {
+            string[] yourArray = (string[])getCivil3DInstallations(yearToRNumber, languageToRegion);
+
+            return yourArray.Contains(path); // Using LINQ for simplicity
+        }
+
+
 
         public string buildShortcut(string client, string language, string version)
         {

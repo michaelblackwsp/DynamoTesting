@@ -39,13 +39,14 @@
             this.usernameLabel = new System.Windows.Forms.Label();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.resetButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.shortcutsModelBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // launchButton
             // 
-            this.launchButton.Location = new System.Drawing.Point(99, 179);
+            this.launchButton.Location = new System.Drawing.Point(101, 203);
             this.launchButton.Name = "launchButton";
             this.launchButton.Size = new System.Drawing.Size(56, 23);
             this.launchButton.TabIndex = 0;
@@ -125,11 +126,22 @@
             this.dataGridView1.TabIndex = 13;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
+            // resetButton
+            // 
+            this.resetButton.Location = new System.Drawing.Point(101, 176);
+            this.resetButton.Name = "resetButton";
+            this.resetButton.Size = new System.Drawing.Size(56, 23);
+            this.resetButton.TabIndex = 14;
+            this.resetButton.Text = "Reset";
+            this.resetButton.UseVisualStyleBackColor = true;
+            this.resetButton.Click += new System.EventHandler(this.resetButton_Click);
+            // 
             // repconLauncher
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(461, 374);
+            this.Controls.Add(this.resetButton);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.usernameLabel);
             this.Controls.Add(this.pathLabel);
@@ -160,5 +172,6 @@
         private Label usernameLabel;
         private ColorDialog colorDialog1;
         private DataGridView dataGridView1;
+        private Button resetButton;
     }
 }

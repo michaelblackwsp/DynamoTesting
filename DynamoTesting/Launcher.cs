@@ -16,7 +16,7 @@ namespace DynamoTesting
             InitializeComponent();
 
             // (string[]) because the method returns and array? Redefining the output it could already know about?
-            string[] installedCivil3D = (string[])model.checkCivil3DInstallations(model.yearToRNumber, model.languageToRegion);
+            string[] installedCivil3D = (string[])model.getCivil3DInstallations(model.yearToRNumber, model.languageToRegion);
             PopulateDataGridView(installedCivil3D);
 
             launchButton.Enabled = false;
@@ -40,7 +40,7 @@ namespace DynamoTesting
         {
             //MessageBox.Show("The form is loading!");
             Model model = new Model();
-            model.checkCivil3DInstallations(model.yearToRNumber, model.languageToRegion);
+            model.getCivil3DInstallations(model.yearToRNumber, model.languageToRegion);
         }
 
 
@@ -92,46 +92,93 @@ namespace DynamoTesting
         }
 
 
+
+        private bool isUpdatingDropdowns = false;
+        private bool initialSelectionMade = false;
+        private bool bothDropdownsSelected = false;
+
         private void toggleVersions()
         {
-            Model model = new Model();
+            string selected = clientDropdownMenu.SelectedItem?.ToString();
 
-            string selected = clientDropdownMenu.SelectedItem.ToString();
-            string[] filteredVersions = model.versionBasedOnClient[selected];
+            if (!isUpdatingDropdowns)
+            {
+                isUpdatingDropdowns = true;
 
-            versionDropdownMenu.Items.Clear();
-            versionDropdownMenu.Items.AddRange(filteredVersions.ToArray());
-            versionDropdownMenu.SelectedIndex = 0;
+                if (selected != null)
+                {
+                    string[] filteredVersions = model.versionBasedOnClient[selected];
+                    versionDropdownMenu.Items.Clear();
+                    versionDropdownMenu.Items.AddRange(filteredVersions);
+                    versionDropdownMenu.SelectedIndex = 0;
 
-            UpdateLaunchButtonState();
+                    initialSelectionMade = true; // Set the flag after the initial selection
+                }
+
+                isUpdatingDropdowns = false;
+                UpdateLaunchButtonState();
+            }
         }
 
         private void toggleClients()
         {
-/*            Model model = new Model();
+            string selected = versionDropdownMenu.SelectedItem?.ToString();
 
-            string selected = versionDropdownMenu.SelectedItem.ToString();
-            string[] filteredVersions = model.clientBasedOnVersion[selected];
+            if (!isUpdatingDropdowns && initialSelectionMade && !bothDropdownsSelected)
+            {
+                isUpdatingDropdowns = true;
 
-            clientDropdownMenu.Items.Clear();
-            clientDropdownMenu.Items.AddRange(filteredVersions.ToArray());
-            clientDropdownMenu.SelectedIndex = 0;*/
+                if (selected != null)
+                {
+                    string[] filteredClients = model.clientBasedOnVersion[selected];
+                    clientDropdownMenu.Items.Clear();
+                    clientDropdownMenu.Items.AddRange(filteredClients);
+                    clientDropdownMenu.SelectedIndex = 0;
 
-            UpdateLaunchButtonState();
+                    bothDropdownsSelected = true; // Set the flag when both dropdowns have been selected
+                }
+
+                isUpdatingDropdowns = false;
+                UpdateLaunchButtonState();
+            }
         }
-
 
         private void UpdateLaunchButtonState()
         {
-            if (clientDropdownMenu.SelectedIndex != -1 &&
-                versionDropdownMenu.SelectedIndex != -1)
+            string[] installedCivil3D = (string[])model.getCivil3DInstallations(model.yearToRNumber, model.languageToRegion);
+
+            if (clientDropdownMenu.Items.Count > 0
+                && versionDropdownMenu.Items.Count > 0
+                && clientDropdownMenu.SelectedIndex != -1
+                && versionDropdownMenu.SelectedIndex != -1)
             {
-                launchButton.Enabled = true;
+
+                string version = versionDropdownMenu.SelectedItem.ToString();
+                string language = "English"; // TO DO: Add logic for allowable languages based on client/version
+
+                string path = model.BuildRegistryPath(version, language, model.yearToRNumber, model.languageToRegion);
+
+                if (model.stringExists(path, installedCivil3D))
+                {
+                    launchButton.Enabled = true;
+                    MessageBox.Show(path);
+                }
             }
             else
             {
                 launchButton.Enabled = false;
             }
+        }
+
+
+
+        private void resetButton_Click(object sender, EventArgs e)
+        {
+            clientDropdownMenu.Items.Clear();
+            clientDropdownMenu.Items.AddRange(Model.clientOptions.ToArray());
+            versionDropdownMenu.Items.Clear();
+            versionDropdownMenu.Items.AddRange(Model.versionOptions.ToArray());
+            UpdateLaunchButtonState();
         }
 
         private void launchButton_Click(object sender, EventArgs e)
@@ -217,6 +264,7 @@ namespace DynamoTesting
         {
             usernameLabel.Text = Environment.UserName;
         }
+
 
 
         //TO DO: Recycle this to be a generic method that checks for good/bad and assigns colour accordingly
