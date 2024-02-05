@@ -75,7 +75,6 @@ namespace DynamoTesting
 
 
 
-
         public Array getCivil3DInstallations(Dictionary<string, Tuple<string, string>> installations, Dictionary<string, string> languages)
         {
             string registryPath = null;
@@ -96,7 +95,7 @@ namespace DynamoTesting
                     if (softwareExists)
                     {
                         listOfInstalls.Add(registryPath.ToString());
-                    } 
+                    }
                 }
             }
 

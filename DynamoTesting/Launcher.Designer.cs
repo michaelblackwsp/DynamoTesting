@@ -46,7 +46,7 @@
             // 
             // launchButton
             // 
-            this.launchButton.Location = new System.Drawing.Point(101, 203);
+            this.launchButton.Location = new System.Drawing.Point(274, 330);
             this.launchButton.Name = "launchButton";
             this.launchButton.Size = new System.Drawing.Size(56, 23);
             this.launchButton.TabIndex = 0;
@@ -57,7 +57,7 @@
             // clientDropdownMenu
             // 
             this.clientDropdownMenu.FormattingEnabled = true;
-            this.clientDropdownMenu.Location = new System.Drawing.Point(93, 108);
+            this.clientDropdownMenu.Location = new System.Drawing.Point(30, 108);
             this.clientDropdownMenu.MaxDropDownItems = 20;
             this.clientDropdownMenu.Name = "clientDropdownMenu";
             this.clientDropdownMenu.Size = new System.Drawing.Size(69, 23);
@@ -71,7 +71,7 @@
             // versionDropdownMenu
             // 
             this.versionDropdownMenu.FormattingEnabled = true;
-            this.versionDropdownMenu.Location = new System.Drawing.Point(93, 137);
+            this.versionDropdownMenu.Location = new System.Drawing.Point(105, 108);
             this.versionDropdownMenu.Name = "versionDropdownMenu";
             this.versionDropdownMenu.Size = new System.Drawing.Size(69, 23);
             this.versionDropdownMenu.TabIndex = 2;
@@ -80,7 +80,7 @@
             // clientLabel
             // 
             this.clientLabel.AutoSize = true;
-            this.clientLabel.Location = new System.Drawing.Point(49, 110);
+            this.clientLabel.Location = new System.Drawing.Point(30, 90);
             this.clientLabel.Name = "clientLabel";
             this.clientLabel.Size = new System.Drawing.Size(38, 15);
             this.clientLabel.TabIndex = 3;
@@ -90,7 +90,7 @@
             // versionLabel
             // 
             this.versionLabel.AutoSize = true;
-            this.versionLabel.Location = new System.Drawing.Point(42, 140);
+            this.versionLabel.Location = new System.Drawing.Point(105, 90);
             this.versionLabel.Name = "versionLabel";
             this.versionLabel.Size = new System.Drawing.Size(45, 15);
             this.versionLabel.TabIndex = 4;
@@ -100,7 +100,7 @@
             // pathLabel
             // 
             this.pathLabel.AutoSize = true;
-            this.pathLabel.Location = new System.Drawing.Point(12, 350);
+            this.pathLabel.Location = new System.Drawing.Point(12, 467);
             this.pathLabel.Name = "pathLabel";
             this.pathLabel.Size = new System.Drawing.Size(31, 15);
             this.pathLabel.TabIndex = 7;
@@ -110,7 +110,7 @@
             // usernameLabel
             // 
             this.usernameLabel.AutoSize = true;
-            this.usernameLabel.Location = new System.Drawing.Point(12, 331);
+            this.usernameLabel.Location = new System.Drawing.Point(12, 448);
             this.usernameLabel.Name = "usernameLabel";
             this.usernameLabel.Size = new System.Drawing.Size(60, 15);
             this.usernameLabel.TabIndex = 11;
@@ -120,15 +120,15 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(238, 12);
+            this.dataGridView1.Location = new System.Drawing.Point(30, 158);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(211, 330);
+            this.dataGridView1.Size = new System.Drawing.Size(566, 166);
             this.dataGridView1.TabIndex = 13;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // resetButton
             // 
-            this.resetButton.Location = new System.Drawing.Point(101, 176);
+            this.resetButton.Location = new System.Drawing.Point(180, 108);
             this.resetButton.Name = "resetButton";
             this.resetButton.Size = new System.Drawing.Size(56, 23);
             this.resetButton.TabIndex = 14;
@@ -140,7 +140,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(461, 374);
+            this.ClientSize = new System.Drawing.Size(842, 488);
             this.Controls.Add(this.resetButton);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.usernameLabel);

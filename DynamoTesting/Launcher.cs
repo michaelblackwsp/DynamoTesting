@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -93,53 +94,46 @@ namespace DynamoTesting
 
 
 
-        private bool isUpdatingDropdowns = false;
-        private string selectedClient = null;
-        private string selectedVersion = null;
+        private bool isUpdatingDropdowns = true;
 
         private void toggleVersions()
         {
-            string selected = clientDropdownMenu.SelectedItem?.ToString();
+            string selectedClient = clientDropdownMenu.SelectedItem?.ToString();
 
-            if (!isUpdatingDropdowns)
+            if (isUpdatingDropdowns)
             {
 
-                if (selected != null)
+                if (selectedClient != null)
                 {
-                    selectedClient = selected;
-
-                    string[] filteredVersions = model.versionBasedOnClient[selected];
+                    string[] filteredVersions = model.versionBasedOnClient[selectedClient];
                     versionDropdownMenu.Items.Clear();
                     versionDropdownMenu.Items.AddRange(filteredVersions);
                     versionDropdownMenu.SelectedIndex = -1;
                 }
-                isUpdatingDropdowns = true;
-                UpdateLaunchButtonState();
+                isUpdatingDropdowns = false;
+
             }
+            UpdateLaunchButtonState();
         }
 
         private void toggleClients()
         {
-            string selected = versionDropdownMenu.SelectedItem?.ToString();
+            string selectedVersion = versionDropdownMenu.SelectedItem?.ToString();
 
-            if (!isUpdatingDropdowns)
+            if (isUpdatingDropdowns)
             {
 
-
-                if (selected != null)
+                if (selectedVersion != null)
                 {
-                    selectedVersion = selected;
-
-                    string[] filteredClients = model.clientBasedOnVersion[selected];
+                    string[] filteredClients = model.clientBasedOnVersion[selectedVersion];
                     clientDropdownMenu.Items.Clear();
                     clientDropdownMenu.Items.AddRange(filteredClients);
                     clientDropdownMenu.SelectedIndex = -1;
-
-
                 }
-                isUpdatingDropdowns = true;
-                UpdateLaunchButtonState();
+                isUpdatingDropdowns = false;
             }
+
+            UpdateLaunchButtonState();
         }
 
         private void UpdateLaunchButtonState()
@@ -157,26 +151,70 @@ namespace DynamoTesting
                 string client = clientDropdownMenu.SelectedItem.ToString();
                 List<string> languages = model.GetLanguagesForSelectedClient(client);
 
-                foreach (string language in languages)
+                bool englishAndFrench = languages.Contains("English") && languages.Contains("French");
+                bool onlyEnglish = languages.Contains("English");
+                bool onlyFrench = languages.Contains("French");
+
+                if (onlyEnglish)
                 {
+                    string language = "English";
                     string path = model.BuildRegistryPath(version, language, model.yearToRNumber, model.languageToRegion);
 
                     if (model.stringExists(path, installedCivil3D))
                     {
                         launchButton.Enabled = true;
-                        MessageBox.Show(path);
-                        break;
+                        MessageBox.Show(client + " " + version + " can be loaded with Civil 3D " + version + " " + language);
+                        //break;
                     }
 
                     else
                     {
-                        launchButton.Enabled = false;
+                        launchButton.Enabled = false; MessageBox.Show(client + " " + version + " cannot be loaded. Civil 3D " + version + " " + language + " is not installed.\n\n" + "Please install Civil 3D " + version + " " + language + " from the Software Centre, or contact Digital Operations for more information.");
+                    }
+                } 
+
+                if (onlyFrench)
+                {
+                    string language = "French";
+                    string path = model.BuildRegistryPath(version, language, model.yearToRNumber, model.languageToRegion);
+
+                    if (model.stringExists(path, installedCivil3D))
+                    {
+                        launchButton.Enabled = true;
+                        MessageBox.Show(client + " " + version + " can be loaded with Civil 3D " + version + " " + language);
+                        //break;
+                    }
+
+                    else
+                    {
+                        launchButton.Enabled = false; MessageBox.Show(client + " " + version + " cannot be loaded. Civil 3D " + version + " " + language + " is not installed.\n\n" + "Please install Civil 3D " + version + " " + language + " from the Software Centre, or contact Digital Operations for more information.");
                     }
                 }
+
+                if (englishAndFrench)
+                {
+                    foreach (string language in languages)
+                    {
+                        string path = model.BuildRegistryPath(version, language, model.yearToRNumber, model.languageToRegion);
+
+                        if (model.stringExists(path, installedCivil3D))
+                        {
+                            launchButton.Enabled = true;
+                            MessageBox.Show(client + " " + version + " can be loaded with Civil 3D " + version + " " + language);
+                            break;
+                        }
+
+                        else
+                        {
+                            launchButton.Enabled = false; MessageBox.Show(client + " " + version + " cannot be loaded. Civil 3D " + version + " " + language + " is not installed.\n\n" + "Please install Civil 3D " + version + " " + language + " from the Software Centre, or contact Digital Operations for more information.");
+                        }
+                    }
+                }
+
+
                 isUpdatingDropdowns = false;
             }
         }
-
 
         private void resetButton_Click(object sender, EventArgs e)
         {
@@ -184,6 +222,7 @@ namespace DynamoTesting
             clientDropdownMenu.Items.AddRange(Model.clientOptions.ToArray());
             versionDropdownMenu.Items.Clear();
             versionDropdownMenu.Items.AddRange(Model.versionOptions.ToArray());
+            isUpdatingDropdowns = true;
             UpdateLaunchButtonState();
         }
 
