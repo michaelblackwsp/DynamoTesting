@@ -35,19 +35,19 @@
             this.versionDropdownMenu = new System.Windows.Forms.ComboBox();
             this.clientLabel = new System.Windows.Forms.Label();
             this.versionLabel = new System.Windows.Forms.Label();
-            this.pathLabel = new System.Windows.Forms.Label();
             this.usernameLabel = new System.Windows.Forms.Label();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.resetButton = new System.Windows.Forms.Button();
             this.software = new System.Windows.Forms.Label();
             this.softwareComboBox = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.pathLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.shortcutsModelBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // launchButton
             // 
-            this.launchButton.Location = new System.Drawing.Point(105, 330);
+            this.launchButton.Location = new System.Drawing.Point(94, 310);
             this.launchButton.Name = "launchButton";
             this.launchButton.Size = new System.Drawing.Size(56, 23);
             this.launchButton.TabIndex = 0;
@@ -98,20 +98,10 @@
             this.versionLabel.Text = "Version";
             this.versionLabel.Click += new System.EventHandler(this.versionLabel_Click);
             // 
-            // pathLabel
-            // 
-            this.pathLabel.AutoSize = true;
-            this.pathLabel.Location = new System.Drawing.Point(8, 401);
-            this.pathLabel.Name = "pathLabel";
-            this.pathLabel.Size = new System.Drawing.Size(31, 15);
-            this.pathLabel.TabIndex = 7;
-            this.pathLabel.Text = "Path";
-            this.pathLabel.Click += new System.EventHandler(this.pathLabel_Click);
-            // 
             // usernameLabel
             // 
             this.usernameLabel.AutoSize = true;
-            this.usernameLabel.Location = new System.Drawing.Point(8, 382);
+            this.usernameLabel.Location = new System.Drawing.Point(8, 356);
             this.usernameLabel.Name = "usernameLabel";
             this.usernameLabel.Size = new System.Drawing.Size(60, 15);
             this.usernameLabel.TabIndex = 11;
@@ -165,11 +155,21 @@
             this.tableLayoutPanel.Size = new System.Drawing.Size(174, 141);
             this.tableLayoutPanel.TabIndex = 17;
             // 
+            // pathLabel
+            // 
+            this.pathLabel.AutoSize = true;
+            this.pathLabel.Location = new System.Drawing.Point(8, 375);
+            this.pathLabel.Name = "pathLabel";
+            this.pathLabel.Size = new System.Drawing.Size(31, 15);
+            this.pathLabel.TabIndex = 7;
+            this.pathLabel.Text = "Path";
+            this.pathLabel.Click += new System.EventHandler(this.pathLabel_Click);
+            // 
             // repconLauncher
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(270, 444);
+            this.ClientSize = new System.Drawing.Size(270, 396);
             this.Controls.Add(this.tableLayoutPanel);
             this.Controls.Add(this.softwareComboBox);
             this.Controls.Add(this.software);
@@ -198,12 +198,12 @@
         private Label clientLabel;
         private Label versionLabel;
         private BindingSource shortcutsModelBindingSource;
-        private Label pathLabel;
         private Label usernameLabel;
         private ColorDialog colorDialog1;
         private Button resetButton;
         private Label software;
         private ComboBox softwareComboBox;
         private TableLayoutPanel tableLayoutPanel;
+        private Label pathLabel;
     }
 }

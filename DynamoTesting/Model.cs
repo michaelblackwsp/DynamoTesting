@@ -17,7 +17,7 @@ namespace DynamoTesting
 
 
 
-        public Dictionary<string, string[]> versionBasedOnClient = new Dictionary<string, string[]>
+        public Dictionary<string, string[]> versionsBasedOnClient = new Dictionary<string, string[]>
         {
             { "BCMoT", new string[] { "2019" } },
             { "CofC", new string[] { "2020", "2022" } },
@@ -32,7 +32,7 @@ namespace DynamoTesting
             { "WSP_FR", new string[] { "2019", "2020", "2021", "2022" } },
         };
 
-        public Dictionary<string, string[]> clientBasedOnVersion = new Dictionary<string, string[]>
+        public Dictionary<string, string[]> clientsBasedOnVersion = new Dictionary<string, string[]>
         {
             { "2019", new string[] {"BCMoT", "MTQ", "VDG", "VDQ", "VIA", "WSP_FR"} },
             { "2020", new string[] {"CofC", "MTQ", "MVRD", "MX", "VDG", "WSP_EN", "WSP_FR"} },
@@ -56,6 +56,21 @@ namespace DynamoTesting
             { "WSP_FR", new List<string> { "English", "French" } },
         };
 
+        public List<string> GetLanguagesForSelectedClient(string selectedClient)
+        {
+            List<string> result = new List<string>();
+
+            if (selectedClient != null && languageBasedOnClient.ContainsKey(selectedClient))
+            {
+                List<string> languages = languageBasedOnClient[selectedClient];
+
+                // Include all languages in the result
+                result.AddRange(languages);
+            }
+
+            return result;
+        }
+
 
 
         public Dictionary<string, Tuple<string, string>> yearToRNumber = new Dictionary<string, Tuple<string, string>>
@@ -75,7 +90,7 @@ namespace DynamoTesting
 
 
 
-        public Array getCivil3DInstallations(Dictionary<string, Tuple<string, string>> installations, Dictionary<string, string> languages)
+        public Array GetCivil3DInstallations(Dictionary<string, Tuple<string, string>> installations, Dictionary<string, string> languages)
         {
             string registryPath = null;
             List<string> listOfInstalls = new List<string>();
@@ -91,7 +106,7 @@ namespace DynamoTesting
                     string regionValue = languages[language];
                     registryPath = $@"SOFTWARE\Autodesk\AutoCAD\{rNumber}\ACAD-{productId}:{regionValue}\Profiles\<<C3D_Metric>>";
 
-                    bool softwareExists = registryExists(registryPath);
+                    bool softwareExists = RegistryExists(registryPath);
                     if (softwareExists)
                     {
                         listOfInstalls.Add(registryPath.ToString());
@@ -101,20 +116,25 @@ namespace DynamoTesting
 
             return listOfInstalls.ToArray();
         }
-
-        public List<string> GetLanguagesForSelectedClient(string selectedClient)
-        {
-            List<string> result = new List<string>();
-
-            if (selectedClient != null && languageBasedOnClient.ContainsKey(selectedClient))
+        
+        public bool RegistryExists(string path)
+        { // Can this be static, as in a part of this class, not an instance of the class?
+            try
             {
-                List<string> languages = languageBasedOnClient[selectedClient];
-
-                // Include all languages in the result
-                result.AddRange(languages);
+                RegistryKey key = Registry.CurrentUser.OpenSubKey(path);
+                return key != null;
             }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
 
-            return result;
+        public bool StringExists(string path, Array array)
+        {
+            string[] yourArray = (string[])GetCivil3DInstallations(yearToRNumber, languageToRegion);
+
+            return yourArray.Contains(path); // Using LINQ for simplicity
         }
 
         public string BuildRegistryPath(string selectedVersion, string selectedLanguage, Dictionary<string, Tuple<string, string>> installations, Dictionary<string, string> languages)
@@ -132,31 +152,7 @@ namespace DynamoTesting
             return registryPath;
         }
 
-
-
-        public bool registryExists(string path)
-        { // Can this be static, as in a part of this class, not an instance of the class?
-            try
-            {
-                RegistryKey key = Registry.CurrentUser.OpenSubKey(path);
-                return key != null;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
-        public bool stringExists(string path, Array array)
-        {
-            string[] yourArray = (string[])getCivil3DInstallations(yearToRNumber, languageToRegion);
-
-            return yourArray.Contains(path); // Using LINQ for simplicity
-        }
-
-
-
-        public string buildShortcut(string client, string language, string version)
+        public string BuildShortcut(string client, string language, string version)
         {
             string shortFormLanguage = null;
             string modifiedVersionShortcut = null;
@@ -179,8 +175,23 @@ namespace DynamoTesting
             return shortcut;
         }
 
-
-        
     }
 
 }
+
+
+
+
+
+
+/*{ "BCMoT", { "British Columbia Ministry of Tranportation"} },
+{ "CofC", { "City of Calgary" } },
+{ "MTQ", { "Ministère de Transport du Québec" } },
+{ "MVRD", { "Metro Vancouver Regional District" } },
+{ "MX", { "Metrolinx" } },
+{ "VDG", { "Ville de Gatineau" } },
+{ "VDM", { "Ville de Montréal" } },
+{ "VDQ", { "Ville de Québec"} },
+{ "VIA", { "VIA Rail"} },
+{ "WSP_EN", { "Standard WSP English" } },
+{ "WSP_FR", { "Standard WSP Français" } }*/

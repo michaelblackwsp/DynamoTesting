@@ -18,7 +18,7 @@ namespace DynamoTesting
             InitializeComponent();
 
             // (string[]) because the method returns and array? Redefining the output it could already know about?
-            string[] installedCivil3D = (string[])model.getCivil3DInstallations(model.yearToRNumber, model.languageToRegion);
+            string[] installedCivil3D = (string[])model.GetCivil3DInstallations(model.yearToRNumber, model.languageToRegion);
             //PopulateDataGridView(installedCivil3D);
 
             launchButton.Enabled = false;
@@ -41,11 +41,8 @@ namespace DynamoTesting
         private void repconLauncher_Load(object sender, EventArgs e)
         {
             Model model = new Model();
-            model.getCivil3DInstallations(model.yearToRNumber, model.languageToRegion);
+            model.GetCivil3DInstallations(model.yearToRNumber, model.languageToRegion);
         }
-
-      
-
 
 
 
@@ -96,6 +93,51 @@ namespace DynamoTesting
         }
 
 
+
+        private void BuildClientOptionsTable()
+        {
+            tableLayoutPanel.Controls.Clear();
+            tableLayoutPanel.ColumnCount = 2;
+
+            List<string> options =
+                clientDropdownMenu.SelectedItem != null ? buildOptions_basedOnClient() :
+                versionDropdownMenu.SelectedItem != null ? buildOptions_basedOnVersion() :
+                new List<string>();
+
+
+            foreach (var option in options)
+            {
+                RadioButton radioButton = new RadioButton();
+                radioButton.AutoSize = true;
+                radioButton.CheckedChanged += RadioButton_CheckedChanged;
+                radioButton.Tag = option; // Assign option text to Tag property
+
+                Label label = new Label();
+                label.Text = option;
+
+                tableLayoutPanel.Controls.Add(radioButton);
+                tableLayoutPanel.Controls.Add(label);
+            }
+        }
+
+        private void RadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            RadioButton radioButton = sender as RadioButton;
+            if (radioButton != null && radioButton.Checked)
+            {
+                int row = tableLayoutPanel.GetRow(radioButton);
+                if (row >=0)
+                {
+                    launchButton.Enabled = true;
+                    string selectedOption = ((Label)tableLayoutPanel.GetControlFromPosition(1, tableLayoutPanel.GetCellPosition(radioButton).Row)).Text;
+                    MessageBox.Show("Selected option: " + selectedOption);
+                }
+
+            }
+        }
+
+
+
         private List<string> buildOptions_basedOnClient()
         {
             string selectedClient = clientDropdownMenu.SelectedItem?.ToString();
@@ -103,7 +145,7 @@ namespace DynamoTesting
 
             if (selectedClient != null)
             {
-                string[] versions = model.versionBasedOnClient[selectedClient];
+                string[] versions = model.versionsBasedOnClient[selectedClient];
                 foreach (string version in versions) 
                 {
                     string displayOption = selectedClient + " (" + version + ")";
@@ -122,7 +164,7 @@ namespace DynamoTesting
 
             if (selectedVersion != null)
             {
-                string[] clients = model.clientBasedOnVersion[selectedVersion];
+                string[] clients = model.clientsBasedOnVersion[selectedVersion];
                 foreach (string client in clients)
                 {
                     string displayOption = client + " (" + selectedVersion + ")";
@@ -134,54 +176,12 @@ namespace DynamoTesting
             return options_basedOnVersion;
         }
 
-        private void BuildClientOptionsTable()
-        {
-            // Clear any existing controls in the TableLayoutPanel
-            tableLayoutPanel.Controls.Clear();
 
-            // Set the column count
-            tableLayoutPanel.ColumnCount = 2;
-
-            List<string> options =
-                clientDropdownMenu.SelectedItem != null ? buildOptions_basedOnClient() :
-                versionDropdownMenu.SelectedItem != null ? buildOptions_basedOnVersion() : 
-                new List<string>();
-
-
-            // Add rows dynamically
-            foreach (var option in options)
-            {
-                // Create radio button
-                RadioButton radioButton = new RadioButton();
-                radioButton.AutoSize = true;
-                radioButton.CheckedChanged += RadioButton_CheckedChanged;
-
-                // Create label for option
-                Label label = new Label();
-                label.Text = option;
-
-                // Add controls to the table layout panel
-                tableLayoutPanel.Controls.Add(radioButton);
-                tableLayoutPanel.Controls.Add(label);
-            }
-        }
-
-        private void RadioButton_CheckedChanged(object sender, EventArgs e)
-        {
-            RadioButton radioButton = sender as RadioButton;
-            if (radioButton != null && radioButton.Checked)
-            {
-                // Do something when a radio button is checked
-                // For example, you can get the option text
-                string selectedOption = ((Label)tableLayoutPanel.GetControlFromPosition(1, tableLayoutPanel.GetCellPosition(radioButton).Row)).Text;
-                MessageBox.Show("Selected option: " + selectedOption);
-            }
-        }
 
         private void UpdateLaunchButtonState()
         {
 
-            string[] installedCivil3D = (string[])model.getCivil3DInstallations(model.yearToRNumber, model.languageToRegion);
+            string[] installedCivil3D = (string[])model.GetCivil3DInstallations(model.yearToRNumber, model.languageToRegion);
 
             if (clientDropdownMenu.Items.Count > 0
                 && versionDropdownMenu.Items.Count > 0
@@ -202,7 +202,7 @@ namespace DynamoTesting
                     string language = "English";
                     string path = model.BuildRegistryPath(version, language, model.yearToRNumber, model.languageToRegion);
 
-                    if (model.stringExists(path, installedCivil3D))
+                    if (model.StringExists(path, installedCivil3D))
                     {
                         launchButton.Enabled = true;
                         MessageBox.Show(client + " " + version + " can be loaded with Civil 3D " + version + " " + language);
@@ -220,7 +220,7 @@ namespace DynamoTesting
                     string language = "French";
                     string path = model.BuildRegistryPath(version, language, model.yearToRNumber, model.languageToRegion);
 
-                    if (model.stringExists(path, installedCivil3D))
+                    if (model.StringExists(path, installedCivil3D))
                     {
                         launchButton.Enabled = true;
                         MessageBox.Show(client + " " + version + " can be loaded with Civil 3D " + version + " " + language);
@@ -239,7 +239,7 @@ namespace DynamoTesting
                     {
                         string path = model.BuildRegistryPath(version, language, model.yearToRNumber, model.languageToRegion);
 
-                        if (model.stringExists(path, installedCivil3D))
+                        if (model.StringExists(path, installedCivil3D))
                         {
                             launchButton.Enabled = true;
                             MessageBox.Show(client + " " + version + " can be loaded with Civil 3D " + version + " " + language);
@@ -278,7 +278,7 @@ namespace DynamoTesting
             string version = versionDropdownMenu.SelectedItem.ToString();
 
             // ************** THIS NEEDS TO BE LANGUAGE AVAILABLE BASED ON THE MATRIX
-            string pathToShortcut = model.buildShortcut(client, "English", version);
+            string pathToShortcut = model.BuildShortcut(client, "English", version);
 
             if (System.IO.File.Exists(pathToShortcut))
             {
@@ -303,41 +303,7 @@ namespace DynamoTesting
         }
 
 
-
-/*        private void PopulateDataGridView(string[] paths)
-        {
-            dataGridView1.RowTemplate.Height = 20;
-            dataGridView1.RowCount = 7;
-
-            dataGridView1.Columns[0].Name = "Client Environment";
-            dataGridView1.Columns[0].Width = 163;
-
-
-
-            *//* dataGridView1.ColumnCount = 1; // One column for the paths
-             dataGridView1.Columns[0].Name = "Civil 3D Version";
-             dataGridView1.Columns[0].Width = 150;*/
-
-
-
-
-            /*            foreach (string path in paths)
-                        {
-                            dataGridView1.Rows.Add(path);
-                        }*//*
-        }*/
-
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-
-
-
-
-
-
+      
         private void clientLabel_Click(object sender, EventArgs e)
         {
 
@@ -358,7 +324,7 @@ namespace DynamoTesting
             string language = "English";
             string version = versionDropdownMenu.SelectedItem.ToString();
 
-            string pathToShortcut = model.buildShortcut(client, language, version);
+            string pathToShortcut = model.BuildShortcut(client, language, version);
             pathLabel.Text = pathToShortcut;
         }
 
