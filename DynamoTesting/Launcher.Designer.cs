@@ -38,15 +38,16 @@
             this.pathLabel = new System.Windows.Forms.Label();
             this.usernameLabel = new System.Windows.Forms.Label();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.resetButton = new System.Windows.Forms.Button();
+            this.software = new System.Windows.Forms.Label();
+            this.softwareComboBox = new System.Windows.Forms.ComboBox();
+            this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)(this.shortcutsModelBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // launchButton
             // 
-            this.launchButton.Location = new System.Drawing.Point(274, 330);
+            this.launchButton.Location = new System.Drawing.Point(105, 330);
             this.launchButton.Name = "launchButton";
             this.launchButton.Size = new System.Drawing.Size(56, 23);
             this.launchButton.TabIndex = 0;
@@ -100,7 +101,7 @@
             // pathLabel
             // 
             this.pathLabel.AutoSize = true;
-            this.pathLabel.Location = new System.Drawing.Point(12, 467);
+            this.pathLabel.Location = new System.Drawing.Point(8, 401);
             this.pathLabel.Name = "pathLabel";
             this.pathLabel.Size = new System.Drawing.Size(31, 15);
             this.pathLabel.TabIndex = 7;
@@ -110,21 +111,12 @@
             // usernameLabel
             // 
             this.usernameLabel.AutoSize = true;
-            this.usernameLabel.Location = new System.Drawing.Point(12, 448);
+            this.usernameLabel.Location = new System.Drawing.Point(8, 382);
             this.usernameLabel.Name = "usernameLabel";
             this.usernameLabel.Size = new System.Drawing.Size(60, 15);
             this.usernameLabel.TabIndex = 11;
             this.usernameLabel.Text = "Username";
             this.usernameLabel.Click += new System.EventHandler(this.usernameLabel_Click);
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(30, 158);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(566, 166);
-            this.dataGridView1.TabIndex = 13;
-            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // resetButton
             // 
@@ -136,13 +128,52 @@
             this.resetButton.UseVisualStyleBackColor = true;
             this.resetButton.Click += new System.EventHandler(this.resetButton_Click);
             // 
+            // software
+            // 
+            this.software.AutoSize = true;
+            this.software.Location = new System.Drawing.Point(30, 19);
+            this.software.Name = "software";
+            this.software.Size = new System.Drawing.Size(53, 15);
+            this.software.TabIndex = 15;
+            this.software.Text = "Software";
+            // 
+            // softwareComboBox
+            // 
+            this.softwareComboBox.FormattingEnabled = true;
+            this.softwareComboBox.Items.AddRange(new object[] {
+            "Civil 3D (Autodesk)"});
+            this.softwareComboBox.Location = new System.Drawing.Point(30, 37);
+            this.softwareComboBox.Name = "softwareComboBox";
+            this.softwareComboBox.Size = new System.Drawing.Size(144, 23);
+            this.softwareComboBox.TabIndex = 16;
+            // 
+            // tableLayoutPanel
+            // 
+            this.tableLayoutPanel.ColumnCount = 2;
+            this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 83.33334F));
+            this.tableLayoutPanel.Location = new System.Drawing.Point(30, 154);
+            this.tableLayoutPanel.Name = "tableLayoutPanel";
+            this.tableLayoutPanel.RowCount = 7;
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.Size = new System.Drawing.Size(174, 141);
+            this.tableLayoutPanel.TabIndex = 17;
+            // 
             // repconLauncher
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(842, 488);
+            this.ClientSize = new System.Drawing.Size(270, 444);
+            this.Controls.Add(this.tableLayoutPanel);
+            this.Controls.Add(this.softwareComboBox);
+            this.Controls.Add(this.software);
             this.Controls.Add(this.resetButton);
-            this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.usernameLabel);
             this.Controls.Add(this.pathLabel);
             this.Controls.Add(this.versionLabel);
@@ -154,7 +185,6 @@
             this.Text = "REPCON Launcher";
             this.Load += new System.EventHandler(this.repconLauncher_Load);
             ((System.ComponentModel.ISupportInitialize)(this.shortcutsModelBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -171,7 +201,9 @@
         private Label pathLabel;
         private Label usernameLabel;
         private ColorDialog colorDialog1;
-        private DataGridView dataGridView1;
         private Button resetButton;
+        private Label software;
+        private ComboBox softwareComboBox;
+        private TableLayoutPanel tableLayoutPanel;
     }
 }

@@ -5,6 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
+using static System.Windows.Forms.Design.AxImporter;
 
 namespace DynamoTesting
 {
@@ -18,7 +19,7 @@ namespace DynamoTesting
 
             // (string[]) because the method returns and array? Redefining the output it could already know about?
             string[] installedCivil3D = (string[])model.getCivil3DInstallations(model.yearToRNumber, model.languageToRegion);
-            PopulateDataGridView(installedCivil3D);
+            //PopulateDataGridView(installedCivil3D);
 
             launchButton.Enabled = false;
 
@@ -39,10 +40,12 @@ namespace DynamoTesting
 
         private void repconLauncher_Load(object sender, EventArgs e)
         {
-            //MessageBox.Show("The form is loading!");
             Model model = new Model();
             model.getCivil3DInstallations(model.yearToRNumber, model.languageToRegion);
         }
+
+      
+
 
 
 
@@ -82,58 +85,97 @@ namespace DynamoTesting
 
         private void clientDropdownMenu_SelectedIndexChanged(object sender, EventArgs e)
         {
-           toggleVersions();
-           
+            versionDropdownMenu.Enabled = false;
+            BuildClientOptionsTable();
         }
 
         private void versionDropdownMenu_SelectedIndexChanged(object sender, EventArgs e)
         {
-           toggleClients();
-           
+            clientDropdownMenu.Enabled = false;
+            BuildClientOptionsTable();
         }
 
 
-
-        private bool isUpdatingDropdowns = true;
-
-        private void toggleVersions()
+        private List<string> buildOptions_basedOnClient()
         {
             string selectedClient = clientDropdownMenu.SelectedItem?.ToString();
+            List<string> options_basedOnClient = new List<string>();
 
-            if (isUpdatingDropdowns)
+            if (selectedClient != null)
             {
-
-                if (selectedClient != null)
+                string[] versions = model.versionBasedOnClient[selectedClient];
+                foreach (string version in versions) 
                 {
-                    string[] filteredVersions = model.versionBasedOnClient[selectedClient];
-                    versionDropdownMenu.Items.Clear();
-                    versionDropdownMenu.Items.AddRange(filteredVersions);
-                    versionDropdownMenu.SelectedIndex = -1;
+                    string displayOption = selectedClient + " (" + version + ")";
+                    options_basedOnClient.Add(displayOption);
                 }
-                isUpdatingDropdowns = false;
 
             }
-            UpdateLaunchButtonState();
+            //UpdateLaunchButtonState();
+            return options_basedOnClient;
         }
 
-        private void toggleClients()
+        private List<string> buildOptions_basedOnVersion()
         {
             string selectedVersion = versionDropdownMenu.SelectedItem?.ToString();
+            List<string> options_basedOnVersion = new List<string>();
 
-            if (isUpdatingDropdowns)
+            if (selectedVersion != null)
             {
-
-                if (selectedVersion != null)
+                string[] clients = model.clientBasedOnVersion[selectedVersion];
+                foreach (string client in clients)
                 {
-                    string[] filteredClients = model.clientBasedOnVersion[selectedVersion];
-                    clientDropdownMenu.Items.Clear();
-                    clientDropdownMenu.Items.AddRange(filteredClients);
-                    clientDropdownMenu.SelectedIndex = -1;
+                    string displayOption = client + " (" + selectedVersion + ")";
+                    options_basedOnVersion.Add(displayOption);
                 }
-                isUpdatingDropdowns = false;
-            }
 
-            UpdateLaunchButtonState();
+            }
+            //UpdateLaunchButtonState();
+            return options_basedOnVersion;
+        }
+
+        private void BuildClientOptionsTable()
+        {
+            // Clear any existing controls in the TableLayoutPanel
+            tableLayoutPanel.Controls.Clear();
+
+            // Set the column count
+            tableLayoutPanel.ColumnCount = 2;
+
+            List<string> options =
+                clientDropdownMenu.SelectedItem != null ? buildOptions_basedOnClient() :
+                versionDropdownMenu.SelectedItem != null ? buildOptions_basedOnVersion() : 
+                new List<string>();
+
+
+            // Add rows dynamically
+            foreach (var option in options)
+            {
+                // Create radio button
+                RadioButton radioButton = new RadioButton();
+                radioButton.AutoSize = true;
+                radioButton.CheckedChanged += RadioButton_CheckedChanged;
+
+                // Create label for option
+                Label label = new Label();
+                label.Text = option;
+
+                // Add controls to the table layout panel
+                tableLayoutPanel.Controls.Add(radioButton);
+                tableLayoutPanel.Controls.Add(label);
+            }
+        }
+
+        private void RadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            RadioButton radioButton = sender as RadioButton;
+            if (radioButton != null && radioButton.Checked)
+            {
+                // Do something when a radio button is checked
+                // For example, you can get the option text
+                string selectedOption = ((Label)tableLayoutPanel.GetControlFromPosition(1, tableLayoutPanel.GetCellPosition(radioButton).Row)).Text;
+                MessageBox.Show("Selected option: " + selectedOption);
+            }
         }
 
         private void UpdateLaunchButtonState()
@@ -211,18 +253,22 @@ namespace DynamoTesting
                     }
                 }
 
-
-                isUpdatingDropdowns = false;
             }
         }
 
         private void resetButton_Click(object sender, EventArgs e)
         {
+            tableLayoutPanel.Controls.Clear();
+
+            clientDropdownMenu.Enabled = true;
             clientDropdownMenu.Items.Clear();
             clientDropdownMenu.Items.AddRange(Model.clientOptions.ToArray());
+
+            versionDropdownMenu.Enabled = true;
             versionDropdownMenu.Items.Clear();
             versionDropdownMenu.Items.AddRange(Model.versionOptions.ToArray());
-            isUpdatingDropdowns = true;
+
+
             UpdateLaunchButtonState();
         }
 
@@ -258,17 +304,28 @@ namespace DynamoTesting
 
 
 
-        private void PopulateDataGridView(string[] paths)
+/*        private void PopulateDataGridView(string[] paths)
         {
-            dataGridView1.ColumnCount = 1; // One column for the paths
-            dataGridView1.Columns[0].Name = "Civil 3D Version";
-            dataGridView1.Columns[0].Width = 150;
+            dataGridView1.RowTemplate.Height = 20;
+            dataGridView1.RowCount = 7;
 
-            foreach (string path in paths)
-            {
-                dataGridView1.Rows.Add(path);
-            }
-        }
+            dataGridView1.Columns[0].Name = "Client Environment";
+            dataGridView1.Columns[0].Width = 163;
+
+
+
+            *//* dataGridView1.ColumnCount = 1; // One column for the paths
+             dataGridView1.Columns[0].Name = "Civil 3D Version";
+             dataGridView1.Columns[0].Width = 150;*/
+
+
+
+
+            /*            foreach (string path in paths)
+                        {
+                            dataGridView1.Rows.Add(path);
+                        }*//*
+        }*/
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -308,6 +365,11 @@ namespace DynamoTesting
         private void usernameLabel_Click(object sender, EventArgs e)
         {
             usernameLabel.Text = Environment.UserName;
+        }
+
+        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
         }
 
 
