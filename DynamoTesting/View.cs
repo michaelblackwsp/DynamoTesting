@@ -92,34 +92,51 @@ namespace DynamoTesting
         private void BuildClientOptionsTable()
         {
             tableLayoutPanel.Controls.Clear();
-            tableLayoutPanel.ColumnCount = 2;
+            tableLayoutPanel.ColumnCount = 4;
 
-            string selectedClient = clientDropdownMenu.SelectedItem?.ToString();
-            string selectedVersion = versionDropdownMenu.SelectedItem?.ToString();
+            tableLayoutPanel.ColumnStyles[0].Width = 40;
+            tableLayoutPanel.ColumnStyles[1].Width = 40;
+            tableLayoutPanel.ColumnStyles[2].Width = 40;
+            tableLayoutPanel.ColumnStyles[3].Width = 40;
 
-            List<string> options = null;
+            List<TableRowData> options = null;
+
             if (clientDropdownMenu.SelectedItem != null)
             {
-                options = viewModel.BuildOptionsBasedOnClient(selectedClient);
+                string selectedClient = clientDropdownMenu.SelectedItem?.ToString();
+                options = viewModel.OptionsBasedOnClient(selectedClient);
             }
             else if (versionDropdownMenu.SelectedItem != null)
             {
-                options = viewModel.BuildOptionsBasedOnVersion(selectedVersion);
+                string selectedVersion = versionDropdownMenu.SelectedItem?.ToString();
+                options = viewModel.OptionsBasedOnVersion(selectedVersion);
             }
 
-            foreach (var option in options)
+            if (options != null)
             {
-                RadioButton radioButton = new RadioButton();
-                radioButton.AutoSize = true;
-                radioButton.CheckedChanged += RadioButton_CheckedChanged;
-                radioButton.Tag = option; // Assign option text to Tag property
+                int rowIndex = 0;
+                foreach (var option in options)
+                {
+                    Label clientLabel = new Label();
+                    clientLabel.Text = option.Client;
+                    tableLayoutPanel.Controls.Add(clientLabel, 0, rowIndex);
 
-                Label label = new Label();
-                label.Text = option;
+                    Label versionLabel = new Label();
+                    versionLabel.Text = option.Version;
+                    tableLayoutPanel.Controls.Add(versionLabel, 1, rowIndex);
 
-                tableLayoutPanel.Controls.Add(radioButton);
-                tableLayoutPanel.Controls.Add(label);
+                    Label englishOfferedLabel = new Label();
+                    englishOfferedLabel.Text = option.EnglishOffered ? "Yes" : "-";
+                    tableLayoutPanel.Controls.Add(englishOfferedLabel, 2, rowIndex);
+
+                    Label frenchOfferedLabel = new Label();
+                    frenchOfferedLabel.Text = option.FrenchOffered ? "Yes" : "No";
+                    tableLayoutPanel.Controls.Add(frenchOfferedLabel, 3, rowIndex);
+
+                    rowIndex++; // Move to the next row for the next option
+                }
             }
+
         }
 
         private void RadioButton_CheckedChanged(object sender, EventArgs e)
@@ -191,6 +208,11 @@ namespace DynamoTesting
         }
 
         private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void tableLayoutPanel_Paint(object sender, PaintEventArgs e)
         {
 
         }

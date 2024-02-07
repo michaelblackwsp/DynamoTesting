@@ -89,7 +89,7 @@ namespace DynamoTesting
         };
 
 
-
+        // TO DO: Try and check the language of the OS to boot up EN / FR
         public Array GetCivil3DInstallations(Dictionary<string, Tuple<string, string>> installations, Dictionary<string, string> languages)
         {
             string registryPath = null;
