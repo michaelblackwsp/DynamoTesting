@@ -152,7 +152,7 @@ namespace DynamoTesting
             return registryPath;
         }
 
-        public string BuildShortcut(string client, string language, string version)
+        public string BuildShortcut(string client, string version, string language)
         {
             string shortFormLanguage = null;
             string modifiedVersionShortcut = null;

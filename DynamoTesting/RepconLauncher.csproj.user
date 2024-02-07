@@ -4,7 +4,7 @@
     <_LastSelectedProfileId>C:\Users\CAMB075971\source\repos\WinForms_Sandbox\DynamoTesting\Properties\PublishProfiles\FolderProfile.pubxml</_LastSelectedProfileId>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Update="Launcher.cs">
+    <Compile Update="View.cs">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>

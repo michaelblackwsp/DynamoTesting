@@ -12,14 +12,14 @@ namespace DynamoTesting
     public partial class repconLauncher : Form
     {
         Model model = new Model();
-        
+        ViewModel viewModel;
+
         public repconLauncher()
         {
             InitializeComponent();
+            viewModel = new ViewModel(model);
 
-            // (string[]) because the method returns and array? Redefining the output it could already know about?
             string[] installedCivil3D = (string[])model.GetCivil3DInstallations(model.yearToRNumber, model.languageToRegion);
-            //PopulateDataGridView(installedCivil3D);
 
             launchButton.Enabled = false;
 
@@ -40,10 +40,8 @@ namespace DynamoTesting
 
         private void repconLauncher_Load(object sender, EventArgs e)
         {
-            Model model = new Model();
             model.GetCivil3DInstallations(model.yearToRNumber, model.languageToRegion);
         }
-
 
 
         private void clientDropdownMenu_DrawItem(object? sender, DrawItemEventArgs e)
@@ -67,7 +65,6 @@ namespace DynamoTesting
         }
 
 
-
         private void clientDropdownMenu_Selected(object sender, EventArgs e)
         {
 
@@ -77,7 +74,6 @@ namespace DynamoTesting
         {
 
         }
-
 
 
         private void clientDropdownMenu_SelectedIndexChanged(object sender, EventArgs e)
@@ -93,17 +89,23 @@ namespace DynamoTesting
         }
 
 
-
         private void BuildClientOptionsTable()
         {
             tableLayoutPanel.Controls.Clear();
             tableLayoutPanel.ColumnCount = 2;
 
-            List<string> options =
-                clientDropdownMenu.SelectedItem != null ? buildOptions_basedOnClient() :
-                versionDropdownMenu.SelectedItem != null ? buildOptions_basedOnVersion() :
-                new List<string>();
+            string selectedClient = clientDropdownMenu.SelectedItem?.ToString();
+            string selectedVersion = versionDropdownMenu.SelectedItem?.ToString();
 
+            List<string> options = null;
+            if (clientDropdownMenu.SelectedItem != null)
+            {
+                options = viewModel.BuildOptionsBasedOnClient(selectedClient);
+            }
+            else if (versionDropdownMenu.SelectedItem != null)
+            {
+                options = viewModel.BuildOptionsBasedOnVersion(selectedVersion);
+            }
 
             foreach (var option in options)
             {
@@ -137,125 +139,6 @@ namespace DynamoTesting
         }
 
 
-
-        private List<string> buildOptions_basedOnClient()
-        {
-            string selectedClient = clientDropdownMenu.SelectedItem?.ToString();
-            List<string> options_basedOnClient = new List<string>();
-
-            if (selectedClient != null)
-            {
-                string[] versions = model.versionsBasedOnClient[selectedClient];
-                foreach (string version in versions) 
-                {
-                    string displayOption = selectedClient + " (" + version + ")";
-                    options_basedOnClient.Add(displayOption);
-                }
-
-            }
-            //UpdateLaunchButtonState();
-            return options_basedOnClient;
-        }
-
-        private List<string> buildOptions_basedOnVersion()
-        {
-            string selectedVersion = versionDropdownMenu.SelectedItem?.ToString();
-            List<string> options_basedOnVersion = new List<string>();
-
-            if (selectedVersion != null)
-            {
-                string[] clients = model.clientsBasedOnVersion[selectedVersion];
-                foreach (string client in clients)
-                {
-                    string displayOption = client + " (" + selectedVersion + ")";
-                    options_basedOnVersion.Add(displayOption);
-                }
-
-            }
-            //UpdateLaunchButtonState();
-            return options_basedOnVersion;
-        }
-
-
-
-        private void UpdateLaunchButtonState()
-        {
-
-            string[] installedCivil3D = (string[])model.GetCivil3DInstallations(model.yearToRNumber, model.languageToRegion);
-
-            if (clientDropdownMenu.Items.Count > 0
-                && versionDropdownMenu.Items.Count > 0
-                && clientDropdownMenu.SelectedIndex != -1
-                && versionDropdownMenu.SelectedIndex != -1)
-            {
-
-                string version = versionDropdownMenu.SelectedItem.ToString();
-                string client = clientDropdownMenu.SelectedItem.ToString();
-                List<string> languages = model.GetLanguagesForSelectedClient(client);
-
-                bool englishAndFrench = languages.Contains("English") && languages.Contains("French");
-                bool onlyEnglish = languages.Contains("English");
-                bool onlyFrench = languages.Contains("French");
-
-                if (onlyEnglish)
-                {
-                    string language = "English";
-                    string path = model.BuildRegistryPath(version, language, model.yearToRNumber, model.languageToRegion);
-
-                    if (model.StringExists(path, installedCivil3D))
-                    {
-                        launchButton.Enabled = true;
-                        MessageBox.Show(client + " " + version + " can be loaded with Civil 3D " + version + " " + language);
-                        //break;
-                    }
-
-                    else
-                    {
-                        launchButton.Enabled = false; MessageBox.Show(client + " " + version + " cannot be loaded. Civil 3D " + version + " " + language + " is not installed.\n\n" + "Please install Civil 3D " + version + " " + language + " from the Software Centre, or contact Digital Operations for more information.");
-                    }
-                } 
-
-                if (onlyFrench)
-                {
-                    string language = "French";
-                    string path = model.BuildRegistryPath(version, language, model.yearToRNumber, model.languageToRegion);
-
-                    if (model.StringExists(path, installedCivil3D))
-                    {
-                        launchButton.Enabled = true;
-                        MessageBox.Show(client + " " + version + " can be loaded with Civil 3D " + version + " " + language);
-                        //break;
-                    }
-
-                    else
-                    {
-                        launchButton.Enabled = false; MessageBox.Show(client + " " + version + " cannot be loaded. Civil 3D " + version + " " + language + " is not installed.\n\n" + "Please install Civil 3D " + version + " " + language + " from the Software Centre, or contact Digital Operations for more information.");
-                    }
-                }
-
-                if (englishAndFrench)
-                {
-                    foreach (string language in languages)
-                    {
-                        string path = model.BuildRegistryPath(version, language, model.yearToRNumber, model.languageToRegion);
-
-                        if (model.StringExists(path, installedCivil3D))
-                        {
-                            launchButton.Enabled = true;
-                            MessageBox.Show(client + " " + version + " can be loaded with Civil 3D " + version + " " + language);
-                            break;
-                        }
-
-                        else
-                        {
-                            launchButton.Enabled = false; MessageBox.Show(client + " " + version + " cannot be loaded. Civil 3D " + version + " " + language + " is not installed.\n\n" + "Please install Civil 3D " + version + " " + language + " from the Software Centre, or contact Digital Operations for more information.");
-                        }
-                    }
-                }
-
-            }
-        }
-
         private void resetButton_Click(object sender, EventArgs e)
         {
             tableLayoutPanel.Controls.Clear();
@@ -268,38 +151,16 @@ namespace DynamoTesting
             versionDropdownMenu.Items.Clear();
             versionDropdownMenu.Items.AddRange(Model.versionOptions.ToArray());
 
-
-            UpdateLaunchButtonState();
+            //UpdateLaunchButtonState();
         }
 
         private void launchButton_Click(object sender, EventArgs e)
         {
             string client = clientDropdownMenu.SelectedItem.ToString();
             string version = versionDropdownMenu.SelectedItem.ToString();
+            string language = "English";
 
-            // ************** THIS NEEDS TO BE LANGUAGE AVAILABLE BASED ON THE MATRIX
-            string pathToShortcut = model.BuildShortcut(client, "English", version);
-
-            if (System.IO.File.Exists(pathToShortcut))
-            {
-                ProcessStartInfo processStartInfo = new ProcessStartInfo
-                {
-                    FileName = pathToShortcut,
-                    UseShellExecute = true  // Set this to true to use the default shell verb (open) for shortcuts
-                };
-                try
-                {
-                    Process.Start(processStartInfo);    // Start the process
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error starting external program: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            else
-            {
-                MessageBox.Show("Shortcut file not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            viewModel.HandleLaunchButtonClick(client, version, language);
         }
 
 
@@ -308,13 +169,10 @@ namespace DynamoTesting
         {
 
         }
-
         private void versionLabel_Click(object sender, EventArgs e)
         {
 
         }
-
-
 
         private void pathLabel_Click(object sender, EventArgs e)
         {
@@ -327,7 +185,6 @@ namespace DynamoTesting
             string pathToShortcut = model.BuildShortcut(client, language, version);
             pathLabel.Text = pathToShortcut;
         }
-
         private void usernameLabel_Click(object sender, EventArgs e)
         {
             usernameLabel.Text = Environment.UserName;
