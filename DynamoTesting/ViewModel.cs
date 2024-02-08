@@ -17,59 +17,54 @@ namespace DynamoTesting
             this.model = model;
         }
 
-        /*        public List<string> BuildOptionsBasedOnClient(string selectedClient)
-                {
-                    List<string> options = new List<string>();
-
-                    if (selectedClient != null)
-                    {
-                        string[] versions = model.versionsBasedOnClient[selectedClient];
-                        foreach (string version in versions)
-                        {
-                            string displayOption = selectedClient + " (" + version + ")";
-                            options.Add(displayOption);
-                        }
-
-                    }
-                    //UpdateLaunchButtonState();
-                    return options;
-                }*/
-
         public List<TableRowData> OptionsBasedOnClient(string selectedClient)
         {
             List<TableRowData> tableData = new List<TableRowData>();
-            if (selectedClient != null)
+            string[] versions = model.versionsBasedOnClient[selectedClient];
+
+            if (model.languageBasedOnClient.ContainsKey(selectedClient))
             {
-                string[] versions = model.versionsBasedOnClient[selectedClient];
+                List<string> language = model.languageBasedOnClient[selectedClient];
 
                 foreach (string version in versions)
                 {
-                    // Create a new TableRowData object representing a row in the table
-                    TableRowData rowData = new TableRowData(selectedClient, version, false, false);
-
-                    // Add the row data to the list
+                    bool englishOffered = language.Contains("English");
+                    bool frenchOffered = language.Contains("French");
+                    TableRowData rowData = new TableRowData(selectedClient, version, englishOffered, frenchOffered);
                     tableData.Add(rowData);
                 }
             }
+            else
+            {
+                throw new KeyNotFoundException($"Languages for client '{selectedClient}' not found.");
+            }
+
             return tableData;
         }
 
         public List<TableRowData> OptionsBasedOnVersion(string selectedVersion)
         {
             List<TableRowData> tableData = new List<TableRowData>();
-            if (selectedVersion != null)
+            string[] clients = model.clientsBasedOnVersion[selectedVersion];
+ 
+            foreach (string client in clients)
             {
-                string[] clients = model.clientsBasedOnVersion[selectedVersion];
-
-                foreach (string client in clients)
+                if (model.languageBasedOnClient.ContainsKey(client))
                 {
-                    // Create a new TableRowData object representing a row in the table
-                    TableRowData rowData = new TableRowData(client, selectedVersion, false, false);
+                    List<string> languages = model.languageBasedOnClient[client];
 
-                    // Add the row data to the list
+                    bool englishOffered = languages.Contains("English");
+                    bool frenchOffered = languages.Contains("French");
+
+                    TableRowData rowData = new TableRowData(client, selectedVersion, englishOffered, frenchOffered);
                     tableData.Add(rowData);
                 }
+                else
+                {
+                    throw new KeyNotFoundException($"Languages for client '{selectedVersion}' not found.");
+                }
             }
+
             return tableData;
         }
 

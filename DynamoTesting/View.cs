@@ -125,15 +125,33 @@ namespace DynamoTesting
                     versionLabel.Text = option.Version;
                     tableLayoutPanel.Controls.Add(versionLabel, 1, rowIndex);
 
-                    Label englishOfferedLabel = new Label();
-                    englishOfferedLabel.Text = option.EnglishOffered ? "Yes" : "-";
-                    tableLayoutPanel.Controls.Add(englishOfferedLabel, 2, rowIndex);
+                    if (option.EnglishOffered)
+                    {
+                        RadioButton englishRadioButton = new RadioButton();
+                        englishRadioButton.Tag = new Tuple<string, string>(option.Client, option.Version); // Store client and version information in the radio button tag
+                        tableLayoutPanel.Controls.Add(englishRadioButton, 2, rowIndex);
+                    }
+                    else
+                    {
+                        Label englishOfferedLabel = new Label();
+                        englishOfferedLabel.Text = "-";
+                        tableLayoutPanel.Controls.Add(englishOfferedLabel, 2, rowIndex);
+                    }
 
-                    Label frenchOfferedLabel = new Label();
-                    frenchOfferedLabel.Text = option.FrenchOffered ? "Yes" : "No";
-                    tableLayoutPanel.Controls.Add(frenchOfferedLabel, 3, rowIndex);
+                    if (option.FrenchOffered)
+                    {
+                        RadioButton frenchRadioButton = new RadioButton();
+                        frenchRadioButton.Tag = new Tuple<string, string>(option.Client, option.Version); // Store client and version information in the radio button tag
+                        tableLayoutPanel.Controls.Add(frenchRadioButton, 3, rowIndex);
+                    }
+                    else
+                    {
+                        Label frenchOfferedLabel = new Label();
+                        frenchOfferedLabel.Text = "-";
+                        tableLayoutPanel.Controls.Add(frenchOfferedLabel, 3, rowIndex);
+                    }
 
-                    rowIndex++; // Move to the next row for the next option
+                    rowIndex++;
                 }
             }
 
