@@ -1,9 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using Microsoft.Win32;
-using System;
-using System.Diagnostics;
-using System.IO;
-using System.Net.Http.Headers;
+﻿using Microsoft.Win32;
 using System.Reflection;
 
 
@@ -14,7 +9,6 @@ namespace DynamoTesting
         public static string[] clientOptions = { "BCMoT", "CofC", "MTQ", "MVRD", "MX", "VDG", "VDM", "VDQ", "VIA", "WSP_EN", "WSP_FR" };
         public static string[] languageOptions = { "English", "French" };
         public static string[] versionOptions = { "2019", "2020", "2021", "2022", "2023" };
-
 
 
         public Dictionary<string, string[]> versionsBasedOnClient = new Dictionary<string, string[]>
@@ -72,7 +66,6 @@ namespace DynamoTesting
         }
 
 
-
         public Dictionary<string, Tuple<string, string>> yearToRNumber = new Dictionary<string, Tuple<string, string>>
         {
             { "2019", Tuple.Create("R23.0", "2000") },
@@ -82,6 +75,7 @@ namespace DynamoTesting
             { "2023", Tuple.Create("R24.2", "6100") },
         };
 
+
         public Dictionary<string, string> languageToRegion = new Dictionary<string, string>
         {
             { "English", "409" },
@@ -90,7 +84,7 @@ namespace DynamoTesting
 
 
         // TO DO: Try and check the language of the OS to boot up EN / FR
-        public Array GetCivil3DInstallations(Dictionary<string, Tuple<string, string>> installations, Dictionary<string, string> languages)
+        public Array GetCivil3DMetricProfiles(Dictionary<string, Tuple<string, string>> installations, Dictionary<string, string> languages)
         {
             string registryPath = null;
             List<string> listOfInstalls = new List<string>();
@@ -132,7 +126,7 @@ namespace DynamoTesting
 
         public bool StringExists(string path, Array array)
         {
-            string[] yourArray = (string[])GetCivil3DInstallations(yearToRNumber, languageToRegion);
+            string[] yourArray = (string[])GetCivil3DMetricProfiles(yearToRNumber, languageToRegion);
 
             return yourArray.Contains(path); // Using LINQ for simplicity
         }
@@ -175,9 +169,56 @@ namespace DynamoTesting
             return shortcut;
         }
 
+
+
+        public List<(string year, string language)> ChangeRegistryCodesToVersionAndLanguage()
+        {
+            string[] profiles = (string[])GetCivil3DMetricProfiles(yearToRNumber, languageToRegion);
+            List<(string year, string language)> resultList = new List<(string year, string language)>();
+
+            foreach (string profile in profiles)
+            {
+                string[] parts = profile.Split(new string[] { "\\" }, StringSplitOptions.RemoveEmptyEntries);
+
+                if (parts.Length >= 5)
+                {
+                    string desiredValue1 = parts[3];
+                    string desiredValue2 = parts[4].Substring(Math.Max(0, parts[4].Length - 3));
+
+                    // Use the values to find the corresponding keys in the mapping dictionaries
+                    string year = yearToRNumber.FirstOrDefault(kv => kv.Value.Item1 == desiredValue1).Key;
+                    string language = languageToRegion.FirstOrDefault(kv => kv.Value == desiredValue2).Key;
+
+                    // Add the keys to the result list
+                    resultList.Add((year, language));
+                }
+            }
+
+            return resultList;
+        }
+
+        public List<(string year, string language)> ConvertDictionaryValuesToKeys(List<(string rNumber, string productID)> versionProductIDList)
+        {
+            List<(string year, string language)> keys = new List<(string year, string language)>();
+
+            foreach ((string rNumber, string productID) in versionProductIDList)
+            {
+                // Find the matching year for the given rNumber in the yearToRNumber dictionary
+                string year = yearToRNumber.FirstOrDefault(kv => kv.Value.Item1 == rNumber).Key;
+
+                // Use the productID directly to get the corresponding language from the languageToRegion dictionary
+                string language = languageToRegion.FirstOrDefault(kv => kv.Value == productID).Key;
+
+                // Add the corresponding keys to the result list
+                keys.Add((year, language));
+            }
+
+            return keys;
+        }
     }
 
 }
+
 
 
 

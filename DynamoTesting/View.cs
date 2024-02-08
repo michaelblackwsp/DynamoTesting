@@ -19,7 +19,7 @@ namespace DynamoTesting
             InitializeComponent();
             viewModel = new ViewModel(model);
 
-            string[] installedCivil3D = (string[])model.GetCivil3DInstallations(model.yearToRNumber, model.languageToRegion);
+            string[] installedCivil3D = (string[])model.GetCivil3DMetricProfiles(model.yearToRNumber, model.languageToRegion);
 
             launchButton.Enabled = false;
 
@@ -40,7 +40,8 @@ namespace DynamoTesting
 
         private void repconLauncher_Load(object sender, EventArgs e)
         {
-            model.GetCivil3DInstallations(model.yearToRNumber, model.languageToRegion);
+            model.GetCivil3DMetricProfiles(model.yearToRNumber, model.languageToRegion);
+            model.ChangeRegistryCodesToVersionAndLanguage();
         }
 
 
@@ -199,7 +200,6 @@ namespace DynamoTesting
         }
 
 
-      
         private void clientLabel_Click(object sender, EventArgs e)
         {
 
