@@ -41,7 +41,8 @@ namespace DynamoTesting
         private void repconLauncher_Load(object sender, EventArgs e)
         {
             model.GetCivil3DMetricProfiles(model.yearToRNumber, model.languageToRegion);
-            model.ChangeRegistryCodesToVersionAndLanguage();
+            // TO DO: Should this just run on load, instead of every time the dropdown is toggled?
+            model.GetVersionsAndLanguageFromRegistry();
         }
 
 
@@ -113,6 +114,8 @@ namespace DynamoTesting
                 options = viewModel.OptionsBasedOnVersion(selectedVersion);
             }
 
+            List<(string version, string language)> extractedVersions = model.GetVersionsAndLanguageFromRegistry();
+
             if (options != null)
             {
                 int rowIndex = 0;
@@ -126,11 +129,13 @@ namespace DynamoTesting
                     versionLabel.Text = option.Version;
                     tableLayoutPanel.Controls.Add(versionLabel, 1, rowIndex);
 
+                    // Change here to use language instead of client
                     if (option.EnglishOffered)
                     {
                         RadioButton englishRadioButton = new RadioButton();
-                        englishRadioButton.Tag = new Tuple<string, string>(option.Client, option.Version); // Store client and version information in the radio button tag
+                        englishRadioButton.Tag = new Tuple<string, string>(option.Version, "English"); // Store version and language information in the radio button tag
                         tableLayoutPanel.Controls.Add(englishRadioButton, 2, rowIndex);
+                        englishRadioButton.Enabled = extractedVersions.Contains((option.Version, "English")); // Enable/disable based on existence in the extracted list
                     }
                     else
                     {
@@ -139,11 +144,13 @@ namespace DynamoTesting
                         tableLayoutPanel.Controls.Add(englishOfferedLabel, 2, rowIndex);
                     }
 
+                    // Change here to use language instead of client
                     if (option.FrenchOffered)
                     {
                         RadioButton frenchRadioButton = new RadioButton();
-                        frenchRadioButton.Tag = new Tuple<string, string>(option.Client, option.Version); // Store client and version information in the radio button tag
+                        frenchRadioButton.Tag = new Tuple<string, string>(option.Version, "French"); // Store version and language information in the radio button tag
                         tableLayoutPanel.Controls.Add(frenchRadioButton, 3, rowIndex);
+                        frenchRadioButton.Enabled = extractedVersions.Contains((option.Version, "French")); // Enable/disable based on existence in the extracted list
                     }
                     else
                     {
@@ -155,7 +162,6 @@ namespace DynamoTesting
                     rowIndex++;
                 }
             }
-
         }
 
         private void RadioButton_CheckedChanged(object sender, EventArgs e)

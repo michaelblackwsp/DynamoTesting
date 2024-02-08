@@ -171,7 +171,7 @@ namespace DynamoTesting
 
 
 
-        public List<(string year, string language)> ChangeRegistryCodesToVersionAndLanguage()
+        public List<(string year, string language)> GetVersionsAndLanguageFromRegistry()
         {
             string[] profiles = (string[])GetCivil3DMetricProfiles(yearToRNumber, languageToRegion);
             List<(string year, string language)> resultList = new List<(string year, string language)>();
