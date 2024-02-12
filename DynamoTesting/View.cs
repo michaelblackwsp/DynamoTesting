@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using static System.Windows.Forms.Design.AxImporter;
@@ -13,6 +14,8 @@ namespace DynamoTesting
     {
         Model model = new Model();
         ViewModel viewModel;
+
+        private string pathToShortcut = null;
 
         public repconLauncher()
         {
@@ -133,9 +136,10 @@ namespace DynamoTesting
                     if (option.EnglishOffered)
                     {
                         RadioButton englishRadioButton = new RadioButton();
-                        englishRadioButton.Tag = new Tuple<string, string>(option.Version, "English"); // Store version and language information in the radio button tag
+                        englishRadioButton.Tag = new Tuple<string, string, string>(option.Client, option.Version, "English");
                         tableLayoutPanel.Controls.Add(englishRadioButton, 2, rowIndex);
                         englishRadioButton.Enabled = extractedVersions.Contains((option.Version, "English")); // Enable/disable based on existence in the extracted list
+                        englishRadioButton.CheckedChanged += RadioButton_CheckedChanged;
                     }
                     else
                     {
@@ -148,9 +152,10 @@ namespace DynamoTesting
                     if (option.FrenchOffered)
                     {
                         RadioButton frenchRadioButton = new RadioButton();
-                        frenchRadioButton.Tag = new Tuple<string, string>(option.Version, "French"); // Store version and language information in the radio button tag
+                        frenchRadioButton.Tag = new Tuple<string, string, string>(option.Client, option.Version, "French");
                         tableLayoutPanel.Controls.Add(frenchRadioButton, 3, rowIndex);
                         frenchRadioButton.Enabled = extractedVersions.Contains((option.Version, "French")); // Enable/disable based on existence in the extracted list
+                        frenchRadioButton.CheckedChanged += RadioButton_CheckedChanged;
                     }
                     else
                     {
@@ -169,15 +174,20 @@ namespace DynamoTesting
             RadioButton radioButton = sender as RadioButton;
             if (radioButton != null && radioButton.Checked)
             {
-                int row = tableLayoutPanel.GetRow(radioButton);
-                if (row >=0)
-                {
-                    launchButton.Enabled = true;
-                    string selectedOption = ((Label)tableLayoutPanel.GetControlFromPosition(1, tableLayoutPanel.GetCellPosition(radioButton).Row)).Text;
-                    MessageBox.Show("Selected option: " + selectedOption);
-                }
+                var tagTuple = radioButton.Tag as Tuple<string, string, string>;
+                string client = tagTuple.Item1;
+                string version = tagTuple.Item2;
+                string language = tagTuple.Item3;
 
+                pathToShortcut = model.BuildShortcut(client, version, language);
+
+                launchButton.Enabled = true;
             }
+        }
+
+        private void launchButton_Click(object sender, EventArgs e)
+        {
+            model.StartSoftware(pathToShortcut);
         }
 
 
@@ -193,17 +203,9 @@ namespace DynamoTesting
             versionDropdownMenu.Items.Clear();
             versionDropdownMenu.Items.AddRange(Model.versionOptions.ToArray());
 
-            //UpdateLaunchButtonState();
+            launchButton.Enabled = false;
         }
 
-        private void launchButton_Click(object sender, EventArgs e)
-        {
-            string client = clientDropdownMenu.SelectedItem.ToString();
-            string version = versionDropdownMenu.SelectedItem.ToString();
-            string language = "English";
-
-            viewModel.HandleLaunchButtonClick(client, version, language);
-        }
 
 
         private void clientLabel_Click(object sender, EventArgs e)

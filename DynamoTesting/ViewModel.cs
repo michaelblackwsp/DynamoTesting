@@ -69,34 +69,6 @@ namespace DynamoTesting
             return tableData;
         }
 
-        public void HandleLaunchButtonClick(string client, string version, string language)
-        {
-
-            // THIS NEEDS TO BE LANGUAGE AVAILABLE BASED ON THE MATRIX
-            string pathToShortcut = model.BuildShortcut(client, version, language);
-
-            if (System.IO.File.Exists(pathToShortcut))
-            {
-                ProcessStartInfo processStartInfo = new ProcessStartInfo
-                {
-                    FileName = pathToShortcut,
-                    UseShellExecute = true  // Set this to true to use the default shell verb (open) for shortcuts
-                };
-                try
-                {
-                    Process.Start(processStartInfo);    // Start the process
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error starting external program: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            else
-            {
-                MessageBox.Show("Shortcut file not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
-        }
 
     }
 

@@ -1,4 +1,6 @@
 ﻿using Microsoft.Win32;
+using System.Diagnostics;
+using System;
 using System.Reflection;
 
 
@@ -195,6 +197,33 @@ namespace DynamoTesting
             }
 
             return resultList;
+        }
+
+
+        public void StartSoftware(string path)
+        {
+
+            if (System.IO.File.Exists(path))
+            {
+                ProcessStartInfo processStartInfo = new ProcessStartInfo
+                {
+                    FileName = path,
+                    UseShellExecute = true  // Set this to true to use the default shell verb (open) for shortcuts
+                };
+                try
+                {
+                    Process.Start(processStartInfo);    // Start the process
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error starting external program: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Shortcut file not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
         }
 
         public List<(string year, string language)> ConvertDictionaryValuesToKeys(List<(string rNumber, string productID)> versionProductIDList)
