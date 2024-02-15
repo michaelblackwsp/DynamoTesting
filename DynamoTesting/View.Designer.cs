@@ -41,7 +41,6 @@
             this.software = new System.Windows.Forms.Label();
             this.softwareComboBox = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.pathLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.shortcutsModelBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -101,7 +100,7 @@
             // usernameLabel
             // 
             this.usernameLabel.AutoSize = true;
-            this.usernameLabel.Location = new System.Drawing.Point(8, 356);
+            this.usernameLabel.Location = new System.Drawing.Point(8, 353);
             this.usernameLabel.Name = "usernameLabel";
             this.usernameLabel.Size = new System.Drawing.Size(60, 15);
             this.usernameLabel.TabIndex = 11;
@@ -158,27 +157,16 @@
             this.tableLayoutPanel.TabIndex = 17;
             this.tableLayoutPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel_Paint);
             // 
-            // pathLabel
-            // 
-            this.pathLabel.AutoSize = true;
-            this.pathLabel.Location = new System.Drawing.Point(8, 375);
-            this.pathLabel.Name = "pathLabel";
-            this.pathLabel.Size = new System.Drawing.Size(31, 15);
-            this.pathLabel.TabIndex = 7;
-            this.pathLabel.Text = "Path";
-            this.pathLabel.Click += new System.EventHandler(this.pathLabel_Click);
-            // 
             // repconLauncher
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(268, 396);
+            this.ClientSize = new System.Drawing.Size(268, 376);
             this.Controls.Add(this.tableLayoutPanel);
             this.Controls.Add(this.softwareComboBox);
             this.Controls.Add(this.software);
             this.Controls.Add(this.resetButton);
             this.Controls.Add(this.usernameLabel);
-            this.Controls.Add(this.pathLabel);
             this.Controls.Add(this.versionLabel);
             this.Controls.Add(this.clientLabel);
             this.Controls.Add(this.versionDropdownMenu);
@@ -207,6 +195,5 @@
         private Label software;
         private ComboBox softwareComboBox;
         private TableLayoutPanel tableLayoutPanel;
-        private Label pathLabel;
     }
 }

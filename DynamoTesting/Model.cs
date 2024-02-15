@@ -173,10 +173,10 @@ namespace DynamoTesting
 
 
 
-        public List<(string year, string language)> GetVersionsAndLanguageFromRegistry()
+        public List<(string year, string language)> GetCivil3DInstallations()
         {
             string[] profiles = (string[])GetCivil3DMetricProfiles(yearToRNumber, languageToRegion);
-            List<(string year, string language)> resultList = new List<(string year, string language)>();
+            List<(string year, string language)> civil3DInstallations = new List<(string year, string language)>();
 
             foreach (string profile in profiles)
             {
@@ -192,11 +192,11 @@ namespace DynamoTesting
                     string language = languageToRegion.FirstOrDefault(kv => kv.Value == desiredValue2).Key;
 
                     // Add the keys to the result list
-                    resultList.Add((year, language));
+                    civil3DInstallations.Add((year, language));
                 }
             }
 
-            return resultList;
+            return civil3DInstallations;
         }
 
 
@@ -244,6 +244,15 @@ namespace DynamoTesting
 
             return keys;
         }
+    }
+
+    public class SavedPreference
+    {
+        public string Name { get; set; }
+        public string Client { get; set; }
+        public string Version { get; set; }
+        public string Language { get; set; }
+        public string ShortcutPath { get; set; }
     }
 
 }

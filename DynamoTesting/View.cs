@@ -16,6 +16,7 @@ namespace DynamoTesting
         ViewModel viewModel;
 
         private string pathToShortcut = null;
+        private List<(string year, string language)> installedVersionsOfCivil3D = null;
 
         public repconLauncher()
         {
@@ -44,8 +45,9 @@ namespace DynamoTesting
         private void repconLauncher_Load(object sender, EventArgs e)
         {
             model.GetCivil3DMetricProfiles(model.yearToRNumber, model.languageToRegion);
-            // TO DO: Should this just run on load, instead of every time the dropdown is toggled?
-            model.GetVersionsAndLanguageFromRegistry();
+            model.GetCivil3DInstallations();
+            installedVersionsOfCivil3D = model.GetCivil3DInstallations();
+            usernameLabel.Text = Environment.UserName;
         }
 
 
@@ -84,12 +86,14 @@ namespace DynamoTesting
         private void clientDropdownMenu_SelectedIndexChanged(object sender, EventArgs e)
         {
             versionDropdownMenu.Enabled = false;
+            launchButton.Enabled = false;
             BuildClientOptionsTable();
         }
 
         private void versionDropdownMenu_SelectedIndexChanged(object sender, EventArgs e)
         {
             clientDropdownMenu.Enabled = false;
+            launchButton.Enabled= false;
             BuildClientOptionsTable();
         }
 
@@ -117,8 +121,6 @@ namespace DynamoTesting
                 options = viewModel.OptionsBasedOnVersion(selectedVersion);
             }
 
-            List<(string version, string language)> extractedVersions = model.GetVersionsAndLanguageFromRegistry();
-
             if (options != null)
             {
                 int rowIndex = 0;
@@ -138,7 +140,7 @@ namespace DynamoTesting
                         RadioButton englishRadioButton = new RadioButton();
                         englishRadioButton.Tag = new Tuple<string, string, string>(option.Client, option.Version, "English");
                         tableLayoutPanel.Controls.Add(englishRadioButton, 2, rowIndex);
-                        englishRadioButton.Enabled = extractedVersions.Contains((option.Version, "English")); // Enable/disable based on existence in the extracted list
+                        englishRadioButton.Enabled = installedVersionsOfCivil3D.Contains((option.Version, "English")); // Enable/disable based on existence in the extracted list
                         englishRadioButton.CheckedChanged += RadioButton_CheckedChanged;
                     }
                     else
@@ -154,7 +156,7 @@ namespace DynamoTesting
                         RadioButton frenchRadioButton = new RadioButton();
                         frenchRadioButton.Tag = new Tuple<string, string, string>(option.Client, option.Version, "French");
                         tableLayoutPanel.Controls.Add(frenchRadioButton, 3, rowIndex);
-                        frenchRadioButton.Enabled = extractedVersions.Contains((option.Version, "French")); // Enable/disable based on existence in the extracted list
+                        frenchRadioButton.Enabled = installedVersionsOfCivil3D.Contains((option.Version, "French")); // Enable/disable based on existence in the extracted list
                         frenchRadioButton.CheckedChanged += RadioButton_CheckedChanged;
                     }
                     else
@@ -217,25 +219,10 @@ namespace DynamoTesting
 
         }
 
-        private void pathLabel_Click(object sender, EventArgs e)
-        {
-            string client = clientDropdownMenu.SelectedItem.ToString();
 
-            // ************** THIS NEEDS TO BE LANGUAGE AVAILABLE BASED ON THE MATRIX
-            string language = "English";
-            string version = versionDropdownMenu.SelectedItem.ToString();
-
-            string pathToShortcut = model.BuildShortcut(client, language, version);
-            pathLabel.Text = pathToShortcut;
-        }
         private void usernameLabel_Click(object sender, EventArgs e)
         {
-            usernameLabel.Text = Environment.UserName;
-        }
-
-        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
-        {
-
+            
         }
 
         private void tableLayoutPanel_Paint(object sender, PaintEventArgs e)
