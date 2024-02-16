@@ -22,7 +22,8 @@ namespace DynamoTesting
         private List<(string year, string language)> installedVersionsOfCivil3D = null;
 
         private List<Button> presetButtons = new List<Button>();
-        private int nextButtonIndex = 0;
+        private int buttonIndex = 0;
+
 
         public repconLauncher()
         {
@@ -55,6 +56,12 @@ namespace DynamoTesting
             nameTextBox.ForeColor = SystemColors.GrayText;
 
             okButton.Visible = false;
+
+            favouriteButton1.Visible = false;
+            favouriteButton2.Visible = false;
+            favouriteButton3.Visible = false;
+            favouriteButton4.Visible = false;
+            favouriteButton5.Visible = false;
         }
 
         private void repconLauncher_Load(object sender, EventArgs e)
@@ -249,6 +256,12 @@ namespace DynamoTesting
 
         private void saveButton_Click(object sender, EventArgs e)
         {
+            if (buttonIndex >= 5)
+            {
+                MessageBox.Show("You can only save up to 5 client environments. \n\nPurchase more Saves through the Digital Operations app store.");
+                return;
+            }
+
             nameTextBox.Visible = true;
             okButton.Visible = true;
         }
@@ -284,37 +297,80 @@ namespace DynamoTesting
 
         private void okButton_Click(object sender, EventArgs e)
         {
-            if (nextButtonIndex >= 5)
+
+            string buttonText = nameTextBox.Text;
+            // TO DO: MAKE THE BUTTON COLOURED ACCORDING TO THE SOFTWARE
+
+            // Update the button at the current index
+            switch (buttonIndex)
             {
-                MessageBox.Show("You can only create up to 5 custom buttons.", "Limit Exceeded", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
+                case 0:
+                    favouriteButton1.Text = buttonText;
+                    favouriteButton1.Visible = true;
+                    break;
+                case 1:
+                    favouriteButton2.Text = buttonText;
+                    favouriteButton2.Visible = true;
+                    break;
+                case 2:
+                    favouriteButton3.Text = buttonText;
+                    favouriteButton3.Visible = true;
+                    break;
+                case 3:
+                    favouriteButton4.Text = buttonText;
+                    favouriteButton4.Visible = true;
+                    break;
+                case 4:
+                    favouriteButton5.Text = buttonText;
+                    favouriteButton5.Visible = true;
+                    break;
+                default:
+                    // This case should not occur if the limit is properly enforced, but handle it just in case
+                    MessageBox.Show("Invalid button index.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
             }
 
-            // Get the text from the text box
-            string buttonText = nameTextBox.Text;
-
-            // Create a new button
-            Button newButton = new Button();
-            newButton.Text = buttonText;
-            newButton.Enabled = true; // Enable the button
-            newButton.Click += CustomButton_Click; // Attach event handler
-            // Set location and size of the button as needed
-
-            // Add the button to the form and the list of preset buttons
-            Controls.Add(newButton);
-            presetButtons.Add(newButton);
-
-            // Increment the index of the next available button
-            nextButtonIndex++;
+            // Increment the buttonIndex
+            buttonIndex++;
 
             // Hide the text box and OK button
             nameTextBox.Visible = false;
             okButton.Visible = false;
+
+            // Make sure to keep previously added buttons visible
+            for (int i = 0; i < buttonIndex; i++)
+            {
+                switch (i)
+                {
+                    case 0:
+                        favouriteButton1.Visible = true;
+                        break;
+                    case 1:
+                        favouriteButton2.Visible = true;
+                        break;
+                    case 2:
+                        favouriteButton3.Visible = true;
+                        break;
+                    case 3:
+                        favouriteButton4.Visible = true;
+                        break;
+                    case 4:
+                        favouriteButton5.Visible = true;
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
 
         private void CustomButton_Click(object sender, EventArgs e)
         {
             //LAUNCH THE SOFTWARE USING THE SAVED PATH FROM THE RADIO BUTTON
+        }
+
+        private void favouriteButton1_Click(object sender, EventArgs e)
+        {
+
         }
 
         //TO DO: Recycle this to be a generic method that checks for good/bad and assigns colour accordingly

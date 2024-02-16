@@ -43,9 +43,15 @@
             this.okButton = new System.Windows.Forms.Button();
             this.tabList = new System.Windows.Forms.TabControl();
             this.linksTab = new System.Windows.Forms.TabPage();
+            this.favouriteButton5 = new System.Windows.Forms.Button();
+            this.favouriteButton4 = new System.Windows.Forms.Button();
+            this.favouriteButton3 = new System.Windows.Forms.Button();
+            this.favouriteButton2 = new System.Windows.Forms.Button();
+            this.favouriteButton1 = new System.Windows.Forms.Button();
             this.helpTab = new System.Windows.Forms.TabPage();
             this.launcherTab = new System.Windows.Forms.TabPage();
             this.tabList.SuspendLayout();
+            this.linksTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // launchButton
@@ -197,18 +203,69 @@
             this.tabList.Location = new System.Drawing.Point(9, 12);
             this.tabList.Name = "tabList";
             this.tabList.SelectedIndex = 0;
-            this.tabList.Size = new System.Drawing.Size(385, 381);
+            this.tabList.Size = new System.Drawing.Size(382, 381);
             this.tabList.TabIndex = 21;
             // 
             // linksTab
             // 
+            this.linksTab.Controls.Add(this.favouriteButton5);
+            this.linksTab.Controls.Add(this.favouriteButton4);
+            this.linksTab.Controls.Add(this.favouriteButton3);
+            this.linksTab.Controls.Add(this.favouriteButton2);
+            this.linksTab.Controls.Add(this.favouriteButton1);
             this.linksTab.Location = new System.Drawing.Point(4, 24);
             this.linksTab.Name = "linksTab";
             this.linksTab.Padding = new System.Windows.Forms.Padding(3);
-            this.linksTab.Size = new System.Drawing.Size(377, 353);
+            this.linksTab.Size = new System.Drawing.Size(374, 353);
             this.linksTab.TabIndex = 1;
             this.linksTab.Text = "Links";
             this.linksTab.UseVisualStyleBackColor = true;
+            // 
+            // favouriteButton5
+            // 
+            this.favouriteButton5.Location = new System.Drawing.Point(282, 138);
+            this.favouriteButton5.Name = "favouriteButton5";
+            this.favouriteButton5.Size = new System.Drawing.Size(75, 23);
+            this.favouriteButton5.TabIndex = 4;
+            this.favouriteButton5.Text = "button5";
+            this.favouriteButton5.UseVisualStyleBackColor = true;
+            // 
+            // favouriteButton4
+            // 
+            this.favouriteButton4.Location = new System.Drawing.Point(282, 109);
+            this.favouriteButton4.Name = "favouriteButton4";
+            this.favouriteButton4.Size = new System.Drawing.Size(75, 23);
+            this.favouriteButton4.TabIndex = 3;
+            this.favouriteButton4.Text = "button4";
+            this.favouriteButton4.UseVisualStyleBackColor = true;
+            // 
+            // favouriteButton3
+            // 
+            this.favouriteButton3.Location = new System.Drawing.Point(282, 80);
+            this.favouriteButton3.Name = "favouriteButton3";
+            this.favouriteButton3.Size = new System.Drawing.Size(75, 23);
+            this.favouriteButton3.TabIndex = 2;
+            this.favouriteButton3.Text = "button3";
+            this.favouriteButton3.UseVisualStyleBackColor = true;
+            // 
+            // favouriteButton2
+            // 
+            this.favouriteButton2.Location = new System.Drawing.Point(282, 51);
+            this.favouriteButton2.Name = "favouriteButton2";
+            this.favouriteButton2.Size = new System.Drawing.Size(75, 23);
+            this.favouriteButton2.TabIndex = 1;
+            this.favouriteButton2.Text = "button2";
+            this.favouriteButton2.UseVisualStyleBackColor = true;
+            // 
+            // favouriteButton1
+            // 
+            this.favouriteButton1.Location = new System.Drawing.Point(282, 22);
+            this.favouriteButton1.Name = "favouriteButton1";
+            this.favouriteButton1.Size = new System.Drawing.Size(75, 23);
+            this.favouriteButton1.TabIndex = 0;
+            this.favouriteButton1.Text = "button1";
+            this.favouriteButton1.UseVisualStyleBackColor = true;
+            this.favouriteButton1.Click += new System.EventHandler(this.favouriteButton1_Click);
             // 
             // helpTab
             // 
@@ -235,7 +292,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(406, 416);
+            this.ClientSize = new System.Drawing.Size(403, 416);
             this.Controls.Add(this.okButton);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.nameTextBox);
@@ -254,6 +311,7 @@
             this.Text = "REPCON Launcher";
             this.Load += new System.EventHandler(this.repconLauncher_Load);
             this.tabList.ResumeLayout(false);
+            this.linksTab.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -278,5 +336,10 @@
         private TabPage linksTab;
         private TabPage helpTab;
         private TabPage launcherTab;
+        private Button favouriteButton5;
+        private Button favouriteButton4;
+        private Button favouriteButton3;
+        private Button favouriteButton2;
+        private Button favouriteButton1;
     }
 }
