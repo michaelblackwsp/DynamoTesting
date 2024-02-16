@@ -7,6 +7,8 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using static System.Windows.Forms.Design.AxImporter;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using Button = System.Windows.Forms.Button;
 
 namespace DynamoTesting
 {
@@ -14,9 +16,13 @@ namespace DynamoTesting
     {
         Model model = new Model();
         ViewModel viewModel;
+        Preset preset = new Preset();
 
         private string pathToShortcut = null;
         private List<(string year, string language)> installedVersionsOfCivil3D = null;
+
+        private List<Button> presetButtons = new List<Button>();
+        private int nextButtonIndex = 0;
 
         public repconLauncher()
         {
@@ -26,6 +32,7 @@ namespace DynamoTesting
             string[] installedCivil3D = (string[])model.GetCivil3DMetricProfiles(model.yearToRNumber, model.languageToRegion);
 
             launchButton.Enabled = false;
+            saveButton.Enabled = false;
 
             clientDropdownMenu.Items.AddRange(Model.clientOptions);
             string[] clientOptions = Model.clientOptions;
@@ -40,6 +47,14 @@ namespace DynamoTesting
             versionDropdownMenu.DrawMode = DrawMode.OwnerDrawFixed;
             versionDropdownMenu.DrawItem += versionDropdownMenu_DrawItem;
             versionDropdownMenu.SelectedIndexChanged += versionDropdownMenu_SelectedIndexChanged;
+
+            nameTextBox.Visible = false;
+            nameTextBox.Enter += preferenceNameTextBox_Enter;
+            nameTextBox.Leave += preferenceNameTextBox_Leave;
+            nameTextBox.Text = "Enter name";
+            nameTextBox.ForeColor = SystemColors.GrayText;
+
+            okButton.Visible = false;
         }
 
         private void repconLauncher_Load(object sender, EventArgs e)
@@ -184,6 +199,7 @@ namespace DynamoTesting
                 pathToShortcut = model.BuildShortcut(client, version, language);
 
                 launchButton.Enabled = true;
+                saveButton.Enabled = true;
             }
         }
 
@@ -206,6 +222,7 @@ namespace DynamoTesting
             versionDropdownMenu.Items.AddRange(Model.versionOptions.ToArray());
 
             launchButton.Enabled = false;
+            saveButton.Enabled = false;
         }
 
 
@@ -230,7 +247,75 @@ namespace DynamoTesting
 
         }
 
+        private void saveButton_Click(object sender, EventArgs e)
+        {
+            nameTextBox.Visible = true;
+            okButton.Visible = true;
+        }
 
+
+        private void nameTextBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void preferenceNameTextBox_Enter(object sender, EventArgs e)
+        {
+            if (nameTextBox.Text == "Enter name")
+            {
+                nameTextBox.Text = "";
+                nameTextBox.ForeColor = Color.Black; // Change text color to black
+            }
+        }
+
+        private void preferenceNameTextBox_Leave(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(nameTextBox.Text))
+            {
+                nameTextBox.Text = "Enter name";
+                nameTextBox.ForeColor = Color.Gray; // Change text color to gray
+            }
+        }
+
+        private void launcherTab_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void okButton_Click(object sender, EventArgs e)
+        {
+            if (nextButtonIndex >= 5)
+            {
+                MessageBox.Show("You can only create up to 5 custom buttons.", "Limit Exceeded", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            // Get the text from the text box
+            string buttonText = nameTextBox.Text;
+
+            // Create a new button
+            Button newButton = new Button();
+            newButton.Text = buttonText;
+            newButton.Enabled = true; // Enable the button
+            newButton.Click += CustomButton_Click; // Attach event handler
+            // Set location and size of the button as needed
+
+            // Add the button to the form and the list of preset buttons
+            Controls.Add(newButton);
+            presetButtons.Add(newButton);
+
+            // Increment the index of the next available button
+            nextButtonIndex++;
+
+            // Hide the text box and OK button
+            nameTextBox.Visible = false;
+            okButton.Visible = false;
+        }
+
+        private void CustomButton_Click(object sender, EventArgs e)
+        {
+            //LAUNCH THE SOFTWARE USING THE SAVED PATH FROM THE RADIO BUTTON
+        }
 
         //TO DO: Recycle this to be a generic method that checks for good/bad and assigns colour accordingly
         /*        public Color setVersionColour(string choice)

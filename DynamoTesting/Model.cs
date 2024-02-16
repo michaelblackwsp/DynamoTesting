@@ -234,10 +234,8 @@ namespace DynamoTesting
             {
                 // Find the matching year for the given rNumber in the yearToRNumber dictionary
                 string year = yearToRNumber.FirstOrDefault(kv => kv.Value.Item1 == rNumber).Key;
-
                 // Use the productID directly to get the corresponding language from the languageToRegion dictionary
                 string language = languageToRegion.FirstOrDefault(kv => kv.Value == productID).Key;
-
                 // Add the corresponding keys to the result list
                 keys.Add((year, language));
             }
@@ -246,13 +244,17 @@ namespace DynamoTesting
         }
     }
 
-    public class SavedPreference
+    public class Preset
     {
         public string Name { get; set; }
-        public string Client { get; set; }
-        public string Version { get; set; }
-        public string Language { get; set; }
-        public string ShortcutPath { get; set; }
+        public string Path { get; set; }
+
+        private List<Preset> presets = new List<Preset>();
+
+        public void AddPreset(string name, string path)
+        {
+            presets.Add(new Preset { Name = name, Path = path });
+        }
     }
 
 }

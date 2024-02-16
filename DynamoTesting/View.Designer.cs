@@ -28,25 +28,29 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.launchButton = new System.Windows.Forms.Button();
             this.clientDropdownMenu = new System.Windows.Forms.ComboBox();
-            this.shortcutsModelBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.versionDropdownMenu = new System.Windows.Forms.ComboBox();
             this.clientLabel = new System.Windows.Forms.Label();
             this.versionLabel = new System.Windows.Forms.Label();
             this.usernameLabel = new System.Windows.Forms.Label();
-            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.resetButton = new System.Windows.Forms.Button();
             this.software = new System.Windows.Forms.Label();
             this.softwareComboBox = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            ((System.ComponentModel.ISupportInitialize)(this.shortcutsModelBindingSource)).BeginInit();
+            this.saveButton = new System.Windows.Forms.Button();
+            this.nameTextBox = new System.Windows.Forms.TextBox();
+            this.okButton = new System.Windows.Forms.Button();
+            this.tabList = new System.Windows.Forms.TabControl();
+            this.linksTab = new System.Windows.Forms.TabPage();
+            this.helpTab = new System.Windows.Forms.TabPage();
+            this.launcherTab = new System.Windows.Forms.TabPage();
+            this.tabList.SuspendLayout();
             this.SuspendLayout();
             // 
             // launchButton
             // 
-            this.launchButton.Location = new System.Drawing.Point(94, 310);
+            this.launchButton.Location = new System.Drawing.Point(31, 355);
             this.launchButton.Name = "launchButton";
             this.launchButton.Size = new System.Drawing.Size(56, 23);
             this.launchButton.TabIndex = 0;
@@ -57,21 +61,17 @@
             // clientDropdownMenu
             // 
             this.clientDropdownMenu.FormattingEnabled = true;
-            this.clientDropdownMenu.Location = new System.Drawing.Point(30, 108);
+            this.clientDropdownMenu.Location = new System.Drawing.Point(31, 151);
             this.clientDropdownMenu.MaxDropDownItems = 20;
             this.clientDropdownMenu.Name = "clientDropdownMenu";
             this.clientDropdownMenu.Size = new System.Drawing.Size(69, 23);
             this.clientDropdownMenu.TabIndex = 1;
             this.clientDropdownMenu.SelectedIndexChanged += new System.EventHandler(this.clientDropdownMenu_Selected);
             // 
-            // shortcutsModelBindingSource
-            // 
-            this.shortcutsModelBindingSource.DataSource = typeof(DynamoTesting.Model);
-            // 
             // versionDropdownMenu
             // 
             this.versionDropdownMenu.FormattingEnabled = true;
-            this.versionDropdownMenu.Location = new System.Drawing.Point(105, 108);
+            this.versionDropdownMenu.Location = new System.Drawing.Point(106, 151);
             this.versionDropdownMenu.Name = "versionDropdownMenu";
             this.versionDropdownMenu.Size = new System.Drawing.Size(69, 23);
             this.versionDropdownMenu.TabIndex = 2;
@@ -80,7 +80,8 @@
             // clientLabel
             // 
             this.clientLabel.AutoSize = true;
-            this.clientLabel.Location = new System.Drawing.Point(30, 90);
+            this.clientLabel.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.clientLabel.Location = new System.Drawing.Point(31, 133);
             this.clientLabel.Name = "clientLabel";
             this.clientLabel.Size = new System.Drawing.Size(38, 15);
             this.clientLabel.TabIndex = 3;
@@ -90,7 +91,8 @@
             // versionLabel
             // 
             this.versionLabel.AutoSize = true;
-            this.versionLabel.Location = new System.Drawing.Point(105, 90);
+            this.versionLabel.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.versionLabel.Location = new System.Drawing.Point(106, 133);
             this.versionLabel.Name = "versionLabel";
             this.versionLabel.Size = new System.Drawing.Size(45, 15);
             this.versionLabel.TabIndex = 4;
@@ -100,7 +102,7 @@
             // usernameLabel
             // 
             this.usernameLabel.AutoSize = true;
-            this.usernameLabel.Location = new System.Drawing.Point(8, 353);
+            this.usernameLabel.Location = new System.Drawing.Point(9, 396);
             this.usernameLabel.Name = "usernameLabel";
             this.usernameLabel.Size = new System.Drawing.Size(60, 15);
             this.usernameLabel.TabIndex = 11;
@@ -109,7 +111,7 @@
             // 
             // resetButton
             // 
-            this.resetButton.Location = new System.Drawing.Point(180, 108);
+            this.resetButton.Location = new System.Drawing.Point(181, 151);
             this.resetButton.Name = "resetButton";
             this.resetButton.Size = new System.Drawing.Size(56, 23);
             this.resetButton.TabIndex = 14;
@@ -120,7 +122,8 @@
             // software
             // 
             this.software.AutoSize = true;
-            this.software.Location = new System.Drawing.Point(30, 19);
+            this.software.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.software.Location = new System.Drawing.Point(31, 62);
             this.software.Name = "software";
             this.software.Size = new System.Drawing.Size(53, 15);
             this.software.TabIndex = 15;
@@ -131,19 +134,20 @@
             this.softwareComboBox.FormattingEnabled = true;
             this.softwareComboBox.Items.AddRange(new object[] {
             "Civil 3D (Autodesk)"});
-            this.softwareComboBox.Location = new System.Drawing.Point(30, 37);
+            this.softwareComboBox.Location = new System.Drawing.Point(31, 80);
             this.softwareComboBox.Name = "softwareComboBox";
             this.softwareComboBox.Size = new System.Drawing.Size(144, 23);
             this.softwareComboBox.TabIndex = 16;
             // 
             // tableLayoutPanel
             // 
+            this.tableLayoutPanel.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.tableLayoutPanel.ColumnCount = 4;
             this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 54.90196F));
             this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 45.09804F));
             this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 26F));
             this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 26F));
-            this.tableLayoutPanel.Location = new System.Drawing.Point(30, 154);
+            this.tableLayoutPanel.Location = new System.Drawing.Point(31, 197);
             this.tableLayoutPanel.Name = "tableLayoutPanel";
             this.tableLayoutPanel.RowCount = 7;
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -157,11 +161,84 @@
             this.tableLayoutPanel.TabIndex = 17;
             this.tableLayoutPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel_Paint);
             // 
+            // saveButton
+            // 
+            this.saveButton.Location = new System.Drawing.Point(106, 355);
+            this.saveButton.Name = "saveButton";
+            this.saveButton.Size = new System.Drawing.Size(56, 23);
+            this.saveButton.TabIndex = 18;
+            this.saveButton.Text = "Save";
+            this.saveButton.UseVisualStyleBackColor = true;
+            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
+            // 
+            // nameTextBox
+            // 
+            this.nameTextBox.Location = new System.Drawing.Point(172, 354);
+            this.nameTextBox.Name = "nameTextBox";
+            this.nameTextBox.Size = new System.Drawing.Size(93, 23);
+            this.nameTextBox.TabIndex = 19;
+            this.nameTextBox.TextChanged += new System.EventHandler(this.nameTextBox_TextChanged);
+            // 
+            // okButton
+            // 
+            this.okButton.Location = new System.Drawing.Point(268, 354);
+            this.okButton.Name = "okButton";
+            this.okButton.Size = new System.Drawing.Size(33, 23);
+            this.okButton.TabIndex = 20;
+            this.okButton.Text = "OK";
+            this.okButton.UseVisualStyleBackColor = true;
+            this.okButton.Click += new System.EventHandler(this.okButton_Click);
+            // 
+            // tabList
+            // 
+            this.tabList.Controls.Add(this.linksTab);
+            this.tabList.Controls.Add(this.helpTab);
+            this.tabList.Controls.Add(this.launcherTab);
+            this.tabList.Location = new System.Drawing.Point(9, 12);
+            this.tabList.Name = "tabList";
+            this.tabList.SelectedIndex = 0;
+            this.tabList.Size = new System.Drawing.Size(385, 381);
+            this.tabList.TabIndex = 21;
+            // 
+            // linksTab
+            // 
+            this.linksTab.Location = new System.Drawing.Point(4, 24);
+            this.linksTab.Name = "linksTab";
+            this.linksTab.Padding = new System.Windows.Forms.Padding(3);
+            this.linksTab.Size = new System.Drawing.Size(377, 353);
+            this.linksTab.TabIndex = 1;
+            this.linksTab.Text = "Links";
+            this.linksTab.UseVisualStyleBackColor = true;
+            // 
+            // helpTab
+            // 
+            this.helpTab.Location = new System.Drawing.Point(4, 24);
+            this.helpTab.Name = "helpTab";
+            this.helpTab.Padding = new System.Windows.Forms.Padding(3);
+            this.helpTab.Size = new System.Drawing.Size(377, 353);
+            this.helpTab.TabIndex = 2;
+            this.helpTab.Text = "Help";
+            this.helpTab.UseVisualStyleBackColor = true;
+            // 
+            // launcherTab
+            // 
+            this.launcherTab.Location = new System.Drawing.Point(4, 24);
+            this.launcherTab.Name = "launcherTab";
+            this.launcherTab.Padding = new System.Windows.Forms.Padding(3);
+            this.launcherTab.Size = new System.Drawing.Size(377, 353);
+            this.launcherTab.TabIndex = 0;
+            this.launcherTab.Text = "Launcher";
+            this.launcherTab.UseVisualStyleBackColor = true;
+            this.launcherTab.Click += new System.EventHandler(this.launcherTab_Click);
+            // 
             // repconLauncher
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(268, 376);
+            this.ClientSize = new System.Drawing.Size(406, 416);
+            this.Controls.Add(this.okButton);
+            this.Controls.Add(this.saveButton);
+            this.Controls.Add(this.nameTextBox);
             this.Controls.Add(this.tableLayoutPanel);
             this.Controls.Add(this.softwareComboBox);
             this.Controls.Add(this.software);
@@ -172,10 +249,11 @@
             this.Controls.Add(this.versionDropdownMenu);
             this.Controls.Add(this.clientDropdownMenu);
             this.Controls.Add(this.launchButton);
+            this.Controls.Add(this.tabList);
             this.Name = "repconLauncher";
             this.Text = "REPCON Launcher";
             this.Load += new System.EventHandler(this.repconLauncher_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.shortcutsModelBindingSource)).EndInit();
+            this.tabList.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -188,12 +266,17 @@
         private ComboBox versionDropdownMenu;
         private Label clientLabel;
         private Label versionLabel;
-        private BindingSource shortcutsModelBindingSource;
         private Label usernameLabel;
-        private ColorDialog colorDialog1;
         private Button resetButton;
         private Label software;
         private ComboBox softwareComboBox;
         private TableLayoutPanel tableLayoutPanel;
+        private Button saveButton;
+        private TextBox nameTextBox;
+        private Button okButton;
+        private TabControl tabList;
+        private TabPage linksTab;
+        private TabPage helpTab;
+        private TabPage launcherTab;
     }
 }
