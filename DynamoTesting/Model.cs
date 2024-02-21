@@ -112,7 +112,7 @@ namespace DynamoTesting
 
             return listOfInstalls.ToArray();
         }
-        
+
         public bool RegistryExists(string path)
         { // Can this be static, as in a part of this class, not an instance of the class?
             try
@@ -244,16 +244,15 @@ namespace DynamoTesting
         }
     }
 
-    public class Preset
+    public class FavouriteButton
     {
         public string Name { get; set; }
-        public string Path { get; set; }
+        public string ShortcutPath { get; set; }
 
-        private List<Preset> presets = new List<Preset>();
-
-        public void AddPreset(string name, string path)
+        public FavouriteButton(string name, string shortcutPath)
         {
-            presets.Add(new Preset { Name = name, Path = path });
+            Name = name;
+            ShortcutPath = shortcutPath;
         }
     }
 

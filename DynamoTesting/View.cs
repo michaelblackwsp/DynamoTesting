@@ -16,14 +16,12 @@ namespace DynamoTesting
     {
         Model model = new Model();
         ViewModel viewModel;
-        Preset preset = new Preset();
 
-        private string pathToShortcut = null;
+        private string builtShortcutPath = null;
         private List<(string year, string language)> installedVersionsOfCivil3D = null;
 
-        private List<Button> presetButtons = new List<Button>();
+        private List<FavouriteButton> favouriteButtons = new List<FavouriteButton>();
         private int buttonIndex = 0;
-
 
         public repconLauncher()
         {
@@ -57,11 +55,6 @@ namespace DynamoTesting
 
             okButton.Visible = false;
 
-            favouriteButton1.Visible = false;
-            favouriteButton2.Visible = false;
-            favouriteButton3.Visible = false;
-            favouriteButton4.Visible = false;
-            favouriteButton5.Visible = false;
         }
 
         private void repconLauncher_Load(object sender, EventArgs e)
@@ -109,13 +102,15 @@ namespace DynamoTesting
         {
             versionDropdownMenu.Enabled = false;
             launchButton.Enabled = false;
+            saveButton.Enabled = false;
             BuildClientOptionsTable();
         }
 
         private void versionDropdownMenu_SelectedIndexChanged(object sender, EventArgs e)
         {
             clientDropdownMenu.Enabled = false;
-            launchButton.Enabled= false;
+            launchButton.Enabled = false;
+            saveButton.Enabled = false;
             BuildClientOptionsTable();
         }
 
@@ -203,36 +198,12 @@ namespace DynamoTesting
                 string version = tagTuple.Item2;
                 string language = tagTuple.Item3;
 
-                pathToShortcut = model.BuildShortcut(client, version, language);
+                builtShortcutPath = model.BuildShortcut(client, version, language);
 
                 launchButton.Enabled = true;
                 saveButton.Enabled = true;
             }
         }
-
-        private void launchButton_Click(object sender, EventArgs e)
-        {
-            model.StartSoftware(pathToShortcut);
-        }
-
-
-        private void resetButton_Click(object sender, EventArgs e)
-        {
-            tableLayoutPanel.Controls.Clear();
-
-            clientDropdownMenu.Enabled = true;
-            clientDropdownMenu.Items.Clear();
-            clientDropdownMenu.Items.AddRange(Model.clientOptions.ToArray());
-
-            versionDropdownMenu.Enabled = true;
-            versionDropdownMenu.Items.Clear();
-            versionDropdownMenu.Items.AddRange(Model.versionOptions.ToArray());
-
-            launchButton.Enabled = false;
-            saveButton.Enabled = false;
-        }
-
-
 
         private void clientLabel_Click(object sender, EventArgs e)
         {
@@ -246,26 +217,13 @@ namespace DynamoTesting
 
         private void usernameLabel_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         private void tableLayoutPanel_Paint(object sender, PaintEventArgs e)
         {
 
         }
-
-        private void saveButton_Click(object sender, EventArgs e)
-        {
-            if (buttonIndex >= 5)
-            {
-                MessageBox.Show("You can only save up to 5 client environments. \n\nPurchase more Saves through the Digital Operations app store.");
-                return;
-            }
-
-            nameTextBox.Visible = true;
-            okButton.Visible = true;
-        }
-
 
         private void nameTextBox_TextChanged(object sender, EventArgs e)
         {
@@ -295,83 +253,84 @@ namespace DynamoTesting
 
         }
 
-        private void okButton_Click(object sender, EventArgs e)
+        private void FavouriteButton_Click(object sender, EventArgs e)
         {
-
-            string buttonText = nameTextBox.Text;
-            // TO DO: MAKE THE BUTTON COLOURED ACCORDING TO THE SOFTWARE
-
-            // Update the button at the current index
-            switch (buttonIndex)
+            Button clickedButton = sender as Button;
+            if (clickedButton != null)
             {
-                case 0:
-                    favouriteButton1.Text = buttonText;
-                    favouriteButton1.Visible = true;
-                    break;
-                case 1:
-                    favouriteButton2.Text = buttonText;
-                    favouriteButton2.Visible = true;
-                    break;
-                case 2:
-                    favouriteButton3.Text = buttonText;
-                    favouriteButton3.Visible = true;
-                    break;
-                case 3:
-                    favouriteButton4.Text = buttonText;
-                    favouriteButton4.Visible = true;
-                    break;
-                case 4:
-                    favouriteButton5.Text = buttonText;
-                    favouriteButton5.Visible = true;
-                    break;
-                default:
-                    // This case should not occur if the limit is properly enforced, but handle it just in case
-                    MessageBox.Show("Invalid button index.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    break;
-            }
-
-            // Increment the buttonIndex
-            buttonIndex++;
-
-            // Hide the text box and OK button
-            nameTextBox.Visible = false;
-            okButton.Visible = false;
-
-            // Make sure to keep previously added buttons visible
-            for (int i = 0; i < buttonIndex; i++)
-            {
-                switch (i)
+                FavouriteButton favorite = clickedButton.Tag as FavouriteButton;
+                if (favorite != null)
                 {
-                    case 0:
-                        favouriteButton1.Visible = true;
-                        break;
-                    case 1:
-                        favouriteButton2.Visible = true;
-                        break;
-                    case 2:
-                        favouriteButton3.Visible = true;
-                        break;
-                    case 3:
-                        favouriteButton4.Visible = true;
-                        break;
-                    case 4:
-                        favouriteButton5.Visible = true;
-                        break;
-                    default:
-                        break;
+                    string shortcutPath = favorite.ShortcutPath;
+                    model.StartSoftware(shortcutPath);
                 }
             }
         }
 
-        private void CustomButton_Click(object sender, EventArgs e)
+        private void resetButton_Click(object sender, EventArgs e)
         {
-            //LAUNCH THE SOFTWARE USING THE SAVED PATH FROM THE RADIO BUTTON
+            tableLayoutPanel.Controls.Clear();
+
+            clientDropdownMenu.Enabled = true;
+            clientDropdownMenu.Items.Clear();
+            clientDropdownMenu.Items.AddRange(Model.clientOptions.ToArray());
+
+            versionDropdownMenu.Enabled = true;
+            versionDropdownMenu.Items.Clear();
+            versionDropdownMenu.Items.AddRange(Model.versionOptions.ToArray());
+
+            launchButton.Enabled = false;
+            saveButton.Enabled = false;
         }
 
-        private void favouriteButton1_Click(object sender, EventArgs e)
+        private void launchButton_Click(object sender, EventArgs e)
         {
-
+            model.StartSoftware(builtShortcutPath);
         }
+
+        private void saveButton_Click(object sender, EventArgs e)
+        {
+            if (buttonIndex >= 5)
+            {
+                MessageBox.Show("You can only save up to 5 client environments.");
+                return;
+            }
+
+            nameTextBox.Visible = true;
+            okButton.Visible = true;
+        }
+
+        private void okButton_Click(object sender, EventArgs e)
+        {
+            // TO DO: MAKE THE BUTTON COLOURED ACCORDING TO THE SOFTWARE
+            string name = nameTextBox.Text;
+            string shortcutPath = builtShortcutPath;
+
+            FavouriteButton favouriteButton = new FavouriteButton(name, shortcutPath);
+            favouriteButtons.Add(favouriteButton);
+
+            Button newButton = new Button();
+            // TO DO: Setting the name inside the click event works, but to rename we will have to use 'Set'
+            newButton.Font = new Font("Sergoe UI", 7, FontStyle.Regular);
+            newButton.Text = name;
+            newButton.Tag = favouriteButton; // (??) Store the FavoriteButton instance in the Tag property
+
+            newButton.Click += FavouriteButton_Click;
+
+            newButton.Top = 160 + (favouriteButtons.Count - 1) * (newButton.Height + 5);
+            newButton.Left = 280;
+            newButton.Visible = true;
+            newButton.BringToFront();
+
+            // Basically, draw the button
+            launcherTab.Controls.Add(newButton);
+
+            buttonIndex++;
+            nameTextBox.Clear();
+            nameTextBox.Visible = false;
+            okButton.Visible = false;
+        }
+
 
         //TO DO: Recycle this to be a generic method that checks for good/bad and assigns colour accordingly
         /*        public Color setVersionColour(string choice)
