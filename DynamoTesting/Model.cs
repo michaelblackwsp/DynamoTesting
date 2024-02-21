@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System;
 using System.Reflection;
-
+using System.Globalization;
 
 namespace DynamoTesting
 {
@@ -77,7 +77,6 @@ namespace DynamoTesting
             { "2023", Tuple.Create("R24.2", "6100") },
         };
 
-
         public Dictionary<string, string> languageToRegion = new Dictionary<string, string>
         {
             { "English", "409" },
@@ -85,7 +84,32 @@ namespace DynamoTesting
         };
 
 
-        // TO DO: Try and check the language of the OS to boot up EN / FR
+        public List<(string year, string language)> GetCivil3DInstallations()
+        {
+            string[] profiles = (string[])GetCivil3DMetricProfiles(yearToRNumber, languageToRegion);
+            List<(string year, string language)> civil3DInstallations = new List<(string year, string language)>();
+
+            foreach (string profile in profiles)
+            {
+                string[] parts = profile.Split(new string[] { "\\" }, StringSplitOptions.RemoveEmptyEntries);
+
+                if (parts.Length >= 5)
+                {
+                    string desiredValue1 = parts[3];
+                    string desiredValue2 = parts[4].Substring(Math.Max(0, parts[4].Length - 3));
+
+                    // Use the values to find the corresponding keys in the mapping dictionaries
+                    string year = yearToRNumber.FirstOrDefault(kv => kv.Value.Item1 == desiredValue1).Key;
+                    string language = languageToRegion.FirstOrDefault(kv => kv.Value == desiredValue2).Key;
+
+                    // Add the keys to the result list
+                    civil3DInstallations.Add((year, language));
+                }
+            }
+
+            return civil3DInstallations;
+        }
+
         public Array GetCivil3DMetricProfiles(Dictionary<string, Tuple<string, string>> installations, Dictionary<string, string> languages)
         {
             string registryPath = null;
@@ -111,6 +135,14 @@ namespace DynamoTesting
             }
 
             return listOfInstalls.ToArray();
+        }
+
+        public void GetWindowsLanguage()
+        {
+            CultureInfo culture = CultureInfo.CurrentCulture;
+
+            MessageBox.Show("Current system language: " + culture.DisplayName); // language
+            MessageBox.Show("Current system language code: " + culture.Name);   // culture code
         }
 
         public bool RegistryExists(string path)
@@ -148,6 +180,7 @@ namespace DynamoTesting
             return registryPath;
         }
 
+
         public string BuildShortcut(string client, string version, string language)
         {
             string shortFormLanguage = null;
@@ -170,35 +203,6 @@ namespace DynamoTesting
 
             return shortcut;
         }
-
-
-
-        public List<(string year, string language)> GetCivil3DInstallations()
-        {
-            string[] profiles = (string[])GetCivil3DMetricProfiles(yearToRNumber, languageToRegion);
-            List<(string year, string language)> civil3DInstallations = new List<(string year, string language)>();
-
-            foreach (string profile in profiles)
-            {
-                string[] parts = profile.Split(new string[] { "\\" }, StringSplitOptions.RemoveEmptyEntries);
-
-                if (parts.Length >= 5)
-                {
-                    string desiredValue1 = parts[3];
-                    string desiredValue2 = parts[4].Substring(Math.Max(0, parts[4].Length - 3));
-
-                    // Use the values to find the corresponding keys in the mapping dictionaries
-                    string year = yearToRNumber.FirstOrDefault(kv => kv.Value.Item1 == desiredValue1).Key;
-                    string language = languageToRegion.FirstOrDefault(kv => kv.Value == desiredValue2).Key;
-
-                    // Add the keys to the result list
-                    civil3DInstallations.Add((year, language));
-                }
-            }
-
-            return civil3DInstallations;
-        }
-
 
         public void StartSoftware(string path)
         {
@@ -226,6 +230,7 @@ namespace DynamoTesting
 
         }
 
+
         public List<(string year, string language)> ConvertDictionaryValuesToKeys(List<(string rNumber, string productID)> versionProductIDList)
         {
             List<(string year, string language)> keys = new List<(string year, string language)>();
@@ -244,6 +249,7 @@ namespace DynamoTesting
         }
     }
 
+
     public class FavouriteButton
     {
         public string Name { get; set; }
@@ -257,21 +263,3 @@ namespace DynamoTesting
     }
 
 }
-
-
-
-
-
-
-
-/*{ "BCMoT", { "British Columbia Ministry of Tranportation"} },
-{ "CofC", { "City of Calgary" } },
-{ "MTQ", { "Ministère de Transport du Québec" } },
-{ "MVRD", { "Metro Vancouver Regional District" } },
-{ "MX", { "Metrolinx" } },
-{ "VDG", { "Ville de Gatineau" } },
-{ "VDM", { "Ville de Montréal" } },
-{ "VDQ", { "Ville de Québec"} },
-{ "VIA", { "VIA Rail"} },
-{ "WSP_EN", { "Standard WSP English" } },
-{ "WSP_FR", { "Standard WSP Français" } }*/

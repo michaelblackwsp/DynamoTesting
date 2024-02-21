@@ -68,8 +68,6 @@ namespace DynamoTesting
 
             return tableData;
         }
-
-
     }
 
     public class TableRowData
@@ -87,6 +85,5 @@ namespace DynamoTesting
             EnglishOffered = englishOffered;
             FrenchOffered = frenchOffered;
         }
-
     }
 }

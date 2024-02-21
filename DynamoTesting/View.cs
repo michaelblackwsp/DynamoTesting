@@ -1,14 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Windows.Forms;
-using static System.Windows.Forms.Design.AxImporter;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using Button = System.Windows.Forms.Button;
+using ToolTip = System.Windows.Forms.ToolTip;
 
 namespace DynamoTesting
 {
@@ -20,6 +11,7 @@ namespace DynamoTesting
         private string builtShortcutPath = null;
         private List<(string year, string language)> installedVersionsOfCivil3D = null;
 
+        // TO DO: put this in the class in the Model
         private List<FavouriteButton> favouriteButtons = new List<FavouriteButton>();
         private int buttonIndex = 0;
 
@@ -59,6 +51,7 @@ namespace DynamoTesting
 
         private void repconLauncher_Load(object sender, EventArgs e)
         {
+            model.GetWindowsLanguage();
             model.GetCivil3DMetricProfiles(model.yearToRNumber, model.languageToRegion);
             model.GetCivil3DInstallations();
             installedVersionsOfCivil3D = model.GetCivil3DInstallations();
@@ -112,6 +105,23 @@ namespace DynamoTesting
             launchButton.Enabled = false;
             saveButton.Enabled = false;
             BuildClientOptionsTable();
+        }
+
+
+        private void resetButton_Click(object sender, EventArgs e)
+        {
+            tableLayoutPanel.Controls.Clear();
+
+            clientDropdownMenu.Enabled = true;
+            clientDropdownMenu.Items.Clear();
+            clientDropdownMenu.Items.AddRange(Model.clientOptions.ToArray());
+
+            versionDropdownMenu.Enabled = true;
+            versionDropdownMenu.Items.Clear();
+            versionDropdownMenu.Items.AddRange(Model.versionOptions.ToArray());
+
+            launchButton.Enabled = false;
+            saveButton.Enabled = false;
         }
 
 
@@ -205,30 +215,24 @@ namespace DynamoTesting
             }
         }
 
-        private void clientLabel_Click(object sender, EventArgs e)
-        {
 
-        }
-        private void versionLabel_Click(object sender, EventArgs e)
+        private void launchButton_Click(object sender, EventArgs e)
         {
-
+            model.StartSoftware(builtShortcutPath);
         }
 
-
-        private void usernameLabel_Click(object sender, EventArgs e)
+        private void saveButton_Click(object sender, EventArgs e)
         {
+            if (buttonIndex >= 5)
+            {
+                MessageBox.Show("You can only save up to 5 client environments.");
+                return;
+            }
 
+            nameTextBox.Visible = true;
+            okButton.Visible = true;
         }
 
-        private void tableLayoutPanel_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void nameTextBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
 
         private void preferenceNameTextBox_Enter(object sender, EventArgs e)
         {
@@ -248,64 +252,13 @@ namespace DynamoTesting
             }
         }
 
-        private void launcherTab_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void FavouriteButton_Click(object sender, EventArgs e)
-        {
-            Button clickedButton = sender as Button;
-            if (clickedButton != null)
-            {
-                FavouriteButton favorite = clickedButton.Tag as FavouriteButton;
-                if (favorite != null)
-                {
-                    string shortcutPath = favorite.ShortcutPath;
-                    model.StartSoftware(shortcutPath);
-                }
-            }
-        }
-
-        private void resetButton_Click(object sender, EventArgs e)
-        {
-            tableLayoutPanel.Controls.Clear();
-
-            clientDropdownMenu.Enabled = true;
-            clientDropdownMenu.Items.Clear();
-            clientDropdownMenu.Items.AddRange(Model.clientOptions.ToArray());
-
-            versionDropdownMenu.Enabled = true;
-            versionDropdownMenu.Items.Clear();
-            versionDropdownMenu.Items.AddRange(Model.versionOptions.ToArray());
-
-            launchButton.Enabled = false;
-            saveButton.Enabled = false;
-        }
-
-        private void launchButton_Click(object sender, EventArgs e)
-        {
-            model.StartSoftware(builtShortcutPath);
-        }
-
-        private void saveButton_Click(object sender, EventArgs e)
-        {
-            if (buttonIndex >= 5)
-            {
-                MessageBox.Show("You can only save up to 5 client environments.");
-                return;
-            }
-
-            nameTextBox.Visible = true;
-            okButton.Visible = true;
-        }
-
         private void okButton_Click(object sender, EventArgs e)
         {
             // TO DO: MAKE THE BUTTON COLOURED ACCORDING TO THE SOFTWARE
             string name = nameTextBox.Text;
             string shortcutPath = builtShortcutPath;
 
+            // TO DO: REFACTOR ALL OF THIS INTO A BUTTON BUILDER METHOD 
             FavouriteButton favouriteButton = new FavouriteButton(name, shortcutPath);
             favouriteButtons.Add(favouriteButton);
 
@@ -322,6 +275,13 @@ namespace DynamoTesting
             newButton.Visible = true;
             newButton.BringToFront();
 
+            ToolTip toolTip = new ToolTip();
+            toolTip.AutoPopDelay = 5000;
+            toolTip.InitialDelay = 500;
+            toolTip.ReshowDelay = 200;
+            toolTip.ShowAlways = true;
+            toolTip.SetToolTip(newButton, builtShortcutPath);
+
             // Basically, draw the button
             launcherTab.Controls.Add(newButton);
 
@@ -332,6 +292,49 @@ namespace DynamoTesting
         }
 
 
+        private void FavouriteButton_Click(object sender, EventArgs e)
+        {
+            Button clickedButton = sender as Button;
+            if (clickedButton != null)
+            {
+                FavouriteButton favorite = clickedButton.Tag as FavouriteButton;
+                if (favorite != null)
+                {
+                    string shortcutPath = favorite.ShortcutPath;
+                    model.StartSoftware(shortcutPath);
+                }
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+        private void clientLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+        private void versionLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+        private void usernameLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+        private void tableLayoutPanel_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+        private void launcherTab_Click(object sender, EventArgs e)
+        {
+
+        }
         //TO DO: Recycle this to be a generic method that checks for good/bad and assigns colour accordingly
         /*        public Color setVersionColour(string choice)
                 {

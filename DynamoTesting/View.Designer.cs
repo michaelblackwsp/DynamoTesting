@@ -43,14 +43,14 @@
             this.versionDropdownMenu = new System.Windows.Forms.ComboBox();
             this.clientDropdownMenu = new System.Windows.Forms.ComboBox();
             this.launchButton = new System.Windows.Forms.Button();
-            this.linksTab = new System.Windows.Forms.TabPage();
+            this.superLinksTab = new System.Windows.Forms.TabPage();
             this.linksComingSoonLabel = new System.Windows.Forms.Label();
-            this.helpTab = new System.Windows.Forms.TabPage();
+            this.resourcesTab = new System.Windows.Forms.TabPage();
             this.helpComingSoonLabel = new System.Windows.Forms.Label();
             this.tabList.SuspendLayout();
             this.launcherTab.SuspendLayout();
-            this.linksTab.SuspendLayout();
-            this.helpTab.SuspendLayout();
+            this.superLinksTab.SuspendLayout();
+            this.resourcesTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // usernameLabel
@@ -66,8 +66,8 @@
             // tabList
             // 
             this.tabList.Controls.Add(this.launcherTab);
-            this.tabList.Controls.Add(this.linksTab);
-            this.tabList.Controls.Add(this.helpTab);
+            this.tabList.Controls.Add(this.superLinksTab);
+            this.tabList.Controls.Add(this.resourcesTab);
             this.tabList.Location = new System.Drawing.Point(12, 12);
             this.tabList.Name = "tabList";
             this.tabList.SelectedIndex = 0;
@@ -148,7 +148,9 @@
             // 
             this.softwareComboBox.FormattingEnabled = true;
             this.softwareComboBox.Items.AddRange(new object[] {
-            "Civil 3D (Autodesk)"});
+            "Civil 3D",
+            "OpenRoads Designer",
+            "Bentley View"});
             this.softwareComboBox.Location = new System.Drawing.Point(15, 36);
             this.softwareComboBox.Name = "softwareComboBox";
             this.softwareComboBox.Size = new System.Drawing.Size(144, 23);
@@ -221,42 +223,42 @@
             this.launchButton.UseVisualStyleBackColor = true;
             this.launchButton.Click += new System.EventHandler(this.launchButton_Click);
             // 
-            // linksTab
+            // superLinksTab
             // 
-            this.linksTab.Controls.Add(this.linksComingSoonLabel);
-            this.linksTab.Location = new System.Drawing.Point(4, 24);
-            this.linksTab.Name = "linksTab";
-            this.linksTab.Padding = new System.Windows.Forms.Padding(3);
-            this.linksTab.Size = new System.Drawing.Size(298, 353);
-            this.linksTab.TabIndex = 0;
-            this.linksTab.Text = "Links";
-            this.linksTab.UseVisualStyleBackColor = true;
-            this.linksTab.Click += new System.EventHandler(this.launcherTab_Click);
+            this.superLinksTab.Controls.Add(this.linksComingSoonLabel);
+            this.superLinksTab.Location = new System.Drawing.Point(4, 24);
+            this.superLinksTab.Name = "superLinksTab";
+            this.superLinksTab.Padding = new System.Windows.Forms.Padding(3);
+            this.superLinksTab.Size = new System.Drawing.Size(371, 353);
+            this.superLinksTab.TabIndex = 0;
+            this.superLinksTab.Text = "Super Links";
+            this.superLinksTab.UseVisualStyleBackColor = true;
+            this.superLinksTab.Click += new System.EventHandler(this.launcherTab_Click);
             // 
             // linksComingSoonLabel
             // 
             this.linksComingSoonLabel.AutoSize = true;
-            this.linksComingSoonLabel.Location = new System.Drawing.Point(144, 169);
+            this.linksComingSoonLabel.Location = new System.Drawing.Point(142, 159);
             this.linksComingSoonLabel.Name = "linksComingSoonLabel";
             this.linksComingSoonLabel.Size = new System.Drawing.Size(83, 15);
             this.linksComingSoonLabel.TabIndex = 2;
             this.linksComingSoonLabel.Text = "Coming Soon!";
             // 
-            // helpTab
+            // resourcesTab
             // 
-            this.helpTab.Controls.Add(this.helpComingSoonLabel);
-            this.helpTab.Location = new System.Drawing.Point(4, 24);
-            this.helpTab.Name = "helpTab";
-            this.helpTab.Padding = new System.Windows.Forms.Padding(3);
-            this.helpTab.Size = new System.Drawing.Size(298, 353);
-            this.helpTab.TabIndex = 2;
-            this.helpTab.Text = "Help";
-            this.helpTab.UseVisualStyleBackColor = true;
+            this.resourcesTab.Controls.Add(this.helpComingSoonLabel);
+            this.resourcesTab.Location = new System.Drawing.Point(4, 24);
+            this.resourcesTab.Name = "resourcesTab";
+            this.resourcesTab.Padding = new System.Windows.Forms.Padding(3);
+            this.resourcesTab.Size = new System.Drawing.Size(371, 353);
+            this.resourcesTab.TabIndex = 2;
+            this.resourcesTab.Text = "Resources";
+            this.resourcesTab.UseVisualStyleBackColor = true;
             // 
             // helpComingSoonLabel
             // 
             this.helpComingSoonLabel.AutoSize = true;
-            this.helpComingSoonLabel.Location = new System.Drawing.Point(142, 158);
+            this.helpComingSoonLabel.Location = new System.Drawing.Point(142, 159);
             this.helpComingSoonLabel.Name = "helpComingSoonLabel";
             this.helpComingSoonLabel.Size = new System.Drawing.Size(83, 15);
             this.helpComingSoonLabel.TabIndex = 1;
@@ -275,10 +277,10 @@
             this.tabList.ResumeLayout(false);
             this.launcherTab.ResumeLayout(false);
             this.launcherTab.PerformLayout();
-            this.linksTab.ResumeLayout(false);
-            this.linksTab.PerformLayout();
-            this.helpTab.ResumeLayout(false);
-            this.helpTab.PerformLayout();
+            this.superLinksTab.ResumeLayout(false);
+            this.superLinksTab.PerformLayout();
+            this.resourcesTab.ResumeLayout(false);
+            this.resourcesTab.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -288,8 +290,8 @@
         private Label usernameLabel;
         private TabControl tabList;
         private TabPage launcherTab;
-        private TabPage helpTab;
-        private TabPage linksTab;
+        private TabPage resourcesTab;
+        private TabPage superLinksTab;
         private Button okButton;
         private Button saveButton;
         private TextBox nameTextBox;
