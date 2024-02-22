@@ -15,6 +15,8 @@ namespace DynamoTesting
         private List<FavouriteButton> favouriteButtons = new List<FavouriteButton>();
         private int buttonIndex = 0;
 
+        string favouriteButtonToolTip = null;
+
         public repconLauncher()
         {
             InitializeComponent();
@@ -179,20 +181,26 @@ namespace DynamoTesting
                 int rowIndex = 1;
                 foreach (var option in options)
                 {
-                    // REFACTOR TO A BUILD LABEL METHOD
-                    Label clientLabel = new Label();
-                    clientLabel.TextAlign = ContentAlignment.MiddleCenter;
-                    clientLabel.Text = option.Client;
-                    tableLayoutPanel.Controls.Add(clientLabel, 0, rowIndex);
+                    CreateAndAddLabel(option.Client, 0, rowIndex);
+                    CreateAndAddLabel(option.Version, 1, rowIndex);
 
-                    Label versionLabel = new Label();
-                    versionLabel.TextAlign = ContentAlignment.MiddleCenter;
-                    versionLabel.Text = option.Version;
-                    tableLayoutPanel.Controls.Add(versionLabel, 1, rowIndex);
+                    if (option.EnglishOffered)
+                    {
+                        CreateAndAddRadioButton(2, rowIndex, option.Client, option.Version, "English");
+                    }
+                    else
+                    {
+                        CreateAndAddLabel("-", 2, rowIndex);
+                    }
 
-                    CreateAndAddRadioButton(option.EnglishOffered, 2, rowIndex, option.Client, option.Version, "English");
-                    CreateAndAddRadioButton(option.EnglishOffered, 3, rowIndex, option.Client, option.Version, "French");
-
+                    if (option.FrenchOffered)
+                    {
+                        CreateAndAddRadioButton(3, rowIndex, option.Client, option.Version, "French");
+                    }
+                    else
+                    {
+                        CreateAndAddLabel("-", 3, rowIndex);
+                    }
                     rowIndex++;
                 }
             }
@@ -200,24 +208,22 @@ namespace DynamoTesting
             AddColumnHeaders(); // TO DO: This really shouldn't come at the end
         }
 
-        private void CreateAndAddRadioButton(bool offered, int column, int row, string client, string version, string language)
+        private void CreateAndAddRadioButton(int column, int row, string client, string version, string language)
         {
-            if (offered)
-            {
-                RadioButton radioButton = new RadioButton();
-                radioButton.Tag = new Tuple<string, string, string>(client, version, language);
-                radioButton.Enabled = installedVersionsOfCivil3D.Contains((version, language));
-                radioButton.CheckedChanged += RadioButton_CheckedChanged;
-                radioButton.TextAlign = ContentAlignment.MiddleCenter;
-                tableLayoutPanel.Controls.Add(radioButton, column, row);
-            }
-            else
-            {
-                Label label = new Label();
-                label.Text = "-";
-                label.TextAlign = ContentAlignment.MiddleCenter;
-                tableLayoutPanel.Controls.Add(label, column, row);
-            }
+            RadioButton radioButton = new RadioButton();
+            radioButton.Tag = new Tuple<string, string, string>(client, version, language);
+            radioButton.Enabled = installedVersionsOfCivil3D.Contains((version, language));
+            radioButton.CheckedChanged += RadioButton_CheckedChanged;
+            radioButton.TextAlign = ContentAlignment.MiddleCenter;
+            tableLayoutPanel.Controls.Add(radioButton, column, row);
+        }
+
+        private void CreateAndAddLabel(string text, int column, int row)
+        {
+            Label label = new Label();
+            label.Text = text;
+            label.TextAlign = ContentAlignment.MiddleCenter;
+            tableLayoutPanel.Controls.Add(label, column, row);
         }
 
         private void RadioButton_CheckedChanged(object sender, EventArgs e)
@@ -231,6 +237,7 @@ namespace DynamoTesting
                 string language = tagTuple.Item3;
 
                 builtShortcutPath = model.BuildShortcut(client, version, language);
+                favouriteButtonToolTip = client + " (" + version  +" " + language + ")";
 
                 launchButton.Enabled = true;
                 saveButton.Enabled = true;
@@ -302,7 +309,7 @@ namespace DynamoTesting
             toolTip.InitialDelay = 500;
             toolTip.ReshowDelay = 200;
             toolTip.ShowAlways = true;
-            toolTip.SetToolTip(newButton, builtShortcutPath);
+            toolTip.SetToolTip(newButton, favouriteButtonToolTip);
 
             // Basically, draw the button
             launcherTab.Controls.Add(newButton);
