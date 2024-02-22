@@ -47,6 +47,7 @@
             this.linksComingSoonLabel = new System.Windows.Forms.Label();
             this.resourcesTab = new System.Windows.Forms.TabPage();
             this.helpComingSoonLabel = new System.Windows.Forms.Label();
+            this.languageLabel = new System.Windows.Forms.Label();
             this.tabList.SuspendLayout();
             this.launcherTab.SuspendLayout();
             this.superLinksTab.SuspendLayout();
@@ -56,7 +57,7 @@
             // usernameLabel
             // 
             this.usernameLabel.AutoSize = true;
-            this.usernameLabel.Location = new System.Drawing.Point(9, 396);
+            this.usernameLabel.Location = new System.Drawing.Point(6, 423);
             this.usernameLabel.Name = "usernameLabel";
             this.usernameLabel.Size = new System.Drawing.Size(60, 15);
             this.usernameLabel.TabIndex = 11;
@@ -71,7 +72,7 @@
             this.tabList.Location = new System.Drawing.Point(12, 12);
             this.tabList.Name = "tabList";
             this.tabList.SelectedIndex = 0;
-            this.tabList.Size = new System.Drawing.Size(379, 381);
+            this.tabList.Size = new System.Drawing.Size(379, 408);
             this.tabList.TabIndex = 21;
             // 
             // launcherTab
@@ -91,14 +92,14 @@
             this.launcherTab.Location = new System.Drawing.Point(4, 24);
             this.launcherTab.Name = "launcherTab";
             this.launcherTab.Padding = new System.Windows.Forms.Padding(3);
-            this.launcherTab.Size = new System.Drawing.Size(371, 353);
+            this.launcherTab.Size = new System.Drawing.Size(371, 380);
             this.launcherTab.TabIndex = 1;
             this.launcherTab.Text = "Launcher";
             this.launcherTab.UseVisualStyleBackColor = true;
             // 
             // okButton
             // 
-            this.okButton.Location = new System.Drawing.Point(252, 310);
+            this.okButton.Location = new System.Drawing.Point(252, 347);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(33, 23);
             this.okButton.TabIndex = 32;
@@ -108,7 +109,7 @@
             // 
             // saveButton
             // 
-            this.saveButton.Location = new System.Drawing.Point(90, 311);
+            this.saveButton.Location = new System.Drawing.Point(90, 348);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(56, 23);
             this.saveButton.TabIndex = 30;
@@ -118,7 +119,7 @@
             // 
             // nameTextBox
             // 
-            this.nameTextBox.Location = new System.Drawing.Point(156, 310);
+            this.nameTextBox.Location = new System.Drawing.Point(156, 347);
             this.nameTextBox.Name = "nameTextBox";
             this.nameTextBox.Size = new System.Drawing.Size(93, 23);
             this.nameTextBox.TabIndex = 31;
@@ -126,23 +127,26 @@
             // tableLayoutPanel
             // 
             this.tableLayoutPanel.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.tableLayoutPanel.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Outset;
             this.tableLayoutPanel.ColumnCount = 4;
             this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 54.90196F));
             this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 45.09804F));
             this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 26F));
             this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 26F));
-            this.tableLayoutPanel.Location = new System.Drawing.Point(15, 153);
+            this.tableLayoutPanel.Location = new System.Drawing.Point(15, 146);
             this.tableLayoutPanel.Name = "tableLayoutPanel";
-            this.tableLayoutPanel.RowCount = 7;
+            this.tableLayoutPanel.RowCount = 8;
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 19F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 19F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel.Size = new System.Drawing.Size(206, 141);
+            this.tableLayoutPanel.Size = new System.Drawing.Size(206, 180);
             this.tableLayoutPanel.TabIndex = 29;
+            this.tableLayoutPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel_Paint_1);
             // 
             // softwareComboBox
             // 
@@ -215,7 +219,7 @@
             // 
             // launchButton
             // 
-            this.launchButton.Location = new System.Drawing.Point(15, 311);
+            this.launchButton.Location = new System.Drawing.Point(15, 348);
             this.launchButton.Name = "launchButton";
             this.launchButton.Size = new System.Drawing.Size(56, 23);
             this.launchButton.TabIndex = 21;
@@ -229,7 +233,7 @@
             this.superLinksTab.Location = new System.Drawing.Point(4, 24);
             this.superLinksTab.Name = "superLinksTab";
             this.superLinksTab.Padding = new System.Windows.Forms.Padding(3);
-            this.superLinksTab.Size = new System.Drawing.Size(371, 353);
+            this.superLinksTab.Size = new System.Drawing.Size(371, 380);
             this.superLinksTab.TabIndex = 0;
             this.superLinksTab.Text = "Super Links";
             this.superLinksTab.UseVisualStyleBackColor = true;
@@ -250,7 +254,7 @@
             this.resourcesTab.Location = new System.Drawing.Point(4, 24);
             this.resourcesTab.Name = "resourcesTab";
             this.resourcesTab.Padding = new System.Windows.Forms.Padding(3);
-            this.resourcesTab.Size = new System.Drawing.Size(371, 353);
+            this.resourcesTab.Size = new System.Drawing.Size(371, 380);
             this.resourcesTab.TabIndex = 2;
             this.resourcesTab.Text = "Resources";
             this.resourcesTab.UseVisualStyleBackColor = true;
@@ -264,15 +268,27 @@
             this.helpComingSoonLabel.TabIndex = 1;
             this.helpComingSoonLabel.Text = "Coming Soon!";
             // 
+            // languageLabel
+            // 
+            this.languageLabel.AutoSize = true;
+            this.languageLabel.Location = new System.Drawing.Point(284, 423);
+            this.languageLabel.Name = "languageLabel";
+            this.languageLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.languageLabel.Size = new System.Drawing.Size(56, 15);
+            this.languageLabel.TabIndex = 22;
+            this.languageLabel.Text = "language";
+            this.languageLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // repconLauncher
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(403, 416);
+            this.ClientSize = new System.Drawing.Size(403, 443);
+            this.Controls.Add(this.languageLabel);
             this.Controls.Add(this.usernameLabel);
             this.Controls.Add(this.tabList);
             this.Name = "repconLauncher";
-            this.Text = "REPCON Launcher";
+            this.Text = "REPCON";
             this.Load += new System.EventHandler(this.repconLauncher_Load);
             this.tabList.ResumeLayout(false);
             this.launcherTab.ResumeLayout(false);
@@ -306,5 +322,6 @@
         private Button launchButton;
         private Label helpComingSoonLabel;
         private Label linksComingSoonLabel;
+        private Label languageLabel;
     }
 }

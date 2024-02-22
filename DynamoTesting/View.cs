@@ -55,7 +55,9 @@ namespace DynamoTesting
             model.GetCivil3DMetricProfiles(model.yearToRNumber, model.languageToRegion);
             model.GetCivil3DInstallations();
             installedVersionsOfCivil3D = model.GetCivil3DInstallations();
+            AddColumnHeaders();
             usernameLabel.Text = Environment.UserName;
+            languageLabel.Text = model.GetWindowsLanguage();
         }
 
 
@@ -96,7 +98,7 @@ namespace DynamoTesting
             versionDropdownMenu.Enabled = false;
             launchButton.Enabled = false;
             saveButton.Enabled = false;
-            BuildClientOptionsTable();
+            UpdateTableData();
         }
 
         private void versionDropdownMenu_SelectedIndexChanged(object sender, EventArgs e)
@@ -104,7 +106,7 @@ namespace DynamoTesting
             clientDropdownMenu.Enabled = false;
             launchButton.Enabled = false;
             saveButton.Enabled = false;
-            BuildClientOptionsTable();
+            UpdateTableData();
         }
 
 
@@ -122,10 +124,34 @@ namespace DynamoTesting
 
             launchButton.Enabled = false;
             saveButton.Enabled = false;
+
+            AddColumnHeaders();
+        }
+
+        private void AddColumnHeaders()
+        {
+            tableLayoutPanel.ColumnStyles[0].Width = 40;
+            tableLayoutPanel.ColumnStyles[1].Width = 40;
+            tableLayoutPanel.ColumnStyles[2].Width = 40;
+            tableLayoutPanel.ColumnStyles[3].Width = 40;
+
+            // Add column headers
+            CreateColumnHeader("Client", 0);
+            CreateColumnHeader("Version", 1);
+            CreateColumnHeader("EN", 2);
+            CreateColumnHeader("FR", 3);
+        }
+
+        private void CreateColumnHeader(string text, int columnIndex)
+        {
+            Label headerLabel = new Label();
+            headerLabel.Text = text;
+            headerLabel.TextAlign = ContentAlignment.MiddleCenter; // Center the text
+            tableLayoutPanel.Controls.Add(headerLabel, columnIndex, 0); // Add header label to the first row
         }
 
 
-        private void BuildClientOptionsTable()
+        private void UpdateTableData()
         {
             tableLayoutPanel.Controls.Clear();
             tableLayoutPanel.ColumnCount = 4;
@@ -150,14 +176,17 @@ namespace DynamoTesting
 
             if (options != null)
             {
-                int rowIndex = 0;
+                int rowIndex = 1;
                 foreach (var option in options)
                 {
+                    // REFACTOR TO A BUILD LABEL METHOD
                     Label clientLabel = new Label();
+                    clientLabel.TextAlign = ContentAlignment.MiddleCenter;
                     clientLabel.Text = option.Client;
                     tableLayoutPanel.Controls.Add(clientLabel, 0, rowIndex);
 
                     Label versionLabel = new Label();
+                    versionLabel.TextAlign = ContentAlignment.MiddleCenter;
                     versionLabel.Text = option.Version;
                     tableLayoutPanel.Controls.Add(versionLabel, 1, rowIndex);
 
@@ -306,6 +335,12 @@ namespace DynamoTesting
             }
         }
 
+        // TO DO: Get rid of _1 in name
+        private void tableLayoutPanel_Paint_1(object sender, PaintEventArgs e)
+        {
+            tableLayoutPanel.GetType().GetProperty("DoubleBuffered", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).SetValue(tableLayoutPanel, true, null);
+
+        }
 
 
 
@@ -335,6 +370,7 @@ namespace DynamoTesting
         {
 
         }
+
         //TO DO: Recycle this to be a generic method that checks for good/bad and assigns colour accordingly
         /*        public Color setVersionColour(string choice)
                 {

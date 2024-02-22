@@ -137,12 +137,16 @@ namespace DynamoTesting
             return listOfInstalls.ToArray();
         }
 
-        public void GetWindowsLanguage()
+        public string GetWindowsLanguage()
         {
+            
+            OperatingSystem os = Environment.OSVersion;
             CultureInfo culture = CultureInfo.CurrentCulture;
 
-            MessageBox.Show("Current system language: " + culture.DisplayName); // language
-            MessageBox.Show("Current system language code: " + culture.Name);   // culture code
+            string version = os.Version.ToString();
+            string language = culture.Name; // use culture.DisplayName for long form
+
+            return version + " (" + language + ")";
         }
 
         public bool RegistryExists(string path)
