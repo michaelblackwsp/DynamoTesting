@@ -190,40 +190,33 @@ namespace DynamoTesting
                     versionLabel.Text = option.Version;
                     tableLayoutPanel.Controls.Add(versionLabel, 1, rowIndex);
 
-                    // Change here to use language instead of client
-                    if (option.EnglishOffered)
-                    {
-                        RadioButton englishRadioButton = new RadioButton();
-                        englishRadioButton.Tag = new Tuple<string, string, string>(option.Client, option.Version, "English");
-                        tableLayoutPanel.Controls.Add(englishRadioButton, 2, rowIndex);
-                        englishRadioButton.Enabled = installedVersionsOfCivil3D.Contains((option.Version, "English")); // Enable/disable based on existence in the extracted list
-                        englishRadioButton.CheckedChanged += RadioButton_CheckedChanged;
-                    }
-                    else
-                    {
-                        Label englishOfferedLabel = new Label();
-                        englishOfferedLabel.Text = "-";
-                        tableLayoutPanel.Controls.Add(englishOfferedLabel, 2, rowIndex);
-                    }
-
-                    // Change here to use language instead of client
-                    if (option.FrenchOffered)
-                    {
-                        RadioButton frenchRadioButton = new RadioButton();
-                        frenchRadioButton.Tag = new Tuple<string, string, string>(option.Client, option.Version, "French");
-                        tableLayoutPanel.Controls.Add(frenchRadioButton, 3, rowIndex);
-                        frenchRadioButton.Enabled = installedVersionsOfCivil3D.Contains((option.Version, "French")); // Enable/disable based on existence in the extracted list
-                        frenchRadioButton.CheckedChanged += RadioButton_CheckedChanged;
-                    }
-                    else
-                    {
-                        Label frenchOfferedLabel = new Label();
-                        frenchOfferedLabel.Text = "-";
-                        tableLayoutPanel.Controls.Add(frenchOfferedLabel, 3, rowIndex);
-                    }
+                    CreateAndAddRadioButton(option.EnglishOffered, 2, rowIndex, option.Client, option.Version, "English");
+                    CreateAndAddRadioButton(option.EnglishOffered, 3, rowIndex, option.Client, option.Version, "French");
 
                     rowIndex++;
                 }
+            }
+
+            AddColumnHeaders(); // TO DO: This really shouldn't come at the end
+        }
+
+        private void CreateAndAddRadioButton(bool offered, int column, int row, string client, string version, string language)
+        {
+            if (offered)
+            {
+                RadioButton radioButton = new RadioButton();
+                radioButton.Tag = new Tuple<string, string, string>(client, version, language);
+                radioButton.Enabled = installedVersionsOfCivil3D.Contains((version, language));
+                radioButton.CheckedChanged += RadioButton_CheckedChanged;
+                radioButton.TextAlign = ContentAlignment.MiddleCenter;
+                tableLayoutPanel.Controls.Add(radioButton, column, row);
+            }
+            else
+            {
+                Label label = new Label();
+                label.Text = "-";
+                label.TextAlign = ContentAlignment.MiddleCenter;
+                tableLayoutPanel.Controls.Add(label, column, row);
             }
         }
 
