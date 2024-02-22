@@ -17,6 +17,9 @@ namespace DynamoTesting
 
         string favouriteButtonToolTip = null;
 
+        // FIX ME: There has to be a better way to do this than to constantly change a global variable...
+        bool useGreyText = false;
+
         public repconLauncher()
         {
             InitializeComponent();
@@ -148,6 +151,7 @@ namespace DynamoTesting
         {
             Label headerLabel = new Label();
             headerLabel.Text = text;
+            headerLabel.ForeColor = Color.Gray;
             headerLabel.TextAlign = ContentAlignment.MiddleCenter; // Center the text
             tableLayoutPanel.Controls.Add(headerLabel, columnIndex, 0); // Add header label to the first row
         }
@@ -155,6 +159,8 @@ namespace DynamoTesting
 
         private void UpdateTableData()
         {
+            useGreyText = true;
+
             tableLayoutPanel.Controls.Clear();
             tableLayoutPanel.ColumnCount = 4;
 
@@ -165,6 +171,7 @@ namespace DynamoTesting
 
             List<TableRowData> options = null;
 
+            // FIXME: Only make the Client and Version black if there is an option for the User to launch
             if (clientDropdownMenu.SelectedItem != null)
             {
                 string selectedClient = clientDropdownMenu.SelectedItem?.ToString();
@@ -181,8 +188,6 @@ namespace DynamoTesting
                 int rowIndex = 1;
                 foreach (var option in options)
                 {
-                    CreateAndAddLabel(option.Client, 0, rowIndex);
-                    CreateAndAddLabel(option.Version, 1, rowIndex);
 
                     if (option.EnglishOffered)
                     {
@@ -190,7 +195,7 @@ namespace DynamoTesting
                     }
                     else
                     {
-                        CreateAndAddLabel("-", 2, rowIndex);
+                        CreateAndAddGrayLabel("-", 2, rowIndex);
                     }
 
                     if (option.FrenchOffered)
@@ -199,8 +204,22 @@ namespace DynamoTesting
                     }
                     else
                     {
-                        CreateAndAddLabel("-", 3, rowIndex);
+                        CreateAndAddGrayLabel("-", 3, rowIndex);
                     }
+
+                    if(useGreyText == true)
+                    {
+                        CreateAndAddGrayLabel(option.Client, 0, rowIndex);
+                        CreateAndAddGrayLabel(option.Version, 1, rowIndex);
+                    }
+                    else
+                    {
+                        CreateAndAddBlackLabel(option.Client, 0, rowIndex);
+                        CreateAndAddBlackLabel(option.Version, 1, rowIndex);
+                    }
+
+
+
                     rowIndex++;
                 }
             }
@@ -214,11 +233,25 @@ namespace DynamoTesting
             radioButton.Tag = new Tuple<string, string, string>(client, version, language);
             radioButton.Enabled = installedVersionsOfCivil3D.Contains((version, language));
             radioButton.CheckedChanged += RadioButton_CheckedChanged;
-            radioButton.TextAlign = ContentAlignment.MiddleCenter;
+            radioButton.Margin = new Padding(13, 2, 0, 0);
             tableLayoutPanel.Controls.Add(radioButton, column, row);
+
+            if (radioButton.Enabled)
+            {
+                useGreyText = false;
+            }
         }
 
-        private void CreateAndAddLabel(string text, int column, int row)
+        private void CreateAndAddGrayLabel(string text, int column, int row)
+        {
+            Label label = new Label();
+            label.Text = text;
+            label.TextAlign = ContentAlignment.MiddleCenter;
+            label.ForeColor = Color.Gray;
+            tableLayoutPanel.Controls.Add(label, column, row);
+        }
+
+        private void CreateAndAddBlackLabel(string text, int column, int row)
         {
             Label label = new Label();
             label.Text = text;
@@ -341,11 +374,6 @@ namespace DynamoTesting
             tableLayoutPanel.GetType().GetProperty("DoubleBuffered", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).SetValue(tableLayoutPanel, true, null);
 
         }
-
-
-
-
-
 
 
 
