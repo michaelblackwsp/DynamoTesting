@@ -20,9 +20,12 @@ namespace DynamoTesting
         // FIX ME: There has to be a better way to do this than to constantly change a global variable...
         bool useGreyText = false;
 
+        private ContextMenuStrip rightClickMenu;
+
         public repconLauncher()
         {
             InitializeComponent();
+            InitializeRightClickMenu();
             viewModel = new ViewModel(model);
 
             string[] installedCivil3D = (string[])model.GetCivil3DMetricProfiles(model.yearToRNumber, model.languageToRegion);
@@ -51,9 +54,91 @@ namespace DynamoTesting
             nameTextBox.ForeColor = SystemColors.GrayText;
 
             okButton.Visible = false;
+            cancelButton.Visible = false;
 
         }
 
+        private void InitializeRightClickMenu()
+        {
+
+            rightClickMenu = new ContextMenuStrip(); // Create the context menu
+            
+            ToolStripMenuItem renameMenuItem = new ToolStripMenuItem("Rename"); // Create menu items
+            renameMenuItem.Click += RenameMenuItem_Click;
+            rightClickMenu.Items.Add(renameMenuItem);
+
+            ToolStripMenuItem updateMenuItem = new ToolStripMenuItem("Update");
+            updateMenuItem.Click += UpdateMenuItem_Click;
+            rightClickMenu.Items.Add(updateMenuItem);
+
+            ToolStripMenuItem removeMenuItem = new ToolStripMenuItem("Remove");
+            removeMenuItem.Click += RemoveMenuItem_Click;
+            rightClickMenu.Items.Add(removeMenuItem);
+        }
+
+
+        private void RenameMenuItem_Click(object sender, EventArgs e)
+        {
+            // Code to handle Rename action
+            MessageBox.Show("Rename action clicked");
+        }
+
+        private void UpdateMenuItem_Click(object sender, EventArgs e)
+        {
+            // Code to handle Update action
+            MessageBox.Show("Update action clicked");
+        }
+
+        private void RemoveMenuItem_Click(object sender, EventArgs e)
+        {
+            // Code to handle Remove action
+            MessageBox.Show("Remove action clicked");
+        }
+
+
+        private void okButton_Click(object sender, EventArgs e)
+        {
+            createFavouriteButton();
+
+            buttonIndex++;
+            nameTextBox.Clear();
+            nameTextBox.Visible = false;
+            okButton.Visible = false;
+            cancelButton.Visible = false;
+        }
+
+        private void createFavouriteButton()
+        {
+            // TO DO: MAKE THE BUTTON COLOURED ACCORDING TO THE SOFTWARE
+            string name = nameTextBox.Text;
+            string shortcutPath = builtShortcutPath;
+
+            FavouriteButton favouriteButton = new FavouriteButton(name, shortcutPath);
+            favouriteButtons.Add(favouriteButton);
+
+            Button newButton = new Button();
+            // TO DO: Setting the name inside the click event works, but to rename we will have to use 'Set'
+            newButton.Font = new Font("Sergoe UI", 7, FontStyle.Regular);
+            newButton.Text = name;
+            newButton.Tag = favouriteButton; // (??) Store the FavoriteButton instance in the Tag property
+
+            newButton.Click += FavouriteButton_Click;
+            newButton.ContextMenuStrip = rightClickMenu;
+
+            newButton.Top = 160 + (favouriteButtons.Count - 1) * (newButton.Height + 5);
+            newButton.Left = 280;
+            newButton.Visible = true;
+            newButton.BringToFront();
+
+            ToolTip toolTip = new ToolTip();
+            toolTip.AutoPopDelay = 5000;
+            toolTip.InitialDelay = 500;
+            toolTip.ReshowDelay = 200;
+            toolTip.ShowAlways = true;
+            toolTip.SetToolTip(newButton, favouriteButtonToolTip);
+
+            launcherTab.Controls.Add(newButton);
+        }
         private void repconLauncher_Load(object sender, EventArgs e)
         {
             model.GetWindowsLanguage();
@@ -195,7 +280,7 @@ namespace DynamoTesting
                     }
                     else
                     {
-                        CreateAndAddGrayLabel("-", 2, rowIndex);
+                        CreateAndAddlightGrayLabel("--", 2, rowIndex);
                     }
 
                     if (option.FrenchOffered)
@@ -204,7 +289,7 @@ namespace DynamoTesting
                     }
                     else
                     {
-                        CreateAndAddGrayLabel("-", 3, rowIndex);
+                        CreateAndAddlightGrayLabel("--", 3, rowIndex);
                     }
 
                     if(useGreyText == true)
@@ -233,13 +318,22 @@ namespace DynamoTesting
             radioButton.Tag = new Tuple<string, string, string>(client, version, language);
             radioButton.Enabled = installedVersionsOfCivil3D.Contains((version, language));
             radioButton.CheckedChanged += RadioButton_CheckedChanged;
-            radioButton.Margin = new Padding(13, 2, 0, 0);
+            radioButton.Margin = new Padding(13, 1, 0, 0);
             tableLayoutPanel.Controls.Add(radioButton, column, row);
 
             if (radioButton.Enabled)
             {
                 useGreyText = false;
             }
+        }
+
+        private void CreateAndAddlightGrayLabel(string text, int column, int row)
+        {
+            Label label = new Label();
+            label.Text = text;
+            label.TextAlign = ContentAlignment.MiddleCenter;
+            label.ForeColor = Color.LightGray;
+            tableLayoutPanel.Controls.Add(label, column, row);
         }
 
         private void CreateAndAddGrayLabel(string text, int column, int row)
@@ -293,6 +387,7 @@ namespace DynamoTesting
 
             nameTextBox.Visible = true;
             okButton.Visible = true;
+            cancelButton.Visible = true;
         }
 
 
@@ -312,45 +407,6 @@ namespace DynamoTesting
                 nameTextBox.Text = "Enter name";
                 nameTextBox.ForeColor = Color.Gray; // Change text color to gray
             }
-        }
-
-        private void okButton_Click(object sender, EventArgs e)
-        {
-            // TO DO: MAKE THE BUTTON COLOURED ACCORDING TO THE SOFTWARE
-            string name = nameTextBox.Text;
-            string shortcutPath = builtShortcutPath;
-
-            // TO DO: REFACTOR ALL OF THIS INTO A BUTTON BUILDER METHOD 
-            FavouriteButton favouriteButton = new FavouriteButton(name, shortcutPath);
-            favouriteButtons.Add(favouriteButton);
-
-            Button newButton = new Button();
-            // TO DO: Setting the name inside the click event works, but to rename we will have to use 'Set'
-            newButton.Font = new Font("Sergoe UI", 7, FontStyle.Regular);
-            newButton.Text = name;
-            newButton.Tag = favouriteButton; // (??) Store the FavoriteButton instance in the Tag property
-
-            newButton.Click += FavouriteButton_Click;
-
-            newButton.Top = 160 + (favouriteButtons.Count - 1) * (newButton.Height + 5);
-            newButton.Left = 280;
-            newButton.Visible = true;
-            newButton.BringToFront();
-
-            ToolTip toolTip = new ToolTip();
-            toolTip.AutoPopDelay = 5000;
-            toolTip.InitialDelay = 500;
-            toolTip.ReshowDelay = 200;
-            toolTip.ShowAlways = true;
-            toolTip.SetToolTip(newButton, favouriteButtonToolTip);
-
-            // Basically, draw the button
-            launcherTab.Controls.Add(newButton);
-
-            buttonIndex++;
-            nameTextBox.Clear();
-            nameTextBox.Visible = false;
-            okButton.Visible = false;
         }
 
 
@@ -397,6 +453,13 @@ namespace DynamoTesting
         private void launcherTab_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void cancelButton_Click(object sender, EventArgs e)
+        {
+            nameTextBox.Visible = false;
+            okButton.Visible = false;
+            cancelButton.Visible = false;
         }
 
         //TO DO: Recycle this to be a generic method that checks for good/bad and assigns colour accordingly

@@ -31,6 +31,7 @@
             this.usernameLabel = new System.Windows.Forms.Label();
             this.tabList = new System.Windows.Forms.TabControl();
             this.launcherTab = new System.Windows.Forms.TabPage();
+            this.cancelButton = new System.Windows.Forms.Button();
             this.okButton = new System.Windows.Forms.Button();
             this.saveButton = new System.Windows.Forms.Button();
             this.nameTextBox = new System.Windows.Forms.TextBox();
@@ -77,6 +78,7 @@
             // 
             // launcherTab
             // 
+            this.launcherTab.Controls.Add(this.cancelButton);
             this.launcherTab.Controls.Add(this.okButton);
             this.launcherTab.Controls.Add(this.saveButton);
             this.launcherTab.Controls.Add(this.nameTextBox);
@@ -97,9 +99,19 @@
             this.launcherTab.Text = "Launcher";
             this.launcherTab.UseVisualStyleBackColor = true;
             // 
+            // cancelButton
+            // 
+            this.cancelButton.Location = new System.Drawing.Point(290, 348);
+            this.cancelButton.Name = "cancelButton";
+            this.cancelButton.Size = new System.Drawing.Size(63, 23);
+            this.cancelButton.TabIndex = 33;
+            this.cancelButton.Text = "Cancel";
+            this.cancelButton.UseVisualStyleBackColor = true;
+            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
+            // 
             // okButton
             // 
-            this.okButton.Location = new System.Drawing.Point(252, 347);
+            this.okButton.Location = new System.Drawing.Point(252, 348);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(33, 23);
             this.okButton.TabIndex = 32;
@@ -109,9 +121,9 @@
             // 
             // saveButton
             // 
-            this.saveButton.Location = new System.Drawing.Point(90, 348);
+            this.saveButton.Location = new System.Drawing.Point(90, 347);
             this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(56, 23);
+            this.saveButton.Size = new System.Drawing.Size(60, 24);
             this.saveButton.TabIndex = 30;
             this.saveButton.Text = "Save";
             this.saveButton.UseVisualStyleBackColor = true;
@@ -219,9 +231,9 @@
             // 
             // launchButton
             // 
-            this.launchButton.Location = new System.Drawing.Point(15, 348);
+            this.launchButton.Location = new System.Drawing.Point(15, 347);
             this.launchButton.Name = "launchButton";
-            this.launchButton.Size = new System.Drawing.Size(56, 23);
+            this.launchButton.Size = new System.Drawing.Size(69, 24);
             this.launchButton.TabIndex = 21;
             this.launchButton.Text = "Launch";
             this.launchButton.UseVisualStyleBackColor = true;
@@ -323,5 +335,6 @@
         private Label helpComingSoonLabel;
         private Label linksComingSoonLabel;
         private Label languageLabel;
+        private Button cancelButton;
     }
 }
