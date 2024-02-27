@@ -132,19 +132,33 @@ namespace DynamoTesting
             dialog.Dispose(); // Dispose the dialog to release resources
         }
 
-
-
-
-
-
-
-
-
-
-
+        // FIX ME: UPDATE SHOULD NOT BE CLICKABLE UNLESS A RADIO BUTTON IS SELECTED
         private void UpdateMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Update clicked");
+            ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;                        
+            ContextMenuStrip contextMenu = (ContextMenuStrip)menuItem.Owner;                
+            Button buttonToUpdate = (Button)contextMenu.SourceControl;
+            FavouriteButton favouriteButtonToUpdate = (FavouriteButton)buttonToUpdate.Tag;
+
+            // Store the original tooltip
+            string originalToolTip = favouriteButtonToUpdate.Tooltip;
+
+            // Update the shortcutPath and toolTip for the active button
+            favouriteButtonToUpdate.ShortcutPath = builtShortcutPath;
+            favouriteButtonToUpdate.Tooltip = favouriteButtonToolTip;
+
+            if (originalToolTip != favouriteButtonToolTip)
+            {
+                // Show a pop-up message indicating the update
+                MessageBox.Show($"{originalToolTip}\n\n -----> \n\n{favouriteButtonToolTip}", "Update Successful!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                // Show a pop-up message indicating no changes
+                MessageBox.Show("No changes made. The selected environment is the same as the original.", "No Changes Made", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            // Redraw the buttons to reflect the changes
+            RedrawButtons();
         }
 
         private void RemoveMenuItem_Click(object sender, EventArgs e)
@@ -344,7 +358,7 @@ namespace DynamoTesting
 
             List<TableRowData> options = null;
 
-            // FIXME: Only make the Client and Version black if there is an option for the User to launch
+            // FIX ME: VDG 2020 SHOULD BE GREY BECAUSE THERE IS NO SELECTABLE RADIO BUTTON
             if (clientDropdownMenu.SelectedItem != null)
             {
                 string selectedClient = clientDropdownMenu.SelectedItem?.ToString();
