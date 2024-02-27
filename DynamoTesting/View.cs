@@ -13,7 +13,7 @@ namespace DynamoTesting
 
         // TO DO: put this in the class in the Model
         private List<FavouriteButton> favouriteButtons = new List<FavouriteButton>();
-        private int buttonIndex = 0;
+        private int buttonCount = 0;
 
         string favouriteButtonToolTip = null;
 
@@ -58,6 +58,17 @@ namespace DynamoTesting
 
         }
 
+        private void repconLauncher_Load(object sender, EventArgs e)
+        {
+            model.GetWindowsLanguage();
+            model.GetCivil3DMetricProfiles(model.yearToRNumber, model.languageToRegion);
+            model.GetCivil3DInstallations();
+            installedVersionsOfCivil3D = model.GetCivil3DInstallations();
+            AddColumnHeaders();
+            usernameLabel.Text = Environment.UserName;
+            languageLabel.Text = model.GetWindowsLanguage();
+        }
+
         private void InitializeRightClickMenu()
         {
 
@@ -79,76 +90,105 @@ namespace DynamoTesting
 
         private void RenameMenuItem_Click(object sender, EventArgs e)
         {
-            // Code to handle Rename action
-            MessageBox.Show("Rename action clicked");
+            MessageBox.Show("Rename clicked");
         }
 
         private void UpdateMenuItem_Click(object sender, EventArgs e)
         {
-            // Code to handle Update action
-            MessageBox.Show("Update action clicked");
+            MessageBox.Show("Update clicked");
         }
 
         private void RemoveMenuItem_Click(object sender, EventArgs e)
         {
-            // Code to handle Remove action
-            MessageBox.Show("Remove action clicked");
+            
+            ToolStripMenuItem menuItem = (ToolStripMenuItem)sender; // Get the MenuItem that triggered the event
+            ContextMenuStrip contextMenu = (ContextMenuStrip)menuItem.Owner; // Get the ContextMenuStrip that contains the MenuItem
+
+            Button buttonToRemove = (Button)contextMenu.SourceControl; // Get the Button associated with the ContextMenuStrip
+            FavouriteButton favouriteButtonToRemove = (FavouriteButton)buttonToRemove.Tag; // Get the FavouriteButton object corresponding to the button
+
+            int indexToRemove = favouriteButtons.FindIndex(button => button == favouriteButtonToRemove);
+            
+            // Remove the button from the list
+            if (indexToRemove != -1)
+            {
+                favouriteButtons.RemoveAt(indexToRemove);
+            }
+            buttonCount--;
+            RedrawButtons();
         }
+
+
 
 
         private void okButton_Click(object sender, EventArgs e)
         {
-            createFavouriteButton();
+            createFavouriteButton(nameTextBox.Text, builtShortcutPath, favouriteButtonToolTip);
 
-            buttonIndex++;
             nameTextBox.Clear();
             nameTextBox.Visible = false;
             okButton.Visible = false;
             cancelButton.Visible = false;
         }
 
-        private void createFavouriteButton()
+        private void createFavouriteButton(string name, string shortcutPath, string tooltip)
         {
-            // TO DO: MAKE THE BUTTON COLOURED ACCORDING TO THE SOFTWARE
-            string name = nameTextBox.Text;
-            string shortcutPath = builtShortcutPath;
-
-            FavouriteButton favouriteButton = new FavouriteButton(name, shortcutPath);
+            FavouriteButton favouriteButton = new FavouriteButton(name, shortcutPath, tooltip);
             favouriteButtons.Add(favouriteButton);
+            buttonCount++;
 
-            Button newButton = new Button();
-            // TO DO: Setting the name inside the click event works, but to rename we will have to use 'Set'
-            newButton.Font = new Font("Sergoe UI", 7, FontStyle.Regular);
-            newButton.Text = name;
-            newButton.Tag = favouriteButton; // (??) Store the FavoriteButton instance in the Tag property
-
-            newButton.Click += FavouriteButton_Click;
-            newButton.ContextMenuStrip = rightClickMenu;
-
-            newButton.Top = 160 + (favouriteButtons.Count - 1) * (newButton.Height + 5);
-            newButton.Left = 280;
-            newButton.Visible = true;
-            newButton.BringToFront();
-
-            ToolTip toolTip = new ToolTip();
-            toolTip.AutoPopDelay = 5000;
-            toolTip.InitialDelay = 500;
-            toolTip.ReshowDelay = 200;
-            toolTip.ShowAlways = true;
-            toolTip.SetToolTip(newButton, favouriteButtonToolTip);
-
-            launcherTab.Controls.Add(newButton);
+            RedrawButtons();
         }
-        private void repconLauncher_Load(object sender, EventArgs e)
+
+        private void RedrawButtons()
         {
-            model.GetWindowsLanguage();
-            model.GetCivil3DMetricProfiles(model.yearToRNumber, model.languageToRegion);
-            model.GetCivil3DInstallations();
-            installedVersionsOfCivil3D = model.GetCivil3DInstallations();
-            AddColumnHeaders();
-            usernameLabel.Text = Environment.UserName;
-            languageLabel.Text = model.GetWindowsLanguage();
+            // !!!!! THIS FIXED IT !!!!!! Create a copy of the controls collection to avoid modifying it while iterating
+            var controlsCopy = new List<Control>(launcherTab.Controls.OfType<Button>());
+
+            // Clear only the buttons that are of type FavouriteButton
+            foreach (var control in controlsCopy)
+            {
+                if (control.Tag is FavouriteButton)
+                {
+                    launcherTab.Controls.Remove(control);
+                    control.Dispose(); // Dispose the button to release resources
+                }
+            }
+
+            int topPosition = 160;
+
+            foreach (var favouriteButton in favouriteButtons)
+            {
+                Button button = new Button();
+                button.Font = new Font("Segoe UI", 7, FontStyle.Regular);
+                button.Text = favouriteButton.Name;
+                button.Tag = favouriteButton; // Store the FavouriteButton instance in the Tag property
+                button.Click += FavouriteButton_Click;
+                button.ContextMenuStrip = rightClickMenu;
+
+                // Create and configure the tooltip for the button
+                ToolTip toolTip = new ToolTip();
+                toolTip.AutoPopDelay = 5000;
+                toolTip.InitialDelay = 500;
+                toolTip.ReshowDelay = 200;
+                toolTip.ShowAlways = true;
+                toolTip.SetToolTip(button, favouriteButton.Tooltip);
+
+                // Set the button's position
+                button.Top = topPosition;
+                button.Left = 280;
+                button.Visible = true;
+
+                // Increment the vertical position for the next button
+                topPosition += button.Height + 5;
+
+                // Add the button to the launcherTab
+                launcherTab.Controls.Add(button);
+            }
         }
+
+
+
 
 
         private void clientDropdownMenu_DrawItem(object? sender, DrawItemEventArgs e)
@@ -379,9 +419,9 @@ namespace DynamoTesting
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            if (buttonIndex >= 5)
+            if (buttonCount >= 6)
             {
-                MessageBox.Show("You can only save up to 5 client environments.");
+                MessageBox.Show("You can only save up to 6 client environments.");
                 return;
             }
 
