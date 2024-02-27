@@ -87,11 +87,60 @@ namespace DynamoTesting
             rightClickMenu.Items.Add(removeMenuItem);
         }
 
-
+        // TO DO: REFACTOR THIS TO CALL A 'BUILD POP UP BOX' METHOD
         private void RenameMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Rename clicked");
+            ToolStripMenuItem menuItem = (ToolStripMenuItem)sender; 
+            ContextMenuStrip contextMenu = (ContextMenuStrip)menuItem.Owner; 
+            Button buttonToRename = (Button)contextMenu.SourceControl; 
+            FavouriteButton favouriteButtonToRename = (FavouriteButton)buttonToRename.Tag; 
+
+            // Create and configure a custom dialog box
+            Form dialog = new Form();
+            dialog.Text = "Enter new name";
+            dialog.FormBorderStyle = FormBorderStyle.FixedDialog;
+            dialog.StartPosition = FormStartPosition.CenterParent;
+            dialog.Size = new Size(250, 115); 
+
+            TextBox nameTextBox = new TextBox();
+            nameTextBox.Location = new Point(10, 10); // Location of window
+            nameTextBox.Size = new Size(210, 20);
+            nameTextBox.Text = favouriteButtonToRename.Name.ToString(); // Set placeholder text
+            dialog.Controls.Add(nameTextBox);
+
+            Button okButton = new Button();
+            okButton.Text = "OK";
+            okButton.DialogResult = DialogResult.OK;
+            okButton.Location = new Point(10, nameTextBox.Bottom + 10); // Adjusted Y-coordinate
+            dialog.Controls.Add(okButton);
+
+            Button cancelButton = new Button();
+            cancelButton.Text = "Cancel";
+            cancelButton.DialogResult = DialogResult.Cancel;
+            cancelButton.Location = new Point(okButton.Right + 10, nameTextBox.Bottom + 10); // Adjusted Y-coordinate
+            dialog.Controls.Add(cancelButton);
+
+            // Show the dialog box and handle the result
+            DialogResult result = dialog.ShowDialog();
+
+            if (result == DialogResult.OK)
+            {
+                favouriteButtonToRename.Name = nameTextBox.Text;
+                RedrawButtons();
+            }
+
+            dialog.Dispose(); // Dispose the dialog to release resources
         }
+
+
+
+
+
+
+
+
+
+
 
         private void UpdateMenuItem_Click(object sender, EventArgs e)
         {
@@ -101,11 +150,10 @@ namespace DynamoTesting
         private void RemoveMenuItem_Click(object sender, EventArgs e)
         {
             
-            ToolStripMenuItem menuItem = (ToolStripMenuItem)sender; // Get the MenuItem that triggered the event
-            ContextMenuStrip contextMenu = (ContextMenuStrip)menuItem.Owner; // Get the ContextMenuStrip that contains the MenuItem
-
-            Button buttonToRemove = (Button)contextMenu.SourceControl; // Get the Button associated with the ContextMenuStrip
-            FavouriteButton favouriteButtonToRemove = (FavouriteButton)buttonToRemove.Tag; // Get the FavouriteButton object corresponding to the button
+            ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;                         // Get the MenuItem that triggered the event
+            ContextMenuStrip contextMenu = (ContextMenuStrip)menuItem.Owner;                // Get the ContextMenuStrip that contains the MenuItem
+            Button buttonToRemove = (Button)contextMenu.SourceControl;                      // Get the Button associated with the ContextMenuStrip
+            FavouriteButton favouriteButtonToRemove = (FavouriteButton)buttonToRemove.Tag;  // Get the FavouriteButton object corresponding to the button
 
             int indexToRemove = favouriteButtons.FindIndex(button => button == favouriteButtonToRemove);
             
