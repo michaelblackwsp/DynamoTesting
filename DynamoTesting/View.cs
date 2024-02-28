@@ -6,14 +6,14 @@ namespace DynamoTesting
     public partial class repconLauncher : Form
     {
         Model model = new Model();
-        ViewModel viewModel;
+        private ViewModel viewModel;
 
         private string builtShortcutPath = null;
+        
+        //TO DO: MOVE THIS TO THE MODEL
         private List<(string year, string language)> installedVersionsOfCivil3D = null;
 
-        // TO DO: put this in the class in the Model
-        private List<FavouriteButton> favouriteButtons = new List<FavouriteButton>();
-        private int buttonCount = 0;
+
 
         string favouriteButtonToolTip = null;
 
@@ -168,14 +168,14 @@ namespace DynamoTesting
             Button buttonToRemove = (Button)contextMenu.SourceControl;                      // Get the Button associated with the ContextMenuStrip
             FavouriteButton favouriteButtonToRemove = (FavouriteButton)buttonToRemove.Tag;  // Get the FavouriteButton object corresponding to the button
 
-            int indexToRemove = favouriteButtons.FindIndex(button => button == favouriteButtonToRemove);
+            int indexToRemove = viewModel.favouriteButtons.FindIndex(button => button == favouriteButtonToRemove);
             
             // Remove the button from the list
             if (indexToRemove != -1)
             {
-                favouriteButtons.RemoveAt(indexToRemove);
+                viewModel.favouriteButtons.RemoveAt(indexToRemove);
             }
-            buttonCount--;
+            viewModel.buttonCount--;
             RedrawButtons();
         }
 
@@ -195,8 +195,8 @@ namespace DynamoTesting
         private void createFavouriteButton(string name, string shortcutPath, string tooltip)
         {
             FavouriteButton favouriteButton = new FavouriteButton(name, shortcutPath, tooltip);
-            favouriteButtons.Add(favouriteButton);
-            buttonCount++;
+            viewModel.favouriteButtons.Add(favouriteButton);
+            viewModel.buttonCount++;
 
             RedrawButtons();
         }
@@ -218,7 +218,7 @@ namespace DynamoTesting
 
             int topPosition = 30;
 
-            foreach (var favouriteButton in favouriteButtons)
+            foreach (var favouriteButton in viewModel.favouriteButtons)
             {
                 Button button = new Button();
                 button.Font = new Font("Segoe UI", 7, FontStyle.Regular);
@@ -481,7 +481,7 @@ namespace DynamoTesting
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            if (buttonCount >= 5)
+            if (viewModel.buttonCount >= 5)
             {
                 MessageBox.Show("You can only save up to 5 client environments.");
                 return;

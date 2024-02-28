@@ -68,6 +68,11 @@ namespace DynamoTesting
 
             return tableData;
         }
+
+
+        // TO DO: put this in the class in the Model
+        public List<FavouriteButton> favouriteButtons = new List<FavouriteButton>();
+        public int buttonCount = 0;
     }
 
     public class TableRowData
