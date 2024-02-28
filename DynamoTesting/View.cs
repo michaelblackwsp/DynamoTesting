@@ -71,7 +71,6 @@ namespace DynamoTesting
 
         private void InitializeRightClickMenu()
         {
-
             rightClickMenu = new ContextMenuStrip(); // Create the context menu
             
             ToolStripMenuItem renameMenuItem = new ToolStripMenuItem("Rename"); // Create menu items
@@ -150,7 +149,7 @@ namespace DynamoTesting
             if (originalToolTip != favouriteButtonToolTip)
             {
                 // Show a pop-up message indicating the update
-                MessageBox.Show($"{originalToolTip}\n\n -----> \n\n{favouriteButtonToolTip}", "Update Successful!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show($"{originalToolTip}\n\nwas uptated to\n\n{favouriteButtonToolTip}", "Update Successful!", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
@@ -205,19 +204,19 @@ namespace DynamoTesting
         private void RedrawButtons()
         {
             // !!!!! THIS FIXED IT !!!!!! Create a copy of the controls collection to avoid modifying it while iterating
-            var controlsCopy = new List<Control>(launcherTab.Controls.OfType<Button>());
+            var controlsCopy = new List<Control>(favouritesPanel.Controls.OfType<Button>());
 
             // Clear only the buttons that are of type FavouriteButton
             foreach (var control in controlsCopy)
             {
                 if (control.Tag is FavouriteButton)
                 {
-                    launcherTab.Controls.Remove(control);
+                    favouritesPanel.Controls.Remove(control);
                     control.Dispose(); // Dispose the button to release resources
                 }
             }
 
-            int topPosition = 160;
+            int topPosition = 30;
 
             foreach (var favouriteButton in favouriteButtons)
             {
@@ -238,14 +237,15 @@ namespace DynamoTesting
 
                 // Set the button's position
                 button.Top = topPosition;
-                button.Left = 280;
+                button.Left = 10;
                 button.Visible = true;
+                button.BringToFront();
 
                 // Increment the vertical position for the next button
                 topPosition += button.Height + 5;
 
                 // Add the button to the launcherTab
-                launcherTab.Controls.Add(button);
+                favouritesPanel.Controls.Add(button);
             }
         }
 
@@ -481,9 +481,9 @@ namespace DynamoTesting
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            if (buttonCount >= 6)
+            if (buttonCount >= 5)
             {
-                MessageBox.Show("You can only save up to 6 client environments.");
+                MessageBox.Show("You can only save up to 5 client environments.");
                 return;
             }
 
@@ -563,6 +563,17 @@ namespace DynamoTesting
             okButton.Visible = false;
             cancelButton.Visible = false;
         }
+
+        private void favouritesLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void nameTextBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
 
         //TO DO: Recycle this to be a generic method that checks for good/bad and assigns colour accordingly
         /*        public Color setVersionColour(string choice)

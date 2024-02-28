@@ -44,6 +44,8 @@
             this.versionDropdownMenu = new System.Windows.Forms.ComboBox();
             this.clientDropdownMenu = new System.Windows.Forms.ComboBox();
             this.launchButton = new System.Windows.Forms.Button();
+            this.favouritesPanel = new System.Windows.Forms.Panel();
+            this.favouritesLabel = new System.Windows.Forms.Label();
             this.superLinksTab = new System.Windows.Forms.TabPage();
             this.linksComingSoonLabel = new System.Windows.Forms.Label();
             this.resourcesTab = new System.Windows.Forms.TabPage();
@@ -51,6 +53,7 @@
             this.languageLabel = new System.Windows.Forms.Label();
             this.tabList.SuspendLayout();
             this.launcherTab.SuspendLayout();
+            this.favouritesPanel.SuspendLayout();
             this.superLinksTab.SuspendLayout();
             this.resourcesTab.SuspendLayout();
             this.SuspendLayout();
@@ -91,6 +94,7 @@
             this.launcherTab.Controls.Add(this.versionDropdownMenu);
             this.launcherTab.Controls.Add(this.clientDropdownMenu);
             this.launcherTab.Controls.Add(this.launchButton);
+            this.launcherTab.Controls.Add(this.favouritesPanel);
             this.launcherTab.Location = new System.Drawing.Point(4, 24);
             this.launcherTab.Name = "launcherTab";
             this.launcherTab.Padding = new System.Windows.Forms.Padding(3);
@@ -135,6 +139,7 @@
             this.nameTextBox.Name = "nameTextBox";
             this.nameTextBox.Size = new System.Drawing.Size(93, 23);
             this.nameTextBox.TabIndex = 31;
+            this.nameTextBox.TextChanged += new System.EventHandler(this.nameTextBox_TextChanged);
             // 
             // tableLayoutPanel
             // 
@@ -239,6 +244,26 @@
             this.launchButton.UseVisualStyleBackColor = true;
             this.launchButton.Click += new System.EventHandler(this.launchButton_Click);
             // 
+            // favouritesPanel
+            // 
+            this.favouritesPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.favouritesPanel.Controls.Add(this.favouritesLabel);
+            this.favouritesPanel.Location = new System.Drawing.Point(252, 146);
+            this.favouritesPanel.Name = "favouritesPanel";
+            this.favouritesPanel.Size = new System.Drawing.Size(101, 180);
+            this.favouritesPanel.TabIndex = 34;
+            // 
+            // favouritesLabel
+            // 
+            this.favouritesLabel.AutoSize = true;
+            this.favouritesLabel.ForeColor = System.Drawing.SystemColors.ButtonShadow;
+            this.favouritesLabel.Location = new System.Drawing.Point(17, 5);
+            this.favouritesLabel.Name = "favouritesLabel";
+            this.favouritesLabel.Size = new System.Drawing.Size(61, 15);
+            this.favouritesLabel.TabIndex = 0;
+            this.favouritesLabel.Text = "Favourites";
+            this.favouritesLabel.Click += new System.EventHandler(this.favouritesLabel_Click);
+            // 
             // superLinksTab
             // 
             this.superLinksTab.Controls.Add(this.linksComingSoonLabel);
@@ -283,7 +308,7 @@
             // languageLabel
             // 
             this.languageLabel.AutoSize = true;
-            this.languageLabel.Location = new System.Drawing.Point(284, 423);
+            this.languageLabel.Location = new System.Drawing.Point(287, 423);
             this.languageLabel.Name = "languageLabel";
             this.languageLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.languageLabel.Size = new System.Drawing.Size(56, 15);
@@ -305,6 +330,8 @@
             this.tabList.ResumeLayout(false);
             this.launcherTab.ResumeLayout(false);
             this.launcherTab.PerformLayout();
+            this.favouritesPanel.ResumeLayout(false);
+            this.favouritesPanel.PerformLayout();
             this.superLinksTab.ResumeLayout(false);
             this.superLinksTab.PerformLayout();
             this.resourcesTab.ResumeLayout(false);
@@ -336,5 +363,7 @@
         private Label linksComingSoonLabel;
         private Label languageLabel;
         private Button cancelButton;
+        private Panel favouritesPanel;
+        private Label favouritesLabel;
     }
 }
