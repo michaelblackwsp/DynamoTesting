@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Security.Policy;
 using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -12,12 +13,16 @@ namespace DynamoTesting
 {
     public class ViewModel
     {
+        #region Initialization
         private readonly Model model;
         public ViewModel(Model model)
         {
             this.model = model;
         }
+        #endregion
 
+
+        #region Prepare Client and Version Dropdown Menu Options
         public List<TableRowData> OptionsBasedOnClient(string selectedClient)
         {
             List<TableRowData> tableData = new List<TableRowData>();
@@ -68,13 +73,42 @@ namespace DynamoTesting
 
             return tableData;
         }
+        #endregion
 
 
-        // TO DO: put this in the class in the Model
-        public List<FavouriteButton> favouriteButtons = new List<FavouriteButton>();
+        #region Favourite Buttons JSON
+        public List<FavouriteButton> favouriteButtons = new List<FavouriteButton>();    // FIX ME: Should this be in the Model?
         public int buttonCount = 0;
+
+        public void WriteToFavouriteButtonsJson()
+        {
+            // TO DO: Make this generic to the User
+            string filePath = @"C:\Users\CAMB075971\source\repos\WinForms_Sandbox\DynamoTesting\preferences\favouriteButtons.json";
+            var options = new JsonSerializerOptions { WriteIndented = true };
+            string jsonString = JsonSerializer.Serialize(favouriteButtons, options);
+            File.WriteAllText(filePath, jsonString);
+            
+            // TO DO: Add a catch in case the file doesn't exist
+        }
+
+        public void ReadFromFavouriteButtonsJson()
+        { 
+            string filePath = @"C:\Users\CAMB075971\source\repos\WinForms_Sandbox\DynamoTesting\preferences\favouriteButtons.json";
+            if (File.Exists(filePath))
+            {
+                string jsonString = File.ReadAllText(filePath);
+                favouriteButtons = JsonSerializer.Deserialize<List<FavouriteButton>>(jsonString);
+            }
+            else
+            {
+                MessageBox.Show("Preferences file cannot be found. Please contact Digital Operations.");
+            }
+        }
+        #endregion
+
     }
 
+    #region TableRowData Class
     public class TableRowData
     {
         public string Client { get; }
@@ -91,4 +125,5 @@ namespace DynamoTesting
             FrenchOffered = frenchOffered;
         }
     }
+    #endregion
 }

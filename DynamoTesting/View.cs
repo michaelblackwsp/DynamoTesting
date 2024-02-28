@@ -5,20 +5,16 @@ namespace DynamoTesting
 {
     public partial class repconLauncher : Form
     {
+        #region Initialization
         Model model = new Model();
         private ViewModel viewModel;
 
-        private string builtShortcutPath = null;
-        
-        //TO DO: MOVE THIS TO THE MODEL
+        // TO DO: MOVE THIS TO THE MODEL
         private List<(string year, string language)> installedVersionsOfCivil3D = null;
 
-
-
-        string favouriteButtonToolTip = null;
-
-        // FIX ME: There has to be a better way to do this than to constantly change a global variable...
-        bool useGreyText = false;
+        private string builtShortcutPath = "";
+        string favouriteButtonToolTip = ""; // FIX ME: Why is this needed when it's part of the class?
+        bool useGreyText = false;   // FIX ME: There has to be a better way to do this than to constantly change a global variable
 
         private ContextMenuStrip rightClickMenu;
 
@@ -67,6 +63,8 @@ namespace DynamoTesting
             AddColumnHeaders();
             usernameLabel.Text = Environment.UserName;
             languageLabel.Text = model.GetWindowsLanguage();
+            viewModel.ReadFromFavouriteButtonsJson();
+            RedrawButtons();
         }
 
         private void InitializeRightClickMenu()
@@ -85,174 +83,10 @@ namespace DynamoTesting
             removeMenuItem.Click += RemoveMenuItem_Click;
             rightClickMenu.Items.Add(removeMenuItem);
         }
-
-        // TO DO: REFACTOR THIS TO CALL A 'BUILD POP UP BOX' METHOD
-        private void RenameMenuItem_Click(object sender, EventArgs e)
-        {
-            ToolStripMenuItem menuItem = (ToolStripMenuItem)sender; 
-            ContextMenuStrip contextMenu = (ContextMenuStrip)menuItem.Owner; 
-            Button buttonToRename = (Button)contextMenu.SourceControl; 
-            FavouriteButton favouriteButtonToRename = (FavouriteButton)buttonToRename.Tag; 
-
-            // Create and configure a custom dialog box
-            Form dialog = new Form();
-            dialog.Text = "Enter new name";
-            dialog.FormBorderStyle = FormBorderStyle.FixedDialog;
-            dialog.StartPosition = FormStartPosition.CenterParent;
-            dialog.Size = new Size(250, 115); 
-
-            TextBox nameTextBox = new TextBox();
-            nameTextBox.Location = new Point(10, 10); // Location of window
-            nameTextBox.Size = new Size(210, 20);
-            nameTextBox.Text = favouriteButtonToRename.Name.ToString(); // Set placeholder text
-            dialog.Controls.Add(nameTextBox);
-
-            Button okButton = new Button();
-            okButton.Text = "OK";
-            okButton.DialogResult = DialogResult.OK;
-            okButton.Location = new Point(10, nameTextBox.Bottom + 10); // Adjusted Y-coordinate
-            dialog.Controls.Add(okButton);
-
-            Button cancelButton = new Button();
-            cancelButton.Text = "Cancel";
-            cancelButton.DialogResult = DialogResult.Cancel;
-            cancelButton.Location = new Point(okButton.Right + 10, nameTextBox.Bottom + 10); // Adjusted Y-coordinate
-            dialog.Controls.Add(cancelButton);
-
-            // Show the dialog box and handle the result
-            DialogResult result = dialog.ShowDialog();
-
-            if (result == DialogResult.OK)
-            {
-                favouriteButtonToRename.Name = nameTextBox.Text;
-                RedrawButtons();
-            }
-
-            dialog.Dispose(); // Dispose the dialog to release resources
-        }
-
-        // FIX ME: UPDATE SHOULD NOT BE CLICKABLE UNLESS A RADIO BUTTON IS SELECTED
-        private void UpdateMenuItem_Click(object sender, EventArgs e)
-        {
-            ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;                        
-            ContextMenuStrip contextMenu = (ContextMenuStrip)menuItem.Owner;                
-            Button buttonToUpdate = (Button)contextMenu.SourceControl;
-            FavouriteButton favouriteButtonToUpdate = (FavouriteButton)buttonToUpdate.Tag;
-
-            // Store the original tooltip
-            string originalToolTip = favouriteButtonToUpdate.Tooltip;
-
-            // Update the shortcutPath and toolTip for the active button
-            favouriteButtonToUpdate.ShortcutPath = builtShortcutPath;
-            favouriteButtonToUpdate.Tooltip = favouriteButtonToolTip;
-
-            if (originalToolTip != favouriteButtonToolTip)
-            {
-                // Show a pop-up message indicating the update
-                MessageBox.Show($"{originalToolTip}\n\nwas uptated to\n\n{favouriteButtonToolTip}", "Update Successful!", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            else
-            {
-                // Show a pop-up message indicating no changes
-                MessageBox.Show("No changes made. The selected environment is the same as the original.", "No Changes Made", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            // Redraw the buttons to reflect the changes
-            RedrawButtons();
-        }
-
-        private void RemoveMenuItem_Click(object sender, EventArgs e)
-        {
-            
-            ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;                         // Get the MenuItem that triggered the event
-            ContextMenuStrip contextMenu = (ContextMenuStrip)menuItem.Owner;                // Get the ContextMenuStrip that contains the MenuItem
-            Button buttonToRemove = (Button)contextMenu.SourceControl;                      // Get the Button associated with the ContextMenuStrip
-            FavouriteButton favouriteButtonToRemove = (FavouriteButton)buttonToRemove.Tag;  // Get the FavouriteButton object corresponding to the button
-
-            int indexToRemove = viewModel.favouriteButtons.FindIndex(button => button == favouriteButtonToRemove);
-            
-            // Remove the button from the list
-            if (indexToRemove != -1)
-            {
-                viewModel.favouriteButtons.RemoveAt(indexToRemove);
-            }
-            viewModel.buttonCount--;
-            RedrawButtons();
-        }
+        #endregion
 
 
-
-
-        private void okButton_Click(object sender, EventArgs e)
-        {
-            createFavouriteButton(nameTextBox.Text, builtShortcutPath, favouriteButtonToolTip);
-
-            nameTextBox.Clear();
-            nameTextBox.Visible = false;
-            okButton.Visible = false;
-            cancelButton.Visible = false;
-        }
-
-        private void createFavouriteButton(string name, string shortcutPath, string tooltip)
-        {
-            FavouriteButton favouriteButton = new FavouriteButton(name, shortcutPath, tooltip);
-            viewModel.favouriteButtons.Add(favouriteButton);
-            viewModel.buttonCount++;
-
-            RedrawButtons();
-        }
-
-        private void RedrawButtons()
-        {
-            // !!!!! THIS FIXED IT !!!!!! Create a copy of the controls collection to avoid modifying it while iterating
-            var controlsCopy = new List<Control>(favouritesPanel.Controls.OfType<Button>());
-
-            // Clear only the buttons that are of type FavouriteButton
-            foreach (var control in controlsCopy)
-            {
-                if (control.Tag is FavouriteButton)
-                {
-                    favouritesPanel.Controls.Remove(control);
-                    control.Dispose(); // Dispose the button to release resources
-                }
-            }
-
-            int topPosition = 30;
-
-            foreach (var favouriteButton in viewModel.favouriteButtons)
-            {
-                Button button = new Button();
-                button.Font = new Font("Segoe UI", 7, FontStyle.Regular);
-                button.Text = favouriteButton.Name;
-                button.Tag = favouriteButton; // Store the FavouriteButton instance in the Tag property
-                button.Click += FavouriteButton_Click;
-                button.ContextMenuStrip = rightClickMenu;
-
-                // Create and configure the tooltip for the button
-                ToolTip toolTip = new ToolTip();
-                toolTip.AutoPopDelay = 5000;
-                toolTip.InitialDelay = 500;
-                toolTip.ReshowDelay = 200;
-                toolTip.ShowAlways = true;
-                toolTip.SetToolTip(button, favouriteButton.Tooltip);
-
-                // Set the button's position
-                button.Top = topPosition;
-                button.Left = 10;
-                button.Visible = true;
-                button.BringToFront();
-
-                // Increment the vertical position for the next button
-                topPosition += button.Height + 5;
-
-                // Add the button to the launcherTab
-                favouritesPanel.Controls.Add(button);
-            }
-        }
-
-
-
-
-
+        #region Draw and Handle Dropdown Menu Events
         private void clientDropdownMenu_DrawItem(object? sender, DrawItemEventArgs e)
         {
             if (e.Index >= 0)
@@ -300,8 +134,9 @@ namespace DynamoTesting
             saveButton.Enabled = false;
             UpdateTableData();
         }
+        #endregion
 
-
+        #region Main Form Buttons and Text Inputs
         private void resetButton_Click(object sender, EventArgs e)
         {
             tableLayoutPanel.Controls.Clear();
@@ -319,6 +154,62 @@ namespace DynamoTesting
 
             AddColumnHeaders();
         }
+
+        private void launchButton_Click(object sender, EventArgs e)
+        {
+            model.StartSoftware(builtShortcutPath);
+        }
+
+        private void saveButton_Click(object sender, EventArgs e)
+        {
+            if (viewModel.buttonCount >= 5)
+            {
+                MessageBox.Show("You can only save up to 5 client environments.");
+                return;
+            }
+
+            nameTextBox.Visible = true;
+            okButton.Visible = true;
+            cancelButton.Visible = true;
+        }
+
+        private void preferenceNameTextBox_Enter(object sender, EventArgs e)
+        {
+            if (nameTextBox.Text == "Enter name")
+            {
+                nameTextBox.Text = "";
+                nameTextBox.ForeColor = Color.Black; // Change text color to black
+            }
+        }
+
+        private void preferenceNameTextBox_Leave(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(nameTextBox.Text))
+            {
+                nameTextBox.Text = "Enter name";
+                nameTextBox.ForeColor = Color.Gray; // Change text color to gray
+            }
+        }
+
+        private void okButton_Click(object sender, EventArgs e)
+        {
+            createFavouriteButton(nameTextBox.Text, builtShortcutPath, favouriteButtonToolTip);
+
+            nameTextBox.Clear();
+            nameTextBox.Visible = false;
+            okButton.Visible = false;
+            cancelButton.Visible = false;
+        }
+
+        private void cancelButton_Click(object sender, EventArgs e)
+        {
+            nameTextBox.Visible = false;
+            okButton.Visible = false;
+            cancelButton.Visible = false;
+        }
+        #endregion
+
+        #region Client Environment Table
 
         private void AddColumnHeaders()
         {
@@ -342,7 +233,6 @@ namespace DynamoTesting
             headerLabel.TextAlign = ContentAlignment.MiddleCenter; // Center the text
             tableLayoutPanel.Controls.Add(headerLabel, columnIndex, 0); // Add header label to the first row
         }
-
 
         private void UpdateTableData()
         {
@@ -472,45 +362,74 @@ namespace DynamoTesting
                 saveButton.Enabled = true;
             }
         }
-
-
-        private void launchButton_Click(object sender, EventArgs e)
+        
+        // TO DO: Get rid of _1 in name
+        private void tableLayoutPanel_Paint_1(object sender, PaintEventArgs e)
         {
-            model.StartSoftware(builtShortcutPath);
+            tableLayoutPanel.GetType().GetProperty("DoubleBuffered", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).SetValue(tableLayoutPanel, true, null);
+
+        }
+        #endregion
+
+
+        #region Favourite Buttons
+        private void createFavouriteButton(string name, string shortcutPath, string tooltip)
+        {
+            FavouriteButton favouriteButton = new FavouriteButton(name, shortcutPath, tooltip);
+            viewModel.favouriteButtons.Add(favouriteButton);
+            viewModel.buttonCount++;
+            viewModel.WriteToFavouriteButtonsJson();
+
+            RedrawButtons();
         }
 
-        private void saveButton_Click(object sender, EventArgs e)
+        private void RedrawButtons()
         {
-            if (viewModel.buttonCount >= 5)
+            // !!!!! THIS FIXED IT !!!!!! Create a copy of the controls collection to avoid modifying it while iterating
+            var controlsCopy = new List<Control>(favouritesPanel.Controls.OfType<Button>());
+
+            // Clear only the buttons that are of type FavouriteButton
+            foreach (var control in controlsCopy)
             {
-                MessageBox.Show("You can only save up to 5 client environments.");
-                return;
+                if (control.Tag is FavouriteButton)
+                {
+                    favouritesPanel.Controls.Remove(control);
+                    control.Dispose(); // Dispose the button to release resources
+                }
             }
 
-            nameTextBox.Visible = true;
-            okButton.Visible = true;
-            cancelButton.Visible = true;
-        }
+            int topPosition = 30;
 
-
-        private void preferenceNameTextBox_Enter(object sender, EventArgs e)
-        {
-            if (nameTextBox.Text == "Enter name")
+            foreach (var favouriteButton in viewModel.favouriteButtons)
             {
-                nameTextBox.Text = "";
-                nameTextBox.ForeColor = Color.Black; // Change text color to black
+                Button button = new Button();
+                button.Font = new Font("Segoe UI", 7, FontStyle.Regular);
+                button.Text = favouriteButton.Name;
+                button.Tag = favouriteButton; // Store the FavouriteButton instance in the Tag property
+                button.Click += FavouriteButton_Click;
+                button.ContextMenuStrip = rightClickMenu;
+
+                // Create and configure the tooltip for the button
+                ToolTip toolTip = new ToolTip();
+                toolTip.AutoPopDelay = 5000;
+                toolTip.InitialDelay = 500;
+                toolTip.ReshowDelay = 200;
+                toolTip.ShowAlways = true;
+                toolTip.SetToolTip(button, favouriteButton.Tooltip);
+
+                // Set the button's position
+                button.Top = topPosition;
+                button.Left = 10;
+                button.Visible = true;
+                button.BringToFront();
+
+                // Increment the vertical position for the next button
+                topPosition += button.Height + 5;
+
+                // Add the button to the launcherTab
+                favouritesPanel.Controls.Add(button);
             }
         }
-
-        private void preferenceNameTextBox_Leave(object sender, EventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(nameTextBox.Text))
-            {
-                nameTextBox.Text = "Enter name";
-                nameTextBox.ForeColor = Color.Gray; // Change text color to gray
-            }
-        }
-
 
         private void FavouriteButton_Click(object sender, EventArgs e)
         {
@@ -526,16 +445,126 @@ namespace DynamoTesting
             }
         }
 
-        // TO DO: Get rid of _1 in name
-        private void tableLayoutPanel_Paint_1(object sender, PaintEventArgs e)
+        private void RenameMenuItem_Click(object sender, EventArgs e)
         {
-            tableLayoutPanel.GetType().GetProperty("DoubleBuffered", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).SetValue(tableLayoutPanel, true, null);
+            // TO DO: REFACTOR THIS TO CALL A 'BUILD POP UP BOX' METHOD
+            ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;
+            ContextMenuStrip contextMenu = (ContextMenuStrip)menuItem.Owner;
+            Button buttonToRename = (Button)contextMenu.SourceControl;
+            FavouriteButton favouriteButtonToRename = (FavouriteButton)buttonToRename.Tag;
 
+            // Create and configure a custom dialog box
+            Form dialog = new Form();
+            dialog.Text = "Enter new name";
+            dialog.FormBorderStyle = FormBorderStyle.FixedDialog;
+            dialog.StartPosition = FormStartPosition.CenterParent;
+            dialog.Size = new Size(250, 115);
+
+            TextBox nameTextBox = new TextBox();
+            nameTextBox.Location = new Point(10, 10); // Location of window
+            nameTextBox.Size = new Size(210, 20);
+            nameTextBox.Text = favouriteButtonToRename.Name.ToString(); // Set placeholder text
+            dialog.Controls.Add(nameTextBox);
+
+            Button okButton = new Button();
+            okButton.Text = "OK";
+            okButton.DialogResult = DialogResult.OK;
+            okButton.Location = new Point(10, nameTextBox.Bottom + 10); // Adjusted Y-coordinate
+            dialog.Controls.Add(okButton);
+
+            Button cancelButton = new Button();
+            cancelButton.Text = "Cancel";
+            cancelButton.DialogResult = DialogResult.Cancel;
+            cancelButton.Location = new Point(okButton.Right + 10, nameTextBox.Bottom + 10); // Adjusted Y-coordinate
+            dialog.Controls.Add(cancelButton);
+
+            // Show the dialog box and handle the result
+            DialogResult result = dialog.ShowDialog();
+
+            if (result == DialogResult.OK)
+            {
+                // Update the name of the button
+                string newName = nameTextBox.Text;
+                favouriteButtonToRename.Name = newName;
+
+                // Update the name in the viewModel.favouriteButtons list
+                int indexToUpdate = viewModel.favouriteButtons.FindIndex(button => button == favouriteButtonToRename);
+                if (indexToUpdate != -1)
+                {
+                    viewModel.favouriteButtons[indexToUpdate].Name = newName;
+                    viewModel.WriteToFavouriteButtonsJson();
+                }
+
+                // Redraw the buttons to reflect the changes
+                RedrawButtons();
+            }
         }
 
+        private void UpdateMenuItem_Click(object sender, EventArgs e)
+        {
+            // FIX ME: UPDATE SHOULD NOT BE CLICKABLE UNLESS A RADIO BUTTON IS SELECTED
+            ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;
+            ContextMenuStrip contextMenu = (ContextMenuStrip)menuItem.Owner;
+            Button buttonToUpdate = (Button)contextMenu.SourceControl;
+            FavouriteButton favouriteButtonToUpdate = (FavouriteButton)buttonToUpdate.Tag;
+
+            // Store the original tooltip
+            string originalToolTip = favouriteButtonToUpdate.Tooltip;
+
+            // Update the shortcutPath and toolTip for the active button
+            favouriteButtonToUpdate.ShortcutPath = builtShortcutPath;
+            favouriteButtonToUpdate.Tooltip = favouriteButtonToolTip;
+
+            if (originalToolTip != favouriteButtonToolTip)
+            {
+                // Show a pop-up message indicating the update
+                MessageBox.Show($"{originalToolTip}\n\nwas uptated to\n\n{favouriteButtonToolTip}", "Update Successful!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                // Show a pop-up message indicating no changes
+                MessageBox.Show("No changes made. The selected environment is the same as the original.", "No Changes Made", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+            // Find the index of the button in the list
+            int indexToUpdate = viewModel.favouriteButtons.FindIndex(button => button == favouriteButtonToUpdate);
+
+            // If found, update the object in the list
+            if (indexToUpdate != -1)
+            {
+                viewModel.favouriteButtons[indexToUpdate] = favouriteButtonToUpdate;
+                // Save changes to persistent storage
+                viewModel.WriteToFavouriteButtonsJson();
+                // Redraw the buttons to reflect the changes
+
+            }
+            RedrawButtons();
+        }
+
+        private void RemoveMenuItem_Click(object sender, EventArgs e)
+        {
+
+            ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;                         // Get the MenuItem that triggered the event
+            ContextMenuStrip contextMenu = (ContextMenuStrip)menuItem.Owner;                // Get the ContextMenuStrip that contains the MenuItem
+            Button buttonToRemove = (Button)contextMenu.SourceControl;                      // Get the Button associated with the ContextMenuStrip
+            FavouriteButton favouriteButtonToRemove = (FavouriteButton)buttonToRemove.Tag;  // Get the FavouriteButton object corresponding to the button
+
+            int indexToRemove = viewModel.favouriteButtons.FindIndex(button => button == favouriteButtonToRemove);
+
+            // Remove the button from the list
+            if (indexToRemove != -1)
+            {
+                viewModel.favouriteButtons.RemoveAt(indexToRemove);
+            }
+            viewModel.buttonCount--;
+            viewModel.WriteToFavouriteButtonsJson();
+
+            RedrawButtons();
+        }
+        #endregion
 
 
-
+        #region Unused Event Handlers
         private void clientLabel_Click(object sender, EventArgs e)
         {
 
@@ -556,62 +585,15 @@ namespace DynamoTesting
         {
 
         }
-
-        private void cancelButton_Click(object sender, EventArgs e)
-        {
-            nameTextBox.Visible = false;
-            okButton.Visible = false;
-            cancelButton.Visible = false;
-        }
-
-        private void favouritesLabel_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void nameTextBox_TextChanged(object sender, EventArgs e)
         {
 
         }
+        private void favouritesLabel_Click(object sender, EventArgs e)
+        {
 
+        }
+        #endregion
 
-        //TO DO: Recycle this to be a generic method that checks for good/bad and assigns colour accordingly
-        /*        public Color setVersionColour(string choice)
-                {
-                    Model model = new Model();
-                    string path = "";
-                    string language = languageDropdownMenu.Text;
-
-                    if (model.yearToRNumberMap.ContainsKey(choice))
-                    {
-                        Tuple<string, string> values = model.yearToRNumberMap[choice];
-                        string rNumber = values.Item1;
-                        string productId = values.Item2;
-                        string regionValue = model.languageToRegionMap[language];
-
-                        path = $@"SOFTWARE\Autodesk\AutoCAD\{rNumber}\ACAD-{productId}:{regionValue}\Profiles\<<C3D_Metric>>";
-
-                    }
-                    else
-                    {
-                        MessageBox.Show("Problem looping through the versions");
-                    }
-
-                    bool softwareVersion = model.registryExists(path);
-
-                    Color colour = Color.Black;
-                    if (softwareVersion == true)
-                    {
-                        colour =  Color.Green;
-                    }
-                    else
-                    {
-                        colour =  Color.Red;
-                    }
-
-                    return colour;
-                    // TO DO(?): Change to greyed out and not selectable, or put (NOT AVAILABLE) next to it?
-                    // TO DO: After making the selection, tab out so the field is visible
-                }*/
     }
 }

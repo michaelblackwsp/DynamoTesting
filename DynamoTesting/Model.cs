@@ -1,18 +1,17 @@
 ﻿using Microsoft.Win32;
 using System.Diagnostics;
-using System;
-using System.Reflection;
 using System.Globalization;
 
 namespace DynamoTesting
 {
     public class Model
     {
+        #region Client Environments
         public static string[] clientOptions = { "BCMoT", "CofC", "MTQ", "MVRD", "MX", "VDG", "VDM", "VDQ", "VIA", "WSP_EN", "WSP_FR" };
         public static string[] languageOptions = { "English", "French" };
         public static string[] versionOptions = { "2019", "2020", "2021", "2022", "2023" };
 
-
+        // TO DO: Change these 3 dictionaries to be a single matrix, single source of truth
         public Dictionary<string, string[]> versionsBasedOnClient = new Dictionary<string, string[]>
         {
             { "BCMoT", new string[] { "2019" } },
@@ -66,8 +65,10 @@ namespace DynamoTesting
 
             return result;
         }
+        #endregion
 
 
+        #region Get Civil 3D Installations and Windows System Info
         public Dictionary<string, Tuple<string, string>> yearToRNumber = new Dictionary<string, Tuple<string, string>>
         {
             { "2019", Tuple.Create("R23.0", "2000") },
@@ -82,7 +83,6 @@ namespace DynamoTesting
             { "English", "409" },
             { "French", "40C" },
         };
-
 
         public List<(string year, string language)> GetCivil3DInstallations()
         {
@@ -139,7 +139,6 @@ namespace DynamoTesting
 
         public string GetWindowsLanguage()
         {
-            
             OperatingSystem os = Environment.OSVersion;
             CultureInfo culture = CultureInfo.CurrentCulture;
 
@@ -148,7 +147,10 @@ namespace DynamoTesting
 
             return version + " (" + language + ")";
         }
+        #endregion
 
+
+        #region Helper Functions
         public bool RegistryExists(string path)
         { // Can this be static, as in a part of this class, not an instance of the class?
             try
@@ -183,7 +185,6 @@ namespace DynamoTesting
 
             return registryPath;
         }
-
 
         public string BuildShortcut(string client, string version, string language)
         {
@@ -234,7 +235,6 @@ namespace DynamoTesting
 
         }
 
-
         public List<(string year, string language)> ConvertDictionaryValuesToKeys(List<(string rNumber, string productID)> versionProductIDList)
         {
             List<(string year, string language)> keys = new List<(string year, string language)>();
@@ -251,9 +251,11 @@ namespace DynamoTesting
 
             return keys;
         }
+        #endregion
+
     }
 
-
+    #region Favourite Button Class
     public class FavouriteButton
     {
         public string Name { get; set; }
@@ -267,5 +269,6 @@ namespace DynamoTesting
             Tooltip = tooltip;
         }
     }
+    #endregion
 
 }

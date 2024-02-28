@@ -1,0 +1,27 @@
+[
+  {
+    "Name": "TWO",
+    "ShortcutPath": "W:\\1_service\\2_environments\\CofC\\english_software\\c3d_2020_en_cofc.lnk",
+    "Tooltip": "CofC (2020 English)"
+  },
+  {
+    "Name": "THREE",
+    "ShortcutPath": "W:\\1_service\\2_environments\\CofC\\english_software\\c3d_2020_en_cofc.lnk",
+    "Tooltip": "CofC (2020 English)"
+  },
+  {
+    "Name": "FOUR",
+    "ShortcutPath": "W:\\1_service\\2_environments\\MTQ\\english_software\\c3d_2020_en_mtq.lnk",
+    "Tooltip": "MTQ (2020 English)"
+  },
+  {
+    "Name": "FIVE",
+    "ShortcutPath": "W:\\1_service\\2_environments\\CofC\\english_software\\c3d_2022_en_cofc.lnk",
+    "Tooltip": "CofC (2022 English)"
+  },
+  {
+    "Name": "ONE",
+    "ShortcutPath": "W:\\1_service\\2_environments\\MTQ\\english_software\\c3d_2020_en_mtq.lnk",
+    "Tooltip": "MTQ (2020 English)"
+  }
+]
