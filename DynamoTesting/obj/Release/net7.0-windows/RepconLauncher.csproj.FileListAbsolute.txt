@@ -16,3 +16,5 @@ C:\Users\CAMB075971\source\repos\WinForms_Sandbox\DynamoTesting\obj\Release\net7
 C:\Users\CAMB075971\source\repos\WinForms_Sandbox\DynamoTesting\obj\Release\net7.0-windows\RepconLauncher.pdb
 C:\Users\CAMB075971\source\repos\WinForms_Sandbox\DynamoTesting\obj\Release\net7.0-windows\RepconLauncher.genruntimeconfig.cache
 C:\Users\CAMB075971\source\repos\WinForms_Sandbox\DynamoTesting\obj\Release\net7.0-windows\ref\RepconLauncher.dll
+C:\Users\CAMB075971\source\repos\WinForms_Sandbox\DynamoTesting\obj\Release\net7.0-windows\RepconLauncher.PresetNameForm.resources
+C:\Users\CAMB075971\source\repos\WinForms_Sandbox\DynamoTesting\bin\Release\net7.0-windows\preferences\favouriteButtons.json
