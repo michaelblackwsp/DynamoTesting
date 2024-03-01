@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepconLauncher", "RepconLau
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{638C35B4-AAAB-4434-A99E-AF3B75157468}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "RepconAppSetup", "..\RepconAppSetup\RepconAppSetup.vdproj", "{039C5F77-2380-4DA8-B444-3AA78C8C5DE3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,6 +19,8 @@ Global
 		{2A81D8F8-2E8C-4F5B-8461-C67AD0793656}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A81D8F8-2E8C-4F5B-8461-C67AD0793656}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A81D8F8-2E8C-4F5B-8461-C67AD0793656}.Release|Any CPU.Build.0 = Release|Any CPU
+		{039C5F77-2380-4DA8-B444-3AA78C8C5DE3}.Debug|Any CPU.ActiveCfg = Debug
+		{039C5F77-2380-4DA8-B444-3AA78C8C5DE3}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -170,12 +170,14 @@
             this.softwareComboBox.FormattingEnabled = true;
             this.softwareComboBox.Items.AddRange(new object[] {
             "Civil 3D",
+            "Bentley View",
             "OpenRoads Designer",
-            "Bentley View"});
+            "Revit"});
             this.softwareComboBox.Location = new System.Drawing.Point(15, 36);
             this.softwareComboBox.Name = "softwareComboBox";
-            this.softwareComboBox.Size = new System.Drawing.Size(144, 23);
+            this.softwareComboBox.Size = new System.Drawing.Size(206, 23);
             this.softwareComboBox.TabIndex = 28;
+            this.softwareComboBox.SelectedIndexChanged += new System.EventHandler(this.softwareComboBox_SelectedIndexChanged);
             // 
             // software
             // 
@@ -248,9 +250,9 @@
             // 
             this.favouritesPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.favouritesPanel.Controls.Add(this.favouritesLabel);
-            this.favouritesPanel.Location = new System.Drawing.Point(252, 146);
+            this.favouritesPanel.Location = new System.Drawing.Point(252, 18);
             this.favouritesPanel.Name = "favouritesPanel";
-            this.favouritesPanel.Size = new System.Drawing.Size(101, 180);
+            this.favouritesPanel.Size = new System.Drawing.Size(101, 308);
             this.favouritesPanel.TabIndex = 34;
             // 
             // favouritesLabel

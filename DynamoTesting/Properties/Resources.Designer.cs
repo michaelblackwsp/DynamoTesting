@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace RepconLauncher.Properties {
+namespace DynamoTesting.Properties {
     using System;
     
     

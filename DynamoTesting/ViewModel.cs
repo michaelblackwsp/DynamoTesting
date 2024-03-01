@@ -14,8 +14,8 @@ namespace DynamoTesting
     public class ViewModel
     {
         #region Initialization
-        private readonly Model model;
-        public ViewModel(Model model)
+        private readonly civil3dModel model;
+        public ViewModel(civil3dModel model)
         {
             this.model = model;
         }
@@ -82,9 +82,8 @@ namespace DynamoTesting
 
         public void WriteToFavouriteButtonsJson()
         {
-            // TO DO: Make this generic to the User
-            string filePath = Path.Combine(Application.StartupPath, "preferences", "favouriteButtons.json");
-            //string filePath = @"C:\Users\CAMB075971\source\repos\WinForms_Sandbox\DynamoTesting\preferences\favouriteButtons.json";
+            //string filePath = Path.Combine(Application.StartupPath, "preferences", "favouriteButtons.json");
+            string filePath = @"C:\Users\CAMB075971\source\repos\WinForms_Sandbox\DynamoTesting\preferences\favouriteButtons.json";
             var options = new JsonSerializerOptions { WriteIndented = true };
             string jsonString = JsonSerializer.Serialize(favouriteButtons, options);
             File.WriteAllText(filePath, jsonString);
@@ -94,8 +93,8 @@ namespace DynamoTesting
 
         public void ReadFromFavouriteButtonsJson()
         {
-            string filePath = Path.Combine(Application.StartupPath, "preferences", "favouriteButtons.json");
-            //string filePath = @"C:\Users\CAMB075971\source\repos\WinForms_Sandbox\DynamoTesting\preferences\favouriteButtons.json";
+            //string filePath = Path.Combine(Application.StartupPath, "preferences", "favouriteButtons.json");
+            string filePath = @"C:\Users\CAMB075971\source\repos\WinForms_Sandbox\DynamoTesting\preferences\favouriteButtons.json";
             if (File.Exists(filePath))
             {
                 string jsonString = File.ReadAllText(filePath);
@@ -128,4 +127,23 @@ namespace DynamoTesting
         }
     }
     #endregion
+
+    #region Favourite Button Class
+    // TO DO: Handle removing of environments by colouring buttons / giving warning
+    public class FavouriteButton
+    {
+        public string Name { get; set; }
+        public string ShortcutPath { get; set; }
+        public string Tooltip { get; set; }
+
+        public FavouriteButton(string name, string shortcutPath, string tooltip)
+        {
+            Name = name;
+            ShortcutPath = shortcutPath;
+            Tooltip = tooltip;
+        }
+    }
+    #endregion
+
+    // The one-stop shop for all your production needs!
 }

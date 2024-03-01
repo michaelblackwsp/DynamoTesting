@@ -1,12 +1,12 @@
-﻿using Microsoft.Win32;
-using System.Diagnostics;
-using System.Globalization;
-
-namespace DynamoTesting
+﻿namespace DynamoTesting
 {
-    public class Model
+    public class civil3dModel
     {
-        #region Client Environments
+        Utilities utilities = new Utilities();
+        public List<(string year, string language)> installedVersionsOfCivil3D = null;
+
+        #region Civil 3D Client Environments
+        // TO DO: Add built-in (default) versions for each software
         public static string[] clientOptions = { "BCMoT", "CofC", "MTQ", "MVRD", "MX", "VDG", "VDM", "VDQ", "VIA", "WSP_EN", "WSP_FR" };
         public static string[] languageOptions = { "English", "French" };
         public static string[] versionOptions = { "2019", "2020", "2021", "2022", "2023" };
@@ -26,7 +26,6 @@ namespace DynamoTesting
             { "WSP_EN", new string[] { "2020", "2021", "2022" } },
             { "WSP_FR", new string[] { "2019", "2020", "2021", "2022" } },
         };
-
         public Dictionary<string, string[]> clientsBasedOnVersion = new Dictionary<string, string[]>
         {
             { "2019", new string[] {"BCMoT", "MTQ", "VDG", "VDQ", "VIA", "WSP_FR"} },
@@ -35,7 +34,6 @@ namespace DynamoTesting
             { "2022", new string[] {"CofC", "MVRD", "MX", "WSP_EN", "WSP_FR" } },
             { "2023", new string[] { "VDM" } },
         };
-
         public Dictionary<string, List<String>> languageBasedOnClient = new Dictionary<string, List<String>>
         {
             { "BCMoT", new List<string> { "English", "French" } },
@@ -50,7 +48,6 @@ namespace DynamoTesting
             { "WSP_EN", new List<string> { "English", "French" } },
             { "WSP_FR", new List<string> { "English", "French" } },
         };
-
         public List<string> GetLanguagesForSelectedClient(string selectedClient)
         {
             List<string> result = new List<string>();
@@ -77,13 +74,11 @@ namespace DynamoTesting
             { "2022", Tuple.Create("R24.1", "5100") },
             { "2023", Tuple.Create("R24.2", "6100") },
         };
-
         public Dictionary<string, string> languageToRegion = new Dictionary<string, string>
         {
             { "English", "409" },
             { "French", "40C" },
         };
-
         public List<(string year, string language)> GetCivil3DInstallations()
         {
             string[] profiles = (string[])GetCivil3DMetricProfiles(yearToRNumber, languageToRegion);
@@ -126,7 +121,7 @@ namespace DynamoTesting
                     string regionValue = languages[language];
                     registryPath = $@"SOFTWARE\Autodesk\AutoCAD\{rNumber}\ACAD-{productId}:{regionValue}\Profiles\<<C3D_Metric>>";
 
-                    bool softwareExists = RegistryExists(registryPath);
+                    bool softwareExists = utilities.RegistryExists(registryPath);
                     if (softwareExists)
                     {
                         listOfInstalls.Add(registryPath.ToString());
@@ -136,57 +131,10 @@ namespace DynamoTesting
 
             return listOfInstalls.ToArray();
         }
-
-        public string GetWindowsLanguage()
-        {
-            OperatingSystem os = Environment.OSVersion;
-            CultureInfo culture = CultureInfo.CurrentCulture;
-
-            string version = os.Version.ToString();
-            string language = culture.Name; // use culture.DisplayName for long form
-
-            return version + " (" + language + ")";
-        }
         #endregion
 
 
-        #region Helper Functions
-        public bool RegistryExists(string path)
-        { // Can this be static, as in a part of this class, not an instance of the class?
-            try
-            {
-                RegistryKey key = Registry.CurrentUser.OpenSubKey(path);
-                return key != null;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
-        public bool StringExists(string path, Array array)
-        {
-            string[] yourArray = (string[])GetCivil3DMetricProfiles(yearToRNumber, languageToRegion);
-
-            return yourArray.Contains(path); // Using LINQ for simplicity
-        }
-
-        public string BuildRegistryPath(string selectedVersion, string selectedLanguage, Dictionary<string, Tuple<string, string>> installations, Dictionary<string, string> languages)
-        {
-            string registryPath = null;
-
-            Tuple<string, string> rNumber_productID = installations[selectedVersion];
-            string rNumber = rNumber_productID.Item1;
-            string productId = rNumber_productID.Item2;
-
-            string regionValue = languages[selectedLanguage];
-
-            registryPath = $@"SOFTWARE\Autodesk\AutoCAD\{rNumber}\ACAD-{productId}:{regionValue}\Profiles\<<C3D_Metric>>";
-
-            return registryPath;
-        }
-
-        public string BuildShortcut(string client, string version, string language)
+        public string BuildCivil3DEnvironmentShortcut(string client, string version, string language)
         {
             string shortFormLanguage = null;
             string modifiedVersionShortcut = null;
@@ -209,66 +157,6 @@ namespace DynamoTesting
             return shortcut;
         }
 
-        public void StartSoftware(string path)
-        {
-
-            if (System.IO.File.Exists(path))
-            {
-                ProcessStartInfo processStartInfo = new ProcessStartInfo
-                {
-                    FileName = path,
-                    UseShellExecute = true  // Set this to true to use the default shell verb (open) for shortcuts
-                };
-                try
-                {
-                    Process.Start(processStartInfo);    // Start the process
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error starting external program: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            else
-            {
-                MessageBox.Show("Shortcut file not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
-        }
-
-        public List<(string year, string language)> ConvertDictionaryValuesToKeys(List<(string rNumber, string productID)> versionProductIDList)
-        {
-            List<(string year, string language)> keys = new List<(string year, string language)>();
-
-            foreach ((string rNumber, string productID) in versionProductIDList)
-            {
-                // Find the matching year for the given rNumber in the yearToRNumber dictionary
-                string year = yearToRNumber.FirstOrDefault(kv => kv.Value.Item1 == rNumber).Key;
-                // Use the productID directly to get the corresponding language from the languageToRegion dictionary
-                string language = languageToRegion.FirstOrDefault(kv => kv.Value == productID).Key;
-                // Add the corresponding keys to the result list
-                keys.Add((year, language));
-            }
-
-            return keys;
-        }
-        #endregion
-
     }
-
-    #region Favourite Button Class
-    public class FavouriteButton
-    {
-        public string Name { get; set; }
-        public string ShortcutPath { get; set; }
-        public string Tooltip { get; set; }
-
-        public FavouriteButton(string name, string shortcutPath, string tooltip)
-        {
-            Name = name;
-            ShortcutPath = shortcutPath;
-            Tooltip = tooltip;
-        }
-    }
-    #endregion
 
 }

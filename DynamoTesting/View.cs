@@ -6,12 +6,12 @@ namespace DynamoTesting
     public partial class repconLauncher : Form
     {
         #region Initialization
-        Model model = new Model();
+        civil3dModel civil3dModel = new civil3dModel();
         private ViewModel viewModel;
 
-        // TO DO: MOVE THIS TO THE MODEL
-        private List<(string year, string language)> installedVersionsOfCivil3D = null;
+        Utilities utilities = new Utilities();
 
+        // TO DO: Make the application only run if a WSP account is logged in / recognized
         private string builtShortcutPath = "";
         string favouriteButtonToolTip = ""; // FIX ME: Why is this needed when it's part of the class?
         bool useGreyText = false;   // FIX ME: There has to be a better way to do this than to constantly change a global variable
@@ -22,22 +22,22 @@ namespace DynamoTesting
         {
             InitializeComponent();
             InitializeRightClickMenu();
-            viewModel = new ViewModel(model);
+            viewModel = new ViewModel(civil3dModel);
 
-            string[] installedCivil3D = (string[])model.GetCivil3DMetricProfiles(model.yearToRNumber, model.languageToRegion);
+            string[] installedCivil3D = (string[])civil3dModel.GetCivil3DMetricProfiles(civil3dModel.yearToRNumber, civil3dModel.languageToRegion);
 
             launchButton.Enabled = false;
             saveButton.Enabled = false;
 
-            clientDropdownMenu.Items.AddRange(Model.clientOptions);
-            string[] clientOptions = Model.clientOptions;
+            clientDropdownMenu.Items.AddRange(civil3dModel.clientOptions);
+            string[] clientOptions = civil3dModel.clientOptions;
             clientDropdownMenu.DropDownStyle = ComboBoxStyle.DropDownList;
             clientDropdownMenu.DrawMode = DrawMode.OwnerDrawFixed;
             clientDropdownMenu.DrawItem += clientDropdownMenu_DrawItem;
             clientDropdownMenu.SelectedIndexChanged += clientDropdownMenu_SelectedIndexChanged;
 
-            versionDropdownMenu.Items.AddRange(Model.versionOptions);
-            string[] versionOptions = Model.versionOptions;
+            versionDropdownMenu.Items.AddRange(civil3dModel.versionOptions);
+            string[] versionOptions = civil3dModel.versionOptions;
             versionDropdownMenu.DropDownStyle = ComboBoxStyle.DropDownList;
             versionDropdownMenu.DrawMode = DrawMode.OwnerDrawFixed;
             versionDropdownMenu.DrawItem += versionDropdownMenu_DrawItem;
@@ -56,13 +56,12 @@ namespace DynamoTesting
 
         private void repconLauncher_Load(object sender, EventArgs e)
         {
-            model.GetWindowsLanguage();
-            model.GetCivil3DMetricProfiles(model.yearToRNumber, model.languageToRegion);
-            model.GetCivil3DInstallations();
-            installedVersionsOfCivil3D = model.GetCivil3DInstallations();
+            utilities.GetWindowsVersionAndLanguage();
+            civil3dModel.GetCivil3DMetricProfiles(civil3dModel.yearToRNumber, civil3dModel.languageToRegion);
+            civil3dModel.installedVersionsOfCivil3D = civil3dModel.GetCivil3DInstallations();
             AddColumnHeaders();
             usernameLabel.Text = Environment.UserName;
-            languageLabel.Text = model.GetWindowsLanguage();
+            languageLabel.Text = utilities.GetWindowsVersionAndLanguage();
             viewModel.ReadFromFavouriteButtonsJson();
             RedrawButtons();
         }
@@ -143,11 +142,11 @@ namespace DynamoTesting
 
             clientDropdownMenu.Enabled = true;
             clientDropdownMenu.Items.Clear();
-            clientDropdownMenu.Items.AddRange(Model.clientOptions.ToArray());
+            clientDropdownMenu.Items.AddRange(civil3dModel.clientOptions.ToArray());
 
             versionDropdownMenu.Enabled = true;
             versionDropdownMenu.Items.Clear();
-            versionDropdownMenu.Items.AddRange(Model.versionOptions.ToArray());
+            versionDropdownMenu.Items.AddRange(civil3dModel.versionOptions.ToArray());
 
             launchButton.Enabled = false;
             saveButton.Enabled = false;
@@ -157,11 +156,12 @@ namespace DynamoTesting
 
         private void launchButton_Click(object sender, EventArgs e)
         {
-            model.StartSoftware(builtShortcutPath);
+            utilities.StartSoftware(builtShortcutPath);
         }
 
         private void saveButton_Click(object sender, EventArgs e)
-        {
+        {   
+            // FIX ME: buttonCount is not being recognized after switching to JSON
             if (viewModel.buttonCount >= 5)
             {
                 MessageBox.Show("You can only save up to 5 client environments.");
@@ -308,7 +308,7 @@ namespace DynamoTesting
         {
             RadioButton radioButton = new RadioButton();
             radioButton.Tag = new Tuple<string, string, string>(client, version, language);
-            radioButton.Enabled = installedVersionsOfCivil3D.Contains((version, language));
+            radioButton.Enabled = civil3dModel.installedVersionsOfCivil3D.Contains((version, language));
             radioButton.CheckedChanged += RadioButton_CheckedChanged;
             radioButton.Margin = new Padding(13, 1, 0, 0);
             tableLayoutPanel.Controls.Add(radioButton, column, row);
@@ -355,7 +355,7 @@ namespace DynamoTesting
                 string version = tagTuple.Item2;
                 string language = tagTuple.Item3;
 
-                builtShortcutPath = model.BuildShortcut(client, version, language);
+                builtShortcutPath = civil3dModel.BuildCivil3DEnvironmentShortcut(client, version, language);
                 favouriteButtonToolTip = client + " (" + version  +" " + language + ")";
 
                 launchButton.Enabled = true;
@@ -440,7 +440,7 @@ namespace DynamoTesting
                 if (favorite != null)
                 {
                     string shortcutPath = favorite.ShortcutPath;
-                    model.StartSoftware(shortcutPath);
+                    utilities.StartSoftware(shortcutPath);
                 }
             }
         }
@@ -593,7 +593,10 @@ namespace DynamoTesting
         {
 
         }
-        #endregion
+        private void softwareComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
 
+        }
+        #endregion
     }
 }
