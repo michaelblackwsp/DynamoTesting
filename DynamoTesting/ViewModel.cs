@@ -14,29 +14,31 @@ namespace DynamoTesting
     public class ViewModel
     {
         #region Initialization
-        private readonly civil3dModel model;
-        public ViewModel(civil3dModel model)
+        private readonly civil3dModel civil3dModel;
+        private readonly openRoadsModel openRoadsModel;
+
+        public ViewModel(civil3dModel civil3dModel, openRoadsModel openRoadsModel)
         {
-            this.model = model;
+            this.civil3dModel = civil3dModel;
+            this.openRoadsModel = openRoadsModel;
         }
         #endregion
 
-
-        #region Prepare Client and Version Dropdown Menu Options
-        public List<TableRowData> OptionsBasedOnClient(string selectedClient)
+        #region Prepare Civil 3D Client and Version Dropdown Menu Options
+        public List<Civil3DTableRowData> Civil3dOptionsBasedOnClient(string selectedClient)
         {
-            List<TableRowData> tableData = new List<TableRowData>();
-            string[] versions = model.versionsBasedOnClient[selectedClient];
+            List<Civil3DTableRowData> tableData = new List<Civil3DTableRowData>();
+            string[] versions = civil3dModel.versionsBasedOnClient[selectedClient];
 
-            if (model.languageBasedOnClient.ContainsKey(selectedClient))
+            if (civil3dModel.languageBasedOnClient.ContainsKey(selectedClient))
             {
-                List<string> language = model.languageBasedOnClient[selectedClient];
+                List<string> language = civil3dModel.languageBasedOnClient[selectedClient];
 
                 foreach (string version in versions)
                 {
                     bool englishOffered = language.Contains("English");
                     bool frenchOffered = language.Contains("French");
-                    TableRowData rowData = new TableRowData(selectedClient, version, englishOffered, frenchOffered);
+                    Civil3DTableRowData rowData = new Civil3DTableRowData(selectedClient, version, englishOffered, frenchOffered);
                     tableData.Add(rowData);
                 }
             }
@@ -48,21 +50,21 @@ namespace DynamoTesting
             return tableData;
         }
 
-        public List<TableRowData> OptionsBasedOnVersion(string selectedVersion)
+        public List<Civil3DTableRowData> Civil3dOptionsBasedOnVersion(string selectedVersion)
         {
-            List<TableRowData> tableData = new List<TableRowData>();
-            string[] clients = model.clientsBasedOnVersion[selectedVersion];
+            List<Civil3DTableRowData> tableData = new List<Civil3DTableRowData>();
+            string[] clients = civil3dModel.clientsBasedOnVersion[selectedVersion];
 
             foreach (string client in clients)
             {
-                if (model.languageBasedOnClient.ContainsKey(client))
+                if (civil3dModel.languageBasedOnClient.ContainsKey(client))
                 {
-                    List<string> languages = model.languageBasedOnClient[client];
+                    List<string> languages = civil3dModel.languageBasedOnClient[client];
 
                     bool englishOffered = languages.Contains("English");
                     bool frenchOffered = languages.Contains("French");
 
-                    TableRowData rowData = new TableRowData(client, selectedVersion, englishOffered, frenchOffered);
+                    Civil3DTableRowData rowData = new Civil3DTableRowData(client, selectedVersion, englishOffered, frenchOffered);
                     tableData.Add(rowData);
                 }
                 else
@@ -75,6 +77,35 @@ namespace DynamoTesting
         }
         #endregion
 
+        #region Prepare OpenRoads Client and Version Dropdown Menu Options
+        public List<OpenRoadsTableRowData> OpenRoadsOptionsBasedOnClient(string selectedClient)
+        {
+            List<OpenRoadsTableRowData> tableData = new List<OpenRoadsTableRowData>();
+            string[] versions = openRoadsModel.versionsBasedOnClient[selectedClient];
+
+            foreach (string version in versions)
+            {
+                OpenRoadsTableRowData rowData = new OpenRoadsTableRowData(selectedClient, version);
+                tableData.Add(rowData);
+            }
+
+            return tableData;
+        }
+
+        public List<OpenRoadsTableRowData> OpenRoadsOptionsBasedOnVersion(string selectedVersion)
+        {
+            List<OpenRoadsTableRowData> tableData = new List<OpenRoadsTableRowData>();
+            string[] clients = openRoadsModel.clientsBasedOnVersion[selectedVersion];
+
+            foreach (string client in clients)
+            {
+                OpenRoadsTableRowData rowData = new OpenRoadsTableRowData(client, selectedVersion);
+                tableData.Add(rowData);
+            }
+
+            return tableData;
+        }
+        #endregion
 
         #region Favourite Buttons JSON
         public List<FavouriteButton> favouriteButtons = new List<FavouriteButton>();    // FIX ME: Should this be in the Model?
@@ -109,21 +140,36 @@ namespace DynamoTesting
 
     }
 
-    #region TableRowData Class
-    public class TableRowData
+    #region Civil 3D TableRowData Class
+    public class Civil3DTableRowData
     {
         public string Client { get; }
         public string Version { get; }
         public bool EnglishOffered { get; }
         public bool FrenchOffered { get; }
 
-        public TableRowData(string client, string version, bool englishOffered, bool frenchOffered)
+        public Civil3DTableRowData(string client, string version, bool englishOffered, bool frenchOffered)
         {
             // client, version etc. are the parameters passed to the TableRowData object
             Client = client;
             Version = version;
             EnglishOffered = englishOffered;
             FrenchOffered = frenchOffered;
+        }
+    }
+    #endregion
+
+    #region OpenRoads TableRowData Class
+    public class OpenRoadsTableRowData
+    {
+        public string Client { get; }
+        public string Version { get; }
+
+        public OpenRoadsTableRowData(string client, string version)
+        {
+            // client, version etc. are the parameters passed to the TableRowData object
+            Client = client;
+            Version = version;
         }
     }
     #endregion

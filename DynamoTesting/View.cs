@@ -7,6 +7,7 @@ namespace DynamoTesting
     {
         #region Initialization
         civil3dModel civil3dModel = new civil3dModel();
+        openRoadsModel openRoadsModel = new openRoadsModel(); // Initialize openRoadsModel
         private ViewModel viewModel;
 
         Utilities utilities = new Utilities();
@@ -22,44 +23,86 @@ namespace DynamoTesting
         {
             InitializeComponent();
             InitializeRightClickMenu();
-            viewModel = new ViewModel(civil3dModel);
+            viewModel = new ViewModel(civil3dModel, openRoadsModel);
 
             string[] installedCivil3D = (string[])civil3dModel.GetCivil3DMetricProfiles(civil3dModel.yearToRNumber, civil3dModel.languageToRegion);
 
             launchButton.Enabled = false;
             saveButton.Enabled = false;
 
-            clientDropdownMenu.Items.AddRange(civil3dModel.clientOptions);
-            string[] clientOptions = civil3dModel.clientOptions;
-            clientDropdownMenu.DropDownStyle = ComboBoxStyle.DropDownList;
-            clientDropdownMenu.DrawMode = DrawMode.OwnerDrawFixed;
-            clientDropdownMenu.DrawItem += clientDropdownMenu_DrawItem;
-            clientDropdownMenu.SelectedIndexChanged += clientDropdownMenu_SelectedIndexChanged;
+            nameTextBox.Enabled = false;
+            okButton.Enabled = false;
+            cancelButton.Enabled = false;
 
-            versionDropdownMenu.Items.AddRange(civil3dModel.versionOptions);
-            string[] versionOptions = civil3dModel.versionOptions;
-            versionDropdownMenu.DropDownStyle = ComboBoxStyle.DropDownList;
-            versionDropdownMenu.DrawMode = DrawMode.OwnerDrawFixed;
-            versionDropdownMenu.DrawItem += versionDropdownMenu_DrawItem;
-            versionDropdownMenu.SelectedIndexChanged += versionDropdownMenu_SelectedIndexChanged;
-
-            nameTextBox.Visible = false;
-            nameTextBox.Enter += preferenceNameTextBox_Enter;
-            nameTextBox.Leave += preferenceNameTextBox_Leave;
-            nameTextBox.Text = "Enter name";
-            nameTextBox.ForeColor = SystemColors.GrayText;
-
-            okButton.Visible = false;
-            cancelButton.Visible = false;
+            clientDropdownMenu.Enabled = false;
+            versionDropdownMenu.Enabled = false;
+            resetButton.Enabled = false;
 
         }
+
+
+
+
+        private void softwareComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string selectedSoftware = softwareComboBox.SelectedItem.ToString();
+
+            clientDropdownMenu.Enabled = true;
+            versionDropdownMenu.Enabled = true;
+
+            clientDropdownMenu.Items.Clear();
+            versionDropdownMenu.Items.Clear();
+
+            if (selectedSoftware == "OpenRoads Designer")
+            {
+                clientDropdownMenu.Items.AddRange(openRoadsModel.clientOptions);
+                string[] clientOptions = openRoadsModel.clientOptions;
+                clientDropdownMenu.DropDownStyle = ComboBoxStyle.DropDownList;
+                clientDropdownMenu.DrawMode = DrawMode.OwnerDrawFixed;
+                clientDropdownMenu.DrawItem += clientDropdownMenu_DrawItem;
+                clientDropdownMenu.SelectedIndexChanged += clientDropdownMenu_SelectedIndexChanged;
+
+                versionDropdownMenu.Items.AddRange(openRoadsModel.versionOptions);
+                string[] versionOptions = openRoadsModel.versionOptions;
+                versionDropdownMenu.DropDownStyle = ComboBoxStyle.DropDownList;
+                versionDropdownMenu.DrawMode = DrawMode.OwnerDrawFixed;
+                versionDropdownMenu.DrawItem += versionDropdownMenu_DrawItem;
+                versionDropdownMenu.SelectedIndexChanged += versionDropdownMenu_SelectedIndexChanged;
+            }
+            else if (selectedSoftware == "Civil 3D")
+            {
+                clientDropdownMenu.Items.AddRange(civil3dModel.clientOptions);
+                string[] clientOptions = civil3dModel.clientOptions;
+                clientDropdownMenu.DropDownStyle = ComboBoxStyle.DropDownList;
+                clientDropdownMenu.DrawMode = DrawMode.OwnerDrawFixed;
+                clientDropdownMenu.DrawItem += clientDropdownMenu_DrawItem;
+                clientDropdownMenu.SelectedIndexChanged += clientDropdownMenu_SelectedIndexChanged;
+
+                versionDropdownMenu.Items.AddRange(civil3dModel.versionOptions);
+                string[] versionOptions = civil3dModel.versionOptions;
+                versionDropdownMenu.DropDownStyle = ComboBoxStyle.DropDownList;
+                versionDropdownMenu.DrawMode = DrawMode.OwnerDrawFixed;
+                versionDropdownMenu.DrawItem += versionDropdownMenu_DrawItem;
+                versionDropdownMenu.SelectedIndexChanged += versionDropdownMenu_SelectedIndexChanged;
+            }
+
+                nameTextBox.Enabled = false;
+                nameTextBox.Enter += preferenceNameTextBox_Enter;
+                nameTextBox.Leave += preferenceNameTextBox_Leave;
+                nameTextBox.Text = "Enter name";
+                nameTextBox.ForeColor = SystemColors.GrayText;
+            
+        }
+
+
+
 
         private void repconLauncher_Load(object sender, EventArgs e)
         {
             utilities.GetWindowsVersionAndLanguage();
             civil3dModel.GetCivil3DMetricProfiles(civil3dModel.yearToRNumber, civil3dModel.languageToRegion);
             civil3dModel.installedVersionsOfCivil3D = civil3dModel.GetCivil3DInstallations();
-            AddColumnHeaders();
+            // AddCivil3DColumnHeaders();
             usernameLabel.Text = Environment.UserName;
             languageLabel.Text = utilities.GetWindowsVersionAndLanguage();
             viewModel.ReadFromFavouriteButtonsJson();
@@ -120,6 +163,7 @@ namespace DynamoTesting
 
         private void clientDropdownMenu_SelectedIndexChanged(object sender, EventArgs e)
         {
+            resetButton.Enabled = true;
             versionDropdownMenu.Enabled = false;
             launchButton.Enabled = false;
             saveButton.Enabled = false;
@@ -128,6 +172,7 @@ namespace DynamoTesting
 
         private void versionDropdownMenu_SelectedIndexChanged(object sender, EventArgs e)
         {
+            resetButton.Enabled = true;
             clientDropdownMenu.Enabled = false;
             launchButton.Enabled = false;
             saveButton.Enabled = false;
@@ -142,16 +187,34 @@ namespace DynamoTesting
 
             clientDropdownMenu.Enabled = true;
             clientDropdownMenu.Items.Clear();
-            clientDropdownMenu.Items.AddRange(civil3dModel.clientOptions.ToArray());
 
             versionDropdownMenu.Enabled = true;
             versionDropdownMenu.Items.Clear();
-            versionDropdownMenu.Items.AddRange(civil3dModel.versionOptions.ToArray());
+
+            string selectedSoftware = softwareComboBox.SelectedItem.ToString();
+
+            if (selectedSoftware == "Civil 3D")
+            {
+                clientDropdownMenu.Items.AddRange(civil3dModel.clientOptions);
+                versionDropdownMenu.Items.AddRange(civil3dModel.versionOptions);
+                AddCivil3DColumnHeaders();
+            }
+            else if (selectedSoftware == "OpenRoads Designer")
+            {
+                clientDropdownMenu.Items.AddRange(openRoadsModel.clientOptions);
+                versionDropdownMenu.Items.AddRange(openRoadsModel.versionOptions);
+                AddOpenRoadsColumnHeaders();
+            }
+
+            resetButton.Enabled = false;
 
             launchButton.Enabled = false;
             saveButton.Enabled = false;
 
-            AddColumnHeaders();
+            nameTextBox.Enabled = false;
+            okButton.Enabled = false;
+            cancelButton.Enabled = false;
+
         }
 
         private void launchButton_Click(object sender, EventArgs e)
@@ -162,15 +225,15 @@ namespace DynamoTesting
         private void saveButton_Click(object sender, EventArgs e)
         {   
             // FIX ME: buttonCount is not being recognized after switching to JSON
-            if (viewModel.buttonCount >= 5)
+            if (viewModel.buttonCount >= 100)
             {
                 MessageBox.Show("You can only save up to 5 client environments.");
                 return;
             }
 
-            nameTextBox.Visible = true;
-            okButton.Visible = true;
-            cancelButton.Visible = true;
+            nameTextBox.Enabled = true;
+            okButton.Enabled = true;
+            cancelButton.Enabled = true;
         }
 
         private void preferenceNameTextBox_Enter(object sender, EventArgs e)
@@ -186,7 +249,7 @@ namespace DynamoTesting
         {
             if (string.IsNullOrWhiteSpace(nameTextBox.Text))
             {
-                nameTextBox.Text = "Enter name";
+                //nameTextBox.Text = "Enter name";
                 nameTextBox.ForeColor = Color.Gray; // Change text color to gray
             }
         }
@@ -196,22 +259,22 @@ namespace DynamoTesting
             createFavouriteButton(nameTextBox.Text, builtShortcutPath, favouriteButtonToolTip);
 
             nameTextBox.Clear();
-            nameTextBox.Visible = false;
-            okButton.Visible = false;
-            cancelButton.Visible = false;
+            nameTextBox.Enabled = false;
+            okButton.Enabled = false;
+            cancelButton.Enabled = false;
         }
 
         private void cancelButton_Click(object sender, EventArgs e)
         {
-            nameTextBox.Visible = false;
-            okButton.Visible = false;
-            cancelButton.Visible = false;
+            nameTextBox.Enabled = false;
+            okButton.Enabled = false;
+            cancelButton.Enabled = false;
         }
         #endregion
 
         #region Client Environment Table
 
-        private void AddColumnHeaders()
+        private void AddCivil3DColumnHeaders()
         {
             tableLayoutPanel.ColumnStyles[0].Width = 40;
             tableLayoutPanel.ColumnStyles[1].Width = 40;
@@ -223,6 +286,18 @@ namespace DynamoTesting
             CreateColumnHeader("Version", 1);
             CreateColumnHeader("EN", 2);
             CreateColumnHeader("FR", 3);
+        }
+
+        private void AddOpenRoadsColumnHeaders()
+        {
+            tableLayoutPanel.ColumnStyles[0].Width = 40;
+            tableLayoutPanel.ColumnStyles[1].Width = 40;
+
+
+            // Add column headers
+            CreateColumnHeader("Client", 0);
+            CreateColumnHeader("Version", 1);
+
         }
 
         private void CreateColumnHeader(string text, int columnIndex)
@@ -238,70 +313,131 @@ namespace DynamoTesting
         {
             useGreyText = true;
 
-            tableLayoutPanel.Controls.Clear();
-            tableLayoutPanel.ColumnCount = 4;
-
-            tableLayoutPanel.ColumnStyles[0].Width = 40;
-            tableLayoutPanel.ColumnStyles[1].Width = 40;
-            tableLayoutPanel.ColumnStyles[2].Width = 40;
-            tableLayoutPanel.ColumnStyles[3].Width = 40;
-
-            List<TableRowData> options = null;
-
-            // FIX ME: VDG 2020 SHOULD BE GREY BECAUSE THERE IS NO SELECTABLE RADIO BUTTON
-            if (clientDropdownMenu.SelectedItem != null)
+            string selectedSoftware = softwareComboBox.SelectedItem.ToString();
+            if (selectedSoftware == "Civil 3D")
             {
-                string selectedClient = clientDropdownMenu.SelectedItem?.ToString();
-                options = viewModel.OptionsBasedOnClient(selectedClient);
-            }
-            else if (versionDropdownMenu.SelectedItem != null)
-            {
-                string selectedVersion = versionDropdownMenu.SelectedItem?.ToString();
-                options = viewModel.OptionsBasedOnVersion(selectedVersion);
-            }
+                tableLayoutPanel.Controls.Clear();
+                tableLayoutPanel.ColumnCount = 4;
 
-            if (options != null)
-            {
-                int rowIndex = 1;
-                foreach (var option in options)
+                tableLayoutPanel.ColumnStyles[0].Width = 40;
+                tableLayoutPanel.ColumnStyles[1].Width = 40;
+                tableLayoutPanel.ColumnStyles[2].Width = 40;
+                tableLayoutPanel.ColumnStyles[3].Width = 40;
+
+                List<Civil3DTableRowData> options = null;
+
+                // FIX ME: VDG 2020 SHOULD BE GREY BECAUSE THERE IS NO SELECTABLE RADIO BUTTON
+                if (clientDropdownMenu.SelectedItem != null)
                 {
-
-                    if (option.EnglishOffered)
-                    {
-                        CreateAndAddRadioButton(2, rowIndex, option.Client, option.Version, "English");
-                    }
-                    else
-                    {
-                        CreateAndAddlightGrayLabel("--", 2, rowIndex);
-                    }
-
-                    if (option.FrenchOffered)
-                    {
-                        CreateAndAddRadioButton(3, rowIndex, option.Client, option.Version, "French");
-                    }
-                    else
-                    {
-                        CreateAndAddlightGrayLabel("--", 3, rowIndex);
-                    }
-
-                    if(useGreyText == true)
-                    {
-                        CreateAndAddGrayLabel(option.Client, 0, rowIndex);
-                        CreateAndAddGrayLabel(option.Version, 1, rowIndex);
-                    }
-                    else
-                    {
-                        CreateAndAddBlackLabel(option.Client, 0, rowIndex);
-                        CreateAndAddBlackLabel(option.Version, 1, rowIndex);
-                    }
-
-
-
-                    rowIndex++;
+                    string? selectedClient = clientDropdownMenu.SelectedItem?.ToString();
+                    options = viewModel.Civil3dOptionsBasedOnClient(selectedClient);
                 }
+                else if (versionDropdownMenu.SelectedItem != null)
+                {
+                    string selectedVersion = versionDropdownMenu.SelectedItem?.ToString();
+                    options = viewModel.Civil3dOptionsBasedOnVersion(selectedVersion);
+                }
+
+                if (options != null)
+                {
+                    int rowIndex = 1;
+                    foreach (var option in options)
+                    {
+
+                        if (option.EnglishOffered)
+                        {
+                            CreateAndAddRadioButton(2, rowIndex, option.Client, option.Version, "English");
+                        }
+                        else
+                        {
+                            CreateAndAddlightGrayLabel("--", 2, rowIndex);
+                        }
+
+                        if (option.FrenchOffered)
+                        {
+                            CreateAndAddRadioButton(3, rowIndex, option.Client, option.Version, "French");
+                        }
+                        else
+                        {
+                            CreateAndAddlightGrayLabel("--", 3, rowIndex);
+                        }
+
+                        if (useGreyText == true)
+                        {
+                            CreateAndAddGrayLabel(option.Client, 0, rowIndex);
+                            CreateAndAddGrayLabel(option.Version, 1, rowIndex);
+                        }
+                        else
+                        {
+                            CreateAndAddBlackLabel(option.Client, 0, rowIndex);
+                            CreateAndAddBlackLabel(option.Version, 1, rowIndex);
+                        }
+
+
+                        rowIndex++;
+                    }
+                }
+
+                AddCivil3DColumnHeaders(); // TO DO: This really shouldn't come at the end
             }
 
-            AddColumnHeaders(); // TO DO: This really shouldn't come at the end
+            else if (selectedSoftware == "OpenRoads Designer")
+            {
+                tableLayoutPanel.Controls.Clear();
+                tableLayoutPanel.ColumnCount = 3;
+
+                tableLayoutPanel.ColumnStyles[0].Width = 40;
+                tableLayoutPanel.ColumnStyles[1].Width = 40;
+                tableLayoutPanel.ColumnStyles[2].Width = 40;
+
+                List<OpenRoadsTableRowData> options = null;
+
+                if (clientDropdownMenu.SelectedItem != null)
+                {
+                    string selectedClient = clientDropdownMenu.SelectedItem?.ToString();
+                    options = viewModel.OpenRoadsOptionsBasedOnClient(selectedClient);
+                }
+                else if (versionDropdownMenu.SelectedItem != null)
+                {
+                    string selectedVersion = versionDropdownMenu.SelectedItem?.ToString();
+                    options = viewModel.OpenRoadsOptionsBasedOnVersion(selectedVersion);
+                }
+
+                if (options != null)
+                {
+                    int rowIndex = 1;
+                    foreach (var option in options)
+                    {
+
+                        if (option != null)
+                        {
+                            CreateAndAddRadioButton(2, rowIndex, option.Client, option.Version, null);
+                        }
+                        else
+                        {
+                            CreateAndAddlightGrayLabel("--", 2, rowIndex);
+                        }
+
+
+                        if (useGreyText == true)
+                        {
+                            CreateAndAddGrayLabel(option.Client, 0, rowIndex);
+                            CreateAndAddGrayLabel(option.Version, 1, rowIndex);
+                        }
+                        else
+                        {
+                            CreateAndAddBlackLabel(option.Client, 0, rowIndex);
+                            CreateAndAddBlackLabel(option.Version, 1, rowIndex);
+                        }
+
+
+                        rowIndex++;
+                    }
+                }
+
+                AddOpenRoadsColumnHeaders(); // TO DO: This really shouldn't come at the end
+            }
+
         }
 
         private void CreateAndAddRadioButton(int column, int row, string client, string version, string language)
@@ -429,7 +565,15 @@ namespace DynamoTesting
                 // Add the button to the launcherTab
                 favouritesPanel.Controls.Add(button);
             }
+
+            // After adding all buttons, check if scrolling is necessary
+            if (favouritesPanel.Controls.Count > 0)
+            {
+                int panelHeight = favouritesPanel.Controls[favouritesPanel.Controls.Count - 1].Bottom + 10;
+                favouritesPanel.AutoScroll = panelHeight > favouritesPanel.Height;
+            }
         }
+
 
         private void FavouriteButton_Click(object sender, EventArgs e)
         {
@@ -593,10 +737,17 @@ namespace DynamoTesting
         {
 
         }
-        private void softwareComboBox_SelectedIndexChanged(object sender, EventArgs e)
+
+        #endregion
+
+        private void favouritesPanel_Paint(object sender, PaintEventArgs e)
         {
 
         }
-        #endregion
+
+        private void clientDropdownMenu_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }
