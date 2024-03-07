@@ -53,6 +53,7 @@ namespace DynamoTesting
             tableLayoutPanel.Visible = false;
             utilities.GetWindowsVersionAndLanguage();
             civil3dModel.GetCivil3DMetricProfiles(civil3dModel.yearToRNumber, civil3dModel.languageToRegion);
+            openRoadsModel.GetOpenRoadsInstallations();
             civil3dModel.installedVersionsOfCivil3D = civil3dModel.GetCivil3DInstallations();
             usernameLabel.Text = Environment.UserName;
             languageLabel.Text = utilities.GetWindowsVersionAndLanguage();
@@ -67,7 +68,7 @@ namespace DynamoTesting
             string userEmail = ActiveDirectoryHelper.GetUserEmail(Environment.UserName);
             if (userEmail != null && userEmail.EndsWith("@wsp.com"))
             {
-                MessageBox.Show(userEmail);
+                //MessageBox.Show(userEmail); //Add @a49 email?
             }
             else
             {
@@ -146,14 +147,25 @@ namespace DynamoTesting
         }
 
         private void clientDropdownMenu_DrawItem(object? sender, DrawItemEventArgs e)
-        {
+            {   // REFACTOR INTO UTILITY METHOD
             if (e.Index >= 0)
-            {
-                string option = clientDropdownMenu.Items[e.Index].ToString();
-                e.DrawBackground();
-                TextRenderer.DrawText(e.Graphics, option, e.Font, e.Bounds, Color.Black, TextFormatFlags.Left);
+                {
+                    string option = clientDropdownMenu.Items[e.Index].ToString();
+                    e.DrawBackground();
+                    // Check if the item is selected
+                    if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
+                    {
+                        // Set the background color for selected item to default color for DropDownList
+                        e.Graphics.FillRectangle(SystemBrushes.ControlLight, e.Bounds);
+                    }
+                    else
+                    {
+                        // Set the background color for unselected item to white
+                        e.Graphics.FillRectangle(Brushes.White, e.Bounds);
+                    }
+                    TextRenderer.DrawText(e.Graphics, option, e.Font, e.Bounds, Color.Black, TextFormatFlags.Left);
+                }
             }
-        }
         private void clientDropdownMenu_SelectedIndexChanged(object sender, EventArgs e)
         {
             resetButton.Enabled = true;
@@ -164,11 +176,22 @@ namespace DynamoTesting
         }
 
         private void versionDropdownMenu_DrawItem(object? sender, DrawItemEventArgs e)
-        {
+        {   // REFACTOR INTO UTILITY METHOD
             if (e.Index >= 0)
             {
-                string option = versionDropdownMenu.Items[e.Index].ToString();
+                string option = clientDropdownMenu.Items[e.Index].ToString();
                 e.DrawBackground();
+                // Check if the item is selected
+                if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
+                {
+                    // Set the background color for selected item to default color for DropDownList
+                    e.Graphics.FillRectangle(SystemBrushes.ControlLight, e.Bounds);
+                }
+                else
+                {
+                    // Set the background color for unselected item to white
+                    e.Graphics.FillRectangle(Brushes.White, e.Bounds);
+                }
                 TextRenderer.DrawText(e.Graphics, option, e.Font, e.Bounds, Color.Black, TextFormatFlags.Left);
             }
         }
@@ -215,8 +238,6 @@ namespace DynamoTesting
             saveButton.Enabled = false;
 
             nameTextBox.Enabled = false;
-            nameTextBox.Text = "Enter name to save";
-            nameTextBox.ForeColor = Color.Gray;
             cancelButton.Enabled = false;
 
         }

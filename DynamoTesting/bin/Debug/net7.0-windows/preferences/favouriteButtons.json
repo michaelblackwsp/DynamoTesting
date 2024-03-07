@@ -1,32 +1,47 @@
 [
   {
-    "Name": "23f32f23",
-    "ShortcutPath": "W:\\1_service\\2_environments\\CofC\\english_software\\c3d_2022_en_cofc.lnk",
-    "Tooltip": "CofC (2022 English)"
+    "Name": "USEP",
+    "ShortcutPath": "W:\\1_service\\2_environments\\WSP_FR\\english_software\\c3d_2022_en_wsp_fr.lnk",
+    "Tooltip": "WSP_FR (2022 English)"
   },
   {
-    "Name": "test",
-    "ShortcutPath": "W:\\1_service\\2_environments\\CofC\\english_software\\c3d_2022_en_cofc.lnk",
-    "Tooltip": "CofC (2022 English)"
+    "Name": "rwg",
+    "ShortcutPath": "W:\\1_service\\2_environments\\WSP_FR\\english_software\\c3d_2020_en_wsp_fr.lnk",
+    "Tooltip": "WSP_FR (2020 English)"
   },
   {
-    "Name": "test",
-    "ShortcutPath": "W:\\1_service\\2_environments\\CofC\\english_software\\c3d_2022_en_cofc.lnk",
-    "Tooltip": "CofC (2022 English)"
+    "Name": "wrgw",
+    "ShortcutPath": "W:\\1_service\\2_environments\\WSP_FR\\logiciel_francais\\c3d_2021_fr_wsp_fr.lnk",
+    "Tooltip": "WSP_FR (2021 French)"
   },
   {
-    "Name": "3434r",
-    "ShortcutPath": "W:\\1_service\\2_environments\\CofC\\english_software\\c3d_2020_en_cofc.lnk",
-    "Tooltip": "CofC (2020 English)"
+    "Name": "rgr",
+    "ShortcutPath": "W:\\1_service\\2_environments\\WSP_FR\\english_software\\c3d_2020_en_wsp_fr.lnk",
+    "Tooltip": "WSP_FR (2020 English)"
   },
   {
-    "Name": "test",
-    "ShortcutPath": "W:\\1_service\\2_environments\\CofC\\english_software\\c3d_2020_en_cofc.lnk",
-    "Tooltip": "CofC (2020 English)"
+    "Name": "wgrw",
+    "ShortcutPath": "W:\\1_service\\2_environments\\WSP_FR\\logiciel_francais\\c3d_2021_fr_wsp_fr.lnk",
+    "Tooltip": "WSP_FR (2021 French)"
   },
   {
-    "Name": "qrwer",
-    "ShortcutPath": "W:\\1_service\\2_environments\\CofC\\english_software\\c3d_2022_en_cofc.lnk",
-    "Tooltip": "CofC (2022 English)"
+    "Name": "wrgwr",
+    "ShortcutPath": "W:\\1_service\\2_environments\\WSP_FR\\english_software\\c3d_2020_en_wsp_fr.lnk",
+    "Tooltip": "WSP_FR (2020 English)"
+  },
+  {
+    "Name": "wrgrwg",
+    "ShortcutPath": "W:\\1_service\\2_environments\\WSP_FR\\english_software\\c3d_2022_en_wsp_fr.lnk",
+    "Tooltip": "WSP_FR (2022 English)"
+  },
+  {
+    "Name": "wgewrg",
+    "ShortcutPath": "W:\\1_service\\2_environments\\WSP_FR\\logiciel_francais\\c3d_2021_fr_wsp_fr.lnk",
+    "Tooltip": "WSP_FR (2021 French)"
+  },
+  {
+    "Name": "wrgwrg",
+    "ShortcutPath": "W:\\1_service\\2_environments\\WSP_FR\\english_software\\c3d_2022_en_wsp_fr.lnk",
+    "Tooltip": "WSP_FR (2022 English)"
   }
 ]

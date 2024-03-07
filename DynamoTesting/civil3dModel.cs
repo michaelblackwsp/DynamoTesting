@@ -121,7 +121,9 @@
                     string regionValue = languages[language];
                     registryPath = $@"SOFTWARE\Autodesk\AutoCAD\{rNumber}\ACAD-{productId}:{regionValue}\Profiles\<<C3D_Metric>>";
 
-                    bool softwareExists = utilities.RegistryExists(registryPath);
+                    string location = "CurrentUser";
+                    bool softwareExists = Utilities.RegistryExists(registryPath, location);
+                    // TO UNDERSTAND: Why when I added location as an input, I needed to use Utilities, capital U?
                     if (softwareExists)
                     {
                         listOfInstalls.Add(registryPath.ToString());

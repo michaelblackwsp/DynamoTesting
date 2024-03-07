@@ -18,11 +18,25 @@ namespace DynamoTesting
             return version + " (" + language + ")";
         }
 
-        public bool RegistryExists(string path)
-        { // Can this be static, as in a part of this class, not an instance of the class?
+        public static bool RegistryExists(string path, string location)
+        {
             try
             {
-                RegistryKey key = Registry.CurrentUser.OpenSubKey(path);
+                RegistryKey key;
+
+                if (location == "CurrentUser")
+                {
+                    key = Registry.CurrentUser.OpenSubKey(path);
+                }
+                else if (location == "LocalMachine")
+                {
+                    key = Registry.LocalMachine.OpenSubKey(path);
+                }
+                else
+                {
+                    throw new ArgumentException("Invalid location specified.");
+                }
+
                 return key != null;
             }
             catch (Exception)
@@ -57,6 +71,22 @@ namespace DynamoTesting
 
         }
 
+        public static string GetUserEmail(string username)
+        {
+            using (var searcher = new DirectorySearcher($"(samaccountname={username})"))
+            {
+                SearchResult result = searcher.FindOne();
+                if (result != null)
+                {
+                    var mailProperty = result.Properties["mail"];
+                    if (mailProperty != null && mailProperty.Count > 0)
+                    {
+                        return mailProperty[0].ToString();
+                    }
+                }
+                return null;
+            }
+        }
     }
 
     public class ActiveDirectoryHelper

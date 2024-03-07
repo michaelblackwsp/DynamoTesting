@@ -31,6 +31,7 @@
             this.usernameLabel = new System.Windows.Forms.Label();
             this.tabList = new System.Windows.Forms.TabControl();
             this.launcherTab = new System.Windows.Forms.TabPage();
+            this.cancelButton = new System.Windows.Forms.Button();
             this.saveButton = new System.Windows.Forms.Button();
             this.nameTextBox = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
@@ -49,7 +50,6 @@
             this.resourcesTab = new System.Windows.Forms.TabPage();
             this.helpComingSoonLabel = new System.Windows.Forms.Label();
             this.languageLabel = new System.Windows.Forms.Label();
-            this.cancelButton = new System.Windows.Forms.Button();
             this.tabList.SuspendLayout();
             this.launcherTab.SuspendLayout();
             this.favouritesPanel.SuspendLayout();
@@ -101,6 +101,16 @@
             this.launcherTab.Text = "Launcher";
             this.launcherTab.UseVisualStyleBackColor = true;
             // 
+            // cancelButton
+            // 
+            this.cancelButton.Location = new System.Drawing.Point(312, 354);
+            this.cancelButton.Name = "cancelButton";
+            this.cancelButton.Size = new System.Drawing.Size(58, 24);
+            this.cancelButton.TabIndex = 35;
+            this.cancelButton.Text = "Cancel";
+            this.cancelButton.UseVisualStyleBackColor = true;
+            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click_1);
+            // 
             // saveButton
             // 
             this.saveButton.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
@@ -147,6 +157,7 @@
             // 
             // softwareComboBox
             // 
+            this.softwareComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.softwareComboBox.FormattingEnabled = true;
             this.softwareComboBox.Items.AddRange(new object[] {
             "Civil 3D",
@@ -199,6 +210,7 @@
             // 
             // versionDropdownMenu
             // 
+            this.versionDropdownMenu.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.versionDropdownMenu.FormattingEnabled = true;
             this.versionDropdownMenu.Location = new System.Drawing.Point(90, 107);
             this.versionDropdownMenu.Name = "versionDropdownMenu";
@@ -207,6 +219,7 @@
             // 
             // clientDropdownMenu
             // 
+            this.clientDropdownMenu.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.clientDropdownMenu.FormattingEnabled = true;
             this.clientDropdownMenu.Location = new System.Drawing.Point(15, 107);
             this.clientDropdownMenu.MaxDropDownItems = 20;
@@ -290,23 +303,13 @@
             // languageLabel
             // 
             this.languageLabel.AutoSize = true;
-            this.languageLabel.Location = new System.Drawing.Point(318, 428);
+            this.languageLabel.Location = new System.Drawing.Point(302, 428);
             this.languageLabel.Name = "languageLabel";
             this.languageLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.languageLabel.Size = new System.Drawing.Size(56, 15);
             this.languageLabel.TabIndex = 22;
             this.languageLabel.Text = "language";
             this.languageLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // cancelButton
-            // 
-            this.cancelButton.Location = new System.Drawing.Point(312, 354);
-            this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(58, 24);
-            this.cancelButton.TabIndex = 35;
-            this.cancelButton.Text = "Cancel";
-            this.cancelButton.UseVisualStyleBackColor = true;
-            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click_1);
             // 
             // repconLauncher
             // 
