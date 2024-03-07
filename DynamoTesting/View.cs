@@ -27,7 +27,7 @@ namespace DynamoTesting
 
             viewModel = new ViewModel(civil3dModel, openRoadsModel);
 
-            string[] installedCivil3D = (string[])civil3dModel.GetCivil3DMetricProfiles(civil3dModel.yearToRNumber, civil3dModel.languageToRegion);
+            //string[] installedCivil3D = (string[])civil3dModel.GetCivil3DMetricProfiles(civil3dModel.yearToRNumber, civil3dModel.languageToRegion);
 
             launchButton.Enabled = false;
             saveButton.Enabled = false;
@@ -52,9 +52,12 @@ namespace DynamoTesting
         {
             tableLayoutPanel.Visible = false;
             utilities.GetWindowsVersionAndLanguage();
-            civil3dModel.GetCivil3DMetricProfiles(civil3dModel.yearToRNumber, civil3dModel.languageToRegion);
+            //civil3dModel.GetCivil3DMetricProfiles(civil3dModel.yearToRNumber, civil3dModel.languageToRegion);
+            civil3dModel.installedVersionsOfCivil3D = civil3dModel.GetCivil3DInstallations(); // INVESTIGATE THIS
+
             openRoadsModel.GetOpenRoadsInstallations();
-            civil3dModel.installedVersionsOfCivil3D = civil3dModel.GetCivil3DInstallations();
+
+
             usernameLabel.Text = Environment.UserName;
             languageLabel.Text = utilities.GetWindowsVersionAndLanguage();
             viewModel.ReadFromFavouriteButtonsJson();
@@ -179,7 +182,7 @@ namespace DynamoTesting
         {   // REFACTOR INTO UTILITY METHOD
             if (e.Index >= 0)
             {
-                string option = clientDropdownMenu.Items[e.Index].ToString();
+                string option = versionDropdownMenu.Items[e.Index].ToString();
                 e.DrawBackground();
                 // Check if the item is selected
                 if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
@@ -377,7 +380,7 @@ namespace DynamoTesting
 
                         if (option.EnglishOffered)
                         {
-                            CreateAndAddRadioButton(2, rowIndex, option.Client, option.Version, "English");
+                            CreateAndAddRadioButton_Civil3D(2, rowIndex, option.Client, option.Version, "English");
                         }
                         else
                         {
@@ -386,7 +389,7 @@ namespace DynamoTesting
 
                         if (option.FrenchOffered)
                         {
-                            CreateAndAddRadioButton(3, rowIndex, option.Client, option.Version, "French");
+                            CreateAndAddRadioButton_Civil3D(3, rowIndex, option.Client, option.Version, "French");
                         }
                         else
                         {
@@ -442,7 +445,7 @@ namespace DynamoTesting
 
                         if (option != null)
                         {
-                            CreateAndAddRadioButton(2, rowIndex, option.Client, option.Version, null);
+                            CreateAndAddRadioButton_OpenRoads(2, rowIndex, option.Client, option.Version);
                         }
                         else
                         {
@@ -471,12 +474,27 @@ namespace DynamoTesting
 
         }
 
-        private void CreateAndAddRadioButton(int column, int row, string client, string version, string language)
+        private void CreateAndAddRadioButton_Civil3D(int column, int row, string client, string version, string language)
         {
             RadioButton radioButton = new RadioButton();
             radioButton.Tag = new Tuple<string, string, string>(client, version, language);
             radioButton.Enabled = civil3dModel.installedVersionsOfCivil3D.Contains((version, language));
-            radioButton.CheckedChanged += RadioButton_CheckedChanged;
+            radioButton.CheckedChanged += RadioButton_CheckedChanged_Civil3D;
+            radioButton.Margin = new Padding(13, 1, 0, 0);
+            tableLayoutPanel.Controls.Add(radioButton, column, row);
+
+            if (radioButton.Enabled)
+            {
+                useGreyText = false;
+            }
+        }
+
+        private void CreateAndAddRadioButton_OpenRoads(int column, int row, string client, string version)
+        {
+            RadioButton radioButton = new RadioButton();
+            radioButton.Tag = new Tuple<string, string>(client, version);
+            radioButton.Enabled = openRoadsModel.GetOpenRoadsInstallations().Contains(version);
+            radioButton.CheckedChanged += RadioButton_CheckedChanged_OpenRoads;
             radioButton.Margin = new Padding(13, 1, 0, 0);
             tableLayoutPanel.Controls.Add(radioButton, column, row);
 
@@ -510,7 +528,7 @@ namespace DynamoTesting
             tableLayoutPanel.Controls.Add(label, column, row);
         }
 
-        private void RadioButton_CheckedChanged(object sender, EventArgs e)
+        private void RadioButton_CheckedChanged_Civil3D(object sender, EventArgs e)
         {
             RadioButton radioButton = sender as RadioButton;
             if (radioButton != null && radioButton.Checked)
@@ -523,13 +541,33 @@ namespace DynamoTesting
                 string language = tagTuple.Item3;
 
                 builtShortcutPath = civil3dModel.BuildCivil3DEnvironmentShortcut(client, version, language);
-                favouriteButtonToolTip = client + " (" + version  +" " + language + ")";
+                favouriteButtonToolTip = client + " [" + version  +" " + language + "]";
 
                 launchButton.Enabled = true;
 
             }
         }
-        
+
+        // REFACTOR EVERYTHING TO DO WITH RADIO BUTTONS, BUT MAKE LANGUAGE NULL WHEN PASSED IN FOR OPEN ROADS
+        private void RadioButton_CheckedChanged_OpenRoads(object sender, EventArgs e)
+        {
+            RadioButton radioButton = sender as RadioButton;
+            if (radioButton != null && radioButton.Checked)
+            {
+                nameTextBox.Enabled = true;
+
+                var tagTuple = radioButton.Tag as Tuple<string, string>;
+                string client = tagTuple.Item1;
+                string version = tagTuple.Item2;
+
+                builtShortcutPath = openRoadsModel.BuildOpenRoadsEnvironmentShortcut(client, version);
+                favouriteButtonToolTip = client + " (" + version + ")";
+
+                launchButton.Enabled = true;
+
+            }
+        }
+
         private void tableLayoutPanel_Paint_1(object sender, PaintEventArgs e)
         {
             tableLayoutPanel.GetType().GetProperty("DoubleBuffered", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).SetValue(tableLayoutPanel, true, null);
@@ -626,7 +664,6 @@ namespace DynamoTesting
             Button buttonToRename = (Button)contextMenu.SourceControl;
             FavouriteButton favouriteButtonToRename = (FavouriteButton)buttonToRename.Tag;
 
-            // Create and configure a custom dialog box
             Form dialog = new Form();
             dialog.Text = "Enter new name";
             dialog.FormBorderStyle = FormBorderStyle.FixedDialog;
@@ -645,16 +682,19 @@ namespace DynamoTesting
             okButton.Location = new Point(10, nameTextBox.Bottom + 10); // Adjusted Y-coordinate
             dialog.Controls.Add(okButton);
 
-            // Show the dialog box and handle the result
+            Button cancelButton = new Button();
+            cancelButton.Text = "Cancel";
+            cancelButton.DialogResult = DialogResult.Cancel;
+            cancelButton.Location = new Point(okButton.Right + 10, nameTextBox.Bottom + 10);
+            dialog.Controls.Add(cancelButton);
+
             DialogResult result = dialog.ShowDialog();
 
             if (result == DialogResult.OK)
             {
-                // Update the name of the button
                 string newName = nameTextBox.Text;
                 favouriteButtonToRename.Name = newName;
 
-                // Update the name in the viewModel.favouriteButtons list
                 int indexToUpdate = viewModel.favouriteButtons.FindIndex(button => button == favouriteButtonToRename);
                 if (indexToUpdate != -1)
                 {
@@ -662,7 +702,6 @@ namespace DynamoTesting
                     viewModel.WriteToFavouriteButtonsJson();
                 }
 
-                // Redraw the buttons to reflect the changes
                 RedrawButtons();
             }
         }
@@ -670,6 +709,7 @@ namespace DynamoTesting
         {
             // FIX ME: UPDATE SHOULD NOT BE CLICKABLE UNLESS A RADIO BUTTON IS SELECTED
             // BUG: WHEN NOTHING IS SELECTED, THE ENVIRONMENT CAN BE UPDATED TO BLANK
+            // FIX ME: WHEN TRYING TO UPDATE A CIVIL 3D BUTTON, IT SHOULD ONLY WORK IF A CIVIL 3D ENVIRONMENT IS SELECTED
             ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;
             ContextMenuStrip contextMenu = (ContextMenuStrip)menuItem.Owner;
             Button buttonToUpdate = (Button)contextMenu.SourceControl;
