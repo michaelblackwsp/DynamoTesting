@@ -7,15 +7,14 @@ namespace DynamoTesting
     {
         #region Initialization
         civil3dModel civil3dModel = new civil3dModel();
-        openRoadsModel openRoadsModel = new openRoadsModel(); // Initialize openRoadsModel
+        openRoadsModel openRoadsModel = new openRoadsModel();
         private ViewModel viewModel;
 
         Utilities utilities = new Utilities();
 
-        // TO DO: Make the application only run if a WSP account is logged in / recognized
         private string builtShortcutPath = "";
         string favouriteButtonToolTip = ""; // FIX ME: Why is this needed when it's part of the class?
-        bool useGreyText = false;   // FIX ME: There has to be a better way to do this than to constantly change a global variable
+        bool useGreyText = false;
 
         private ContextMenuStrip rightClickMenu;
 
@@ -31,7 +30,6 @@ namespace DynamoTesting
             saveButton.Enabled = false;
 
             nameTextBox.Enabled = false;
-            okButton.Enabled = false;
             cancelButton.Enabled = false;
 
             clientDropdownMenu.Enabled = false;
@@ -40,11 +38,47 @@ namespace DynamoTesting
 
         }
 
+        private void repconLauncher_Load(object sender, EventArgs e)
+        {
+            tableLayoutPanel.Visible = false;
+            utilities.GetWindowsVersionAndLanguage();
+            civil3dModel.GetCivil3DMetricProfiles(civil3dModel.yearToRNumber, civil3dModel.languageToRegion);
+            civil3dModel.installedVersionsOfCivil3D = civil3dModel.GetCivil3DInstallations();
+            usernameLabel.Text = Environment.UserName;
+            languageLabel.Text = utilities.GetWindowsVersionAndLanguage();
+            viewModel.ReadFromFavouriteButtonsJson();
+            RedrawButtons();
+
+            nameTextBox.Text = "Enter name to save";
+            nameTextBox.Enter += nameTextBox_Enter;
+            nameTextBox.Leave += nameTextBox_Leave;
+            nameTextBox.ForeColor = SystemColors.GrayText;
+        }
+
+        private void InitializeRightClickMenu()
+        {
+            rightClickMenu = new ContextMenuStrip(); // Create the context menu
+            
+            ToolStripMenuItem renameMenuItem = new ToolStripMenuItem("Rename"); // Create menu items
+            renameMenuItem.Click += RenameMenuItem_Click;
+            rightClickMenu.Items.Add(renameMenuItem);
+
+            ToolStripMenuItem updateMenuItem = new ToolStripMenuItem("Update");
+            updateMenuItem.Click += UpdateMenuItem_Click;
+            rightClickMenu.Items.Add(updateMenuItem);
+
+            ToolStripMenuItem removeMenuItem = new ToolStripMenuItem("Remove");
+            removeMenuItem.Click += RemoveMenuItem_Click;
+            rightClickMenu.Items.Add(removeMenuItem);
+        }
+        #endregion
 
 
-
+        #region Draw and Handle Dropdown Menu Events
         private void softwareComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            UpdateTableData();
+
             string selectedSoftware = softwareComboBox.SelectedItem.ToString();
 
             clientDropdownMenu.Enabled = true;
@@ -86,49 +120,8 @@ namespace DynamoTesting
                 versionDropdownMenu.SelectedIndexChanged += versionDropdownMenu_SelectedIndexChanged;
             }
 
-                nameTextBox.Enabled = false;
-                nameTextBox.Enter += preferenceNameTextBox_Enter;
-                nameTextBox.Leave += preferenceNameTextBox_Leave;
-                nameTextBox.Text = "Enter name";
-                nameTextBox.ForeColor = SystemColors.GrayText;
-            
         }
 
-
-
-
-        private void repconLauncher_Load(object sender, EventArgs e)
-        {
-            utilities.GetWindowsVersionAndLanguage();
-            civil3dModel.GetCivil3DMetricProfiles(civil3dModel.yearToRNumber, civil3dModel.languageToRegion);
-            civil3dModel.installedVersionsOfCivil3D = civil3dModel.GetCivil3DInstallations();
-            // AddCivil3DColumnHeaders();
-            usernameLabel.Text = Environment.UserName;
-            languageLabel.Text = utilities.GetWindowsVersionAndLanguage();
-            viewModel.ReadFromFavouriteButtonsJson();
-            RedrawButtons();
-        }
-
-        private void InitializeRightClickMenu()
-        {
-            rightClickMenu = new ContextMenuStrip(); // Create the context menu
-            
-            ToolStripMenuItem renameMenuItem = new ToolStripMenuItem("Rename"); // Create menu items
-            renameMenuItem.Click += RenameMenuItem_Click;
-            rightClickMenu.Items.Add(renameMenuItem);
-
-            ToolStripMenuItem updateMenuItem = new ToolStripMenuItem("Update");
-            updateMenuItem.Click += UpdateMenuItem_Click;
-            rightClickMenu.Items.Add(updateMenuItem);
-
-            ToolStripMenuItem removeMenuItem = new ToolStripMenuItem("Remove");
-            removeMenuItem.Click += RemoveMenuItem_Click;
-            rightClickMenu.Items.Add(removeMenuItem);
-        }
-        #endregion
-
-
-        #region Draw and Handle Dropdown Menu Events
         private void clientDropdownMenu_DrawItem(object? sender, DrawItemEventArgs e)
         {
             if (e.Index >= 0)
@@ -137,6 +130,14 @@ namespace DynamoTesting
                 e.DrawBackground();
                 TextRenderer.DrawText(e.Graphics, option, e.Font, e.Bounds, Color.Black, TextFormatFlags.Left);
             }
+        }
+        private void clientDropdownMenu_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            resetButton.Enabled = true;
+            versionDropdownMenu.Enabled = false;
+            launchButton.Enabled = false;
+            saveButton.Enabled = false;
+            UpdateTableData();
         }
 
         private void versionDropdownMenu_DrawItem(object? sender, DrawItemEventArgs e)
@@ -148,28 +149,6 @@ namespace DynamoTesting
                 TextRenderer.DrawText(e.Graphics, option, e.Font, e.Bounds, Color.Black, TextFormatFlags.Left);
             }
         }
-
-
-        private void clientDropdownMenu_Selected(object sender, EventArgs e)
-        {
-
-        }
-
-        private void versionDropdownMenu_Selected(object sender, EventArgs e)
-        {
-
-        }
-
-
-        private void clientDropdownMenu_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            resetButton.Enabled = true;
-            versionDropdownMenu.Enabled = false;
-            launchButton.Enabled = false;
-            saveButton.Enabled = false;
-            UpdateTableData();
-        }
-
         private void versionDropdownMenu_SelectedIndexChanged(object sender, EventArgs e)
         {
             resetButton.Enabled = true;
@@ -180,7 +159,8 @@ namespace DynamoTesting
         }
         #endregion
 
-        #region Main Form Buttons and Text Inputs
+
+        #region Form Buttons and Text Inputs
         private void resetButton_Click(object sender, EventArgs e)
         {
             tableLayoutPanel.Controls.Clear();
@@ -212,11 +192,11 @@ namespace DynamoTesting
             saveButton.Enabled = false;
 
             nameTextBox.Enabled = false;
-            okButton.Enabled = false;
+            nameTextBox.Text = "Enter name to save";
+            nameTextBox.ForeColor = Color.Gray;
             cancelButton.Enabled = false;
 
         }
-
         private void launchButton_Click(object sender, EventArgs e)
         {
             utilities.StartSoftware(builtShortcutPath);
@@ -231,49 +211,59 @@ namespace DynamoTesting
                 return;
             }
 
-            nameTextBox.Enabled = true;
-            okButton.Enabled = true;
-            cancelButton.Enabled = true;
-        }
-
-        private void preferenceNameTextBox_Enter(object sender, EventArgs e)
-        {
-            if (nameTextBox.Text == "Enter name")
-            {
-                nameTextBox.Text = "";
-                nameTextBox.ForeColor = Color.Black; // Change text color to black
-            }
-        }
-
-        private void preferenceNameTextBox_Leave(object sender, EventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(nameTextBox.Text))
-            {
-                //nameTextBox.Text = "Enter name";
-                nameTextBox.ForeColor = Color.Gray; // Change text color to gray
-            }
-        }
-
-        private void okButton_Click(object sender, EventArgs e)
-        {
             createFavouriteButton(nameTextBox.Text, builtShortcutPath, favouriteButtonToolTip);
 
             nameTextBox.Clear();
             nameTextBox.Enabled = false;
-            okButton.Enabled = false;
+            cancelButton.Enabled = false;
+            saveButton.Enabled = false;
+        }
+        private void cancelButton_Click_1(object sender, EventArgs e)
+        {
+            // TO DO: Get rid of _1
+            nameTextBox.Clear();
+            nameTextBox.Text = "Enter name to save";
+            nameTextBox.ForeColor = Color.Gray;
             cancelButton.Enabled = false;
         }
 
-        private void cancelButton_Click(object sender, EventArgs e)
+        private void nameTextBox_Enter(object sender, EventArgs e)
         {
-            nameTextBox.Enabled = false;
-            okButton.Enabled = false;
-            cancelButton.Enabled = false;
+            if (nameTextBox.Text == "Enter name to save")
+            {
+                cancelButton.Enabled = true;
+                nameTextBox.Text = "";
+                nameTextBox.ForeColor = Color.Black;
+            }
+
+            if (nameTextBox.Text != "")
+            {
+                saveButton.Enabled = true;
+            }
+        }
+        private void nameTextBox_Leave(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(nameTextBox.Text))
+            {
+                nameTextBox.Text = "Enter name to save";
+                nameTextBox.ForeColor = Color.Gray;
+            }
+        }
+        private void nameTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (nameTextBox.Text.Length >= 1 && nameTextBox.Text != "Enter name to save")
+            {
+                saveButton.Enabled = true;
+            }
+            else
+            {
+                saveButton.Enabled = false;
+            }
         }
         #endregion
 
-        #region Client Environment Table
 
+        #region Client Environment Table
         private void AddCivil3DColumnHeaders()
         {
             tableLayoutPanel.ColumnStyles[0].Width = 40;
@@ -287,19 +277,15 @@ namespace DynamoTesting
             CreateColumnHeader("EN", 2);
             CreateColumnHeader("FR", 3);
         }
-
         private void AddOpenRoadsColumnHeaders()
         {
             tableLayoutPanel.ColumnStyles[0].Width = 40;
             tableLayoutPanel.ColumnStyles[1].Width = 40;
 
-
-            // Add column headers
             CreateColumnHeader("Client", 0);
             CreateColumnHeader("Version", 1);
 
         }
-
         private void CreateColumnHeader(string text, int columnIndex)
         {
             Label headerLabel = new Label();
@@ -311,6 +297,7 @@ namespace DynamoTesting
 
         private void UpdateTableData()
         {
+            tableLayoutPanel.Visible = true;
             useGreyText = true;
 
             string selectedSoftware = softwareComboBox.SelectedItem.ToString();
@@ -463,7 +450,6 @@ namespace DynamoTesting
             label.ForeColor = Color.LightGray;
             tableLayoutPanel.Controls.Add(label, column, row);
         }
-
         private void CreateAndAddGrayLabel(string text, int column, int row)
         {
             Label label = new Label();
@@ -472,7 +458,6 @@ namespace DynamoTesting
             label.ForeColor = Color.Gray;
             tableLayoutPanel.Controls.Add(label, column, row);
         }
-
         private void CreateAndAddBlackLabel(string text, int column, int row)
         {
             Label label = new Label();
@@ -486,6 +471,8 @@ namespace DynamoTesting
             RadioButton radioButton = sender as RadioButton;
             if (radioButton != null && radioButton.Checked)
             {
+                nameTextBox.Enabled = true;
+
                 var tagTuple = radioButton.Tag as Tuple<string, string, string>;
                 string client = tagTuple.Item1;
                 string version = tagTuple.Item2;
@@ -495,16 +482,15 @@ namespace DynamoTesting
                 favouriteButtonToolTip = client + " (" + version  +" " + language + ")";
 
                 launchButton.Enabled = true;
-                saveButton.Enabled = true;
+
             }
         }
         
-        // TO DO: Get rid of _1 in name
         private void tableLayoutPanel_Paint_1(object sender, PaintEventArgs e)
         {
             tableLayoutPanel.GetType().GetProperty("DoubleBuffered", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).SetValue(tableLayoutPanel, true, null);
 
-        }
+        } // TO DO: Get rid of _1 in name
         #endregion
 
 
@@ -574,7 +560,6 @@ namespace DynamoTesting
             }
         }
 
-
         private void FavouriteButton_Click(object sender, EventArgs e)
         {
             Button clickedButton = sender as Button;
@@ -616,12 +601,6 @@ namespace DynamoTesting
             okButton.Location = new Point(10, nameTextBox.Bottom + 10); // Adjusted Y-coordinate
             dialog.Controls.Add(okButton);
 
-            Button cancelButton = new Button();
-            cancelButton.Text = "Cancel";
-            cancelButton.DialogResult = DialogResult.Cancel;
-            cancelButton.Location = new Point(okButton.Right + 10, nameTextBox.Bottom + 10); // Adjusted Y-coordinate
-            dialog.Controls.Add(cancelButton);
-
             // Show the dialog box and handle the result
             DialogResult result = dialog.ShowDialog();
 
@@ -643,10 +622,10 @@ namespace DynamoTesting
                 RedrawButtons();
             }
         }
-
         private void UpdateMenuItem_Click(object sender, EventArgs e)
         {
             // FIX ME: UPDATE SHOULD NOT BE CLICKABLE UNLESS A RADIO BUTTON IS SELECTED
+            // BUG: WHEN NOTHING IS SELECTED, THE ENVIRONMENT CAN BE UPDATED TO BLANK
             ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;
             ContextMenuStrip contextMenu = (ContextMenuStrip)menuItem.Owner;
             Button buttonToUpdate = (Button)contextMenu.SourceControl;
@@ -684,7 +663,6 @@ namespace DynamoTesting
             }
             RedrawButtons();
         }
-
         private void RemoveMenuItem_Click(object sender, EventArgs e)
         {
 
@@ -708,7 +686,37 @@ namespace DynamoTesting
         #endregion
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         #region Unused Event Handlers
+        private void clientDropdownMenu_Selected(object sender, EventArgs e)
+        {
+
+        }
+        private void versionDropdownMenu_Selected(object sender, EventArgs e)
+        {
+
+        }
         private void clientLabel_Click(object sender, EventArgs e)
         {
 
@@ -729,25 +737,20 @@ namespace DynamoTesting
         {
 
         }
-        private void nameTextBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
         private void favouritesLabel_Click(object sender, EventArgs e)
         {
 
         }
-
-        #endregion
-
         private void favouritesPanel_Paint(object sender, PaintEventArgs e)
         {
 
         }
-
         private void clientDropdownMenu_SelectedIndexChanged_1(object sender, EventArgs e)
         {
 
         }
+        #endregion
+
+
     }
 }

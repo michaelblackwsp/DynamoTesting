@@ -16,13 +16,13 @@ namespace DynamoTesting
         #region Initialization
         private readonly civil3dModel civil3dModel;
         private readonly openRoadsModel openRoadsModel;
-
         public ViewModel(civil3dModel civil3dModel, openRoadsModel openRoadsModel)
         {
             this.civil3dModel = civil3dModel;
             this.openRoadsModel = openRoadsModel;
         }
         #endregion
+
 
         #region Prepare Civil 3D Client and Version Dropdown Menu Options
         public List<Civil3DTableRowData> Civil3dOptionsBasedOnClient(string selectedClient)
@@ -49,7 +49,6 @@ namespace DynamoTesting
 
             return tableData;
         }
-
         public List<Civil3DTableRowData> Civil3dOptionsBasedOnVersion(string selectedVersion)
         {
             List<Civil3DTableRowData> tableData = new List<Civil3DTableRowData>();
@@ -77,6 +76,7 @@ namespace DynamoTesting
         }
         #endregion
 
+
         #region Prepare OpenRoads Client and Version Dropdown Menu Options
         public List<OpenRoadsTableRowData> OpenRoadsOptionsBasedOnClient(string selectedClient)
         {
@@ -91,7 +91,6 @@ namespace DynamoTesting
 
             return tableData;
         }
-
         public List<OpenRoadsTableRowData> OpenRoadsOptionsBasedOnVersion(string selectedVersion)
         {
             List<OpenRoadsTableRowData> tableData = new List<OpenRoadsTableRowData>();
@@ -107,6 +106,7 @@ namespace DynamoTesting
         }
         #endregion
 
+
         #region Favourite Buttons JSON
         public List<FavouriteButton> favouriteButtons = new List<FavouriteButton>();    // FIX ME: Should this be in the Model?
         public int buttonCount = 0;
@@ -121,7 +121,6 @@ namespace DynamoTesting
             
             // TO DO: Add a catch in case the file doesn't exist
         }
-
         public void ReadFromFavouriteButtonsJson()
         {
             //string filePath = Path.Combine(Application.StartupPath, "preferences", "favouriteButtons.json");
@@ -159,6 +158,7 @@ namespace DynamoTesting
     }
     #endregion
 
+
     #region OpenRoads TableRowData Class
     public class OpenRoadsTableRowData
     {
@@ -191,5 +191,4 @@ namespace DynamoTesting
     }
     #endregion
 
-    // The one-stop shop for all your production needs!
 }
