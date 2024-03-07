@@ -1,3 +1,4 @@
+using System.Reflection;
 using Button = System.Windows.Forms.Button;
 using ToolTip = System.Windows.Forms.ToolTip;
 
@@ -22,6 +23,8 @@ namespace DynamoTesting
         {
             InitializeComponent();
             InitializeRightClickMenu();
+            EnableDoubleBuffering(tableLayoutPanel);
+
             viewModel = new ViewModel(civil3dModel, openRoadsModel);
 
             string[] installedCivil3D = (string[])civil3dModel.GetCivil3DMetricProfiles(civil3dModel.yearToRNumber, civil3dModel.languageToRegion);
@@ -36,6 +39,13 @@ namespace DynamoTesting
             versionDropdownMenu.Enabled = false;
             resetButton.Enabled = false;
 
+        }
+
+        private void EnableDoubleBuffering(Control control)
+        {
+            Type type = control.GetType();
+            PropertyInfo propertyInfo = type.GetProperty("DoubleBuffered", BindingFlags.Instance | BindingFlags.NonPublic);
+            propertyInfo?.SetValue(control, true, null);
         }
 
         private void repconLauncher_Load(object sender, EventArgs e)
@@ -53,6 +63,18 @@ namespace DynamoTesting
             nameTextBox.Enter += nameTextBox_Enter;
             nameTextBox.Leave += nameTextBox_Leave;
             nameTextBox.ForeColor = SystemColors.GrayText;
+
+            string userEmail = ActiveDirectoryHelper.GetUserEmail(Environment.UserName);
+            if (userEmail != null && userEmail.EndsWith("@wsp.com"))
+            {
+                MessageBox.Show(userEmail);
+            }
+            else
+            {
+                MessageBox.Show("Unauthorized to use. WSP email not recognized. \n\nPlease contact Digital Operations. Application will now close.");
+                Application.Exit();
+            }
+
         }
 
         private void InitializeRightClickMenu()
@@ -77,6 +99,7 @@ namespace DynamoTesting
         #region Draw and Handle Dropdown Menu Events
         private void softwareComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            resetButton.PerformClick(); // Reset the form so it doesn't try to draw the OpenRoads table based on old Civil 3D selection
             UpdateTableData();
 
             string selectedSoftware = softwareComboBox.SelectedItem.ToString();
@@ -316,7 +339,7 @@ namespace DynamoTesting
                 // FIX ME: VDG 2020 SHOULD BE GREY BECAUSE THERE IS NO SELECTABLE RADIO BUTTON
                 if (clientDropdownMenu.SelectedItem != null)
                 {
-                    string? selectedClient = clientDropdownMenu.SelectedItem?.ToString();
+                    string selectedClient = clientDropdownMenu.SelectedItem?.ToString();
                     options = viewModel.Civil3dOptionsBasedOnClient(selectedClient);
                 }
                 else if (versionDropdownMenu.SelectedItem != null)

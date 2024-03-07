@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using System.Diagnostics;
+using System.DirectoryServices;
 using System.Globalization;
 
 namespace DynamoTesting
@@ -56,6 +57,26 @@ namespace DynamoTesting
 
         }
 
-
     }
+
+    public class ActiveDirectoryHelper
+    {
+        public static string GetUserEmail(string username)
+        {
+            using (var searcher = new DirectorySearcher($"(samaccountname={username})"))
+            {
+                SearchResult result = searcher.FindOne();
+                if (result != null)
+                {
+                    var mailProperty = result.Properties["mail"];
+                    if (mailProperty != null && mailProperty.Count > 0)
+                    {
+                        return mailProperty[0].ToString();
+                    }
+                }
+                return null;
+            }
+        }
+    }
+
 }

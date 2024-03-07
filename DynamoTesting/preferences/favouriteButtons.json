@@ -28,5 +28,10 @@
     "Name": "qrwer",
     "ShortcutPath": "W:\\1_service\\2_environments\\CofC\\english_software\\c3d_2022_en_cofc.lnk",
     "Tooltip": "CofC (2022 English)"
+  },
+  {
+    "Name": "45g45g",
+    "ShortcutPath": "W:\\1_service\\2_environments\\MVRD\\english_software\\c3d_2020_en_mvrd.lnk",
+    "Tooltip": "MVRD (2020 English)"
   }
 ]

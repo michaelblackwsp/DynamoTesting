@@ -45,11 +45,6 @@
 
     // Computer\HKEY_LOCAL_MACHINE\SOFTWARE\Bentley\OpenRoadsDesigner\{359F376F-B120-3DD3-BC30-56D5687B766D}
 
-    // POWERSHELL TO GET USER'S EMAIL
-    // $searcher = [adsisearcher]"(samaccountname=$env:USERNAME)"
-    //$searcher.FindOne().Properties.mail
-
-    // TO DO: Make the application only run if a WSP account is logged in / recognized
     // The one-stop shop for all your production needs!
 
 }
