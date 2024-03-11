@@ -181,12 +181,14 @@ namespace DynamoTesting
         public string Name { get; set; }
         public string ShortcutPath { get; set; }
         public string Tooltip { get; set; }
+        public string Software { get ; set; }
 
-        public FavouriteButton(string name, string shortcutPath, string tooltip)
+        public FavouriteButton(string name, string shortcutPath, string tooltip, string software)
         {
             Name = name;
             ShortcutPath = shortcutPath;
             Tooltip = tooltip;
+            Software = software;
         }
     }
     #endregion

@@ -250,7 +250,10 @@ namespace DynamoTesting
         }
 
         private void saveButton_Click(object sender, EventArgs e)
-        {   
+        {
+
+            string software = softwareComboBox.SelectedItem.ToString();
+
             // FIX ME: buttonCount is not being recognized after switching to JSON
             if (viewModel.buttonCount >= 100)
             {
@@ -258,7 +261,7 @@ namespace DynamoTesting
                 return;
             }
 
-            createFavouriteButton(nameTextBox.Text, builtShortcutPath, favouriteButtonToolTip);
+            createFavouriteButton(nameTextBox.Text, builtShortcutPath, favouriteButtonToolTip, software);
 
             nameTextBox.Clear();
             nameTextBox.Enabled = false;
@@ -573,9 +576,9 @@ namespace DynamoTesting
 
 
         #region Favourite Buttons
-        private void createFavouriteButton(string name, string shortcutPath, string tooltip)
+        private void createFavouriteButton(string name, string shortcutPath, string tooltip, string software)
         {
-            FavouriteButton favouriteButton = new FavouriteButton(name, shortcutPath, tooltip);
+            FavouriteButton favouriteButton = new FavouriteButton(name, shortcutPath, tooltip, software);
             viewModel.favouriteButtons.Add(favouriteButton);
             viewModel.buttonCount++;
             viewModel.WriteToFavouriteButtonsJson();
@@ -588,7 +591,6 @@ namespace DynamoTesting
             // !!!!! THIS FIXED IT !!!!!! Create a copy of the controls collection to avoid modifying it while iterating
             var controlsCopy = new List<Control>(favouritesPanel.Controls.OfType<Button>());
 
-            // Clear only the buttons that are of type FavouriteButton
             foreach (var control in controlsCopy)
             {
                 if (control.Tag is FavouriteButton)
@@ -611,6 +613,19 @@ namespace DynamoTesting
                 button.ContextMenuStrip = rightClickMenu;
                 button.ForeColor = Color.Black;
                 button.BackColor = Color.LightGray;
+
+                if (favouriteButton.Software == "Civil 3D")
+                {
+                    button.BackColor = Color.FromArgb(132, 197, 227);
+                }
+                else if (favouriteButton.Software == "OpenRoads Designer")
+                {
+                    button.BackColor = Color.FromArgb(51, 87, 115);
+                }
+                else
+                {
+                    button.BackColor = Color.LightGray; // Default color
+                }
 
                 // Create and configure the tooltip for the button
                 ToolTip toolTip = new ToolTip();
@@ -663,6 +678,8 @@ namespace DynamoTesting
             Button buttonToRename = (Button)contextMenu.SourceControl;
             FavouriteButton favouriteButtonToRename = (FavouriteButton)buttonToRename.Tag;
 
+            string selectedSoftware = softwareComboBox.SelectedItem.ToString();
+
             Form dialog = new Form();
             dialog.Text = "Enter new name";
             dialog.FormBorderStyle = FormBorderStyle.FixedDialog;
@@ -704,11 +721,12 @@ namespace DynamoTesting
                 RedrawButtons();
             }
         }
+
         private void UpdateMenuItem_Click(object sender, EventArgs e)
         {
-            // FIX ME: UPDATE SHOULD NOT BE CLICKABLE UNLESS A RADIO BUTTON IS SELECTED
-            // BUG: WHEN NOTHING IS SELECTED, THE ENVIRONMENT CAN BE UPDATED TO BLANK
-            // FIX ME: WHEN TRYING TO UPDATE A CIVIL 3D BUTTON, IT SHOULD ONLY WORK IF A CIVIL 3D ENVIRONMENT IS SELECTED
+            // BUG: SOFTWARE MIGHT NOT BE SELECTED AT START
+            string software = softwareComboBox.SelectedItem?.ToString();
+
             ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;
             ContextMenuStrip contextMenu = (ContextMenuStrip)menuItem.Owner;
             Button buttonToUpdate = (Button)contextMenu.SourceControl;
@@ -727,52 +745,60 @@ namespace DynamoTesting
             if (!radioButtonSelected)
             {
                 MessageBox.Show("Please select a client environment to update the favourite button with.", "No Environment Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return; // Exit the method if no radio button is selected
+                return;
             }
 
             string originalToolTip = favouriteButtonToUpdate.Tooltip;
 
-            favouriteButtonToUpdate.ShortcutPath = builtShortcutPath;
-            favouriteButtonToUpdate.Tooltip = favouriteButtonToolTip;
-
-            if (originalToolTip != favouriteButtonToolTip)
+            if (originalToolTip == favouriteButtonToolTip)
             {
-                MessageBox.Show($"{originalToolTip} was uptated to {favouriteButtonToolTip}", "Update Successful!", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            else
-            {
-                MessageBox.Show("No changes made. The selected environment is the same as the original.", "No Changes Made", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("The selected environment is the same as the original.", "Nothing to update", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
             }
 
-            int indexToUpdate = viewModel.favouriteButtons.FindIndex(button => button == favouriteButtonToUpdate);
+            DialogResult result = MessageBox.Show("Are you sure you want to update this button?", "Update button", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-            if (indexToUpdate != -1)
+            if (result == DialogResult.Yes)
             {
-                viewModel.favouriteButtons[indexToUpdate] = favouriteButtonToUpdate;
-                viewModel.WriteToFavouriteButtonsJson();
+                favouriteButtonToUpdate.ShortcutPath = builtShortcutPath;
+                favouriteButtonToUpdate.Tooltip = favouriteButtonToolTip;
+                favouriteButtonToUpdate.Software = software;
+
+                int indexToUpdate = viewModel.favouriteButtons.FindIndex(button => button == favouriteButtonToUpdate);
+
+                if (indexToUpdate != -1)
+                {
+                    viewModel.favouriteButtons[indexToUpdate] = favouriteButtonToUpdate;
+                    viewModel.WriteToFavouriteButtonsJson();
+                }
+                RedrawButtons();
             }
-            RedrawButtons();
         }
+
         private void RemoveMenuItem_Click(object sender, EventArgs e)
         {
-
             ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;                         // Get the MenuItem that triggered the event
             ContextMenuStrip contextMenu = (ContextMenuStrip)menuItem.Owner;                // Get the ContextMenuStrip that contains the MenuItem
             Button buttonToRemove = (Button)contextMenu.SourceControl;                      // Get the Button associated with the ContextMenuStrip
             FavouriteButton favouriteButtonToRemove = (FavouriteButton)buttonToRemove.Tag;  // Get the FavouriteButton object corresponding to the button
 
-            int indexToRemove = viewModel.favouriteButtons.FindIndex(button => button == favouriteButtonToRemove);
+            DialogResult result = MessageBox.Show("Are you sure you want to remove this button?", "Remove button", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-            // Remove the button from the list
-            if (indexToRemove != -1)
+            if (result == DialogResult.Yes)
             {
-                viewModel.favouriteButtons.RemoveAt(indexToRemove);
-            }
-            viewModel.buttonCount--;
-            viewModel.WriteToFavouriteButtonsJson();
+                int indexToRemove = viewModel.favouriteButtons.FindIndex(button => button == favouriteButtonToRemove);
 
-            RedrawButtons();
+                if (indexToRemove != -1)
+                {
+                    viewModel.favouriteButtons.RemoveAt(indexToRemove);
+                }
+                viewModel.buttonCount--;
+                viewModel.WriteToFavouriteButtonsJson();
+
+                RedrawButtons();
+            }
         }
+
         #endregion
 
 

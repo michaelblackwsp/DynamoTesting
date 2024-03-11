@@ -1,7 +1,26 @@
 [
   {
-    "Name": "TEST",
+    "Name": "wefwef",
     "ShortcutPath": "W:\\1_service\\2_environments\\CofC\\english_software\\c3d_2020_en_cofc.lnk",
-    "Tooltip": "CofC (2020 English)"
+    "Tooltip": "CofC (2020 English)",
+    "Software": "Civil 3D"
+  },
+  {
+    "Name": "WEFWEFWE",
+    "ShortcutPath": "W:\\1_service\\2_environments\\CofC\\english_software\\c3d_2020_en_cofc.lnk",
+    "Tooltip": "CofC (2020 English)",
+    "Software": "Civil 3D"
+  },
+  {
+    "Name": "t",
+    "ShortcutPath": "W:\\1_service\\2_environments\\CofC\\english_software\\c3d_2022_en_cofc.lnk",
+    "Tooltip": "CofC (2022 English)",
+    "Software": "Civil 3D"
+  },
+  {
+    "Name": "wefwe",
+    "ShortcutPath": "W:\\1_service\\2_environments\\CofC\\english_software\\c3d_2022_en_cofc.lnk",
+    "Tooltip": "CofC (2022 English)",
+    "Software": "Civil 3D"
   }
 ]
