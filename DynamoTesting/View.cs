@@ -1,3 +1,4 @@
+using Microsoft.VisualBasic.ApplicationServices;
 using System.Reflection;
 using Button = System.Windows.Forms.Button;
 using ToolTip = System.Windows.Forms.ToolTip;
@@ -61,7 +62,7 @@ namespace DynamoTesting
             usernameLabel.Text = Environment.UserName;
             languageLabel.Text = utilities.GetWindowsVersionAndLanguage();
             viewModel.ReadFromFavouriteButtonsJson();
-            RedrawButtons();
+            DrawButtons();
 
             nameTextBox.Text = "Enter name to save";
             nameTextBox.Enter += nameTextBox_Enter;
@@ -251,8 +252,8 @@ namespace DynamoTesting
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-
             string software = softwareComboBox.SelectedItem.ToString();
+            string iconPath = GetIconPath(software);
 
             // FIX ME: buttonCount is not being recognized after switching to JSON
             if (viewModel.buttonCount >= 100)
@@ -261,7 +262,7 @@ namespace DynamoTesting
                 return;
             }
 
-            createFavouriteButton(nameTextBox.Text, builtShortcutPath, favouriteButtonToolTip, software);
+            CreateFavouriteButton(nameTextBox.Text, builtShortcutPath, favouriteButtonToolTip, software, iconPath);
 
             nameTextBox.Clear();
             nameTextBox.Enabled = false;
@@ -576,19 +577,30 @@ namespace DynamoTesting
 
 
         #region Favourite Buttons
-        private void createFavouriteButton(string name, string shortcutPath, string tooltip, string software)
+        private string GetIconPath(string software)
         {
-            FavouriteButton favouriteButton = new FavouriteButton(name, shortcutPath, tooltip, software);
+            if (software == "Civil 3D")
+            {
+                return "C:\\Users\\CAMB075971\\source\\repos\\WinForms_Sandbox\\DynamoTesting\\Icons\\Civil3D.ico";
+            }
+            else if (software == "OpenRoads Designer") ;
+            {
+                return "C:\\Users\\CAMB075971\\source\\repos\\WinForms_Sandbox\\DynamoTesting\\Icons\\OpenRoads.ico";
+            }
+        }
+
+        private void CreateFavouriteButton(string name, string shortcutPath, string tooltip, string software, string iconPath)
+        {
+            FavouriteButton favouriteButton = new FavouriteButton(name, shortcutPath, tooltip, software, iconPath);
             viewModel.favouriteButtons.Add(favouriteButton);
             viewModel.buttonCount++;
             viewModel.WriteToFavouriteButtonsJson();
 
-            RedrawButtons();
+            DrawButtons();
         }
 
-        private void RedrawButtons()
+        private void DrawButtons()
         {
-            // !!!!! THIS FIXED IT !!!!!! Create a copy of the controls collection to avoid modifying it while iterating
             var controlsCopy = new List<Control>(favouritesPanel.Controls.OfType<Button>());
 
             foreach (var control in controlsCopy)
@@ -601,60 +613,69 @@ namespace DynamoTesting
             }
 
             int topPosition = 30;
-
             foreach (var favouriteButton in viewModel.favouriteButtons)
             {
-                Button button = new Button();
-                button.Font = new Font("Segoe UI", 7, FontStyle.Regular);
-
-                button.Text = favouriteButton.Name;
-                button.Tag = favouriteButton; // Store the FavouriteButton instance in the Tag property
-                button.Click += FavouriteButton_Click;
-                button.ContextMenuStrip = rightClickMenu;
-                button.ForeColor = Color.Black;
-                button.BackColor = Color.LightGray;
-
-                if (favouriteButton.Software == "Civil 3D")
-                {
-                    button.BackColor = Color.FromArgb(132, 197, 227);
-                }
-                else if (favouriteButton.Software == "OpenRoads Designer")
-                {
-                    button.BackColor = Color.FromArgb(51, 87, 115);
-                }
-                else
-                {
-                    button.BackColor = Color.LightGray; // Default color
-                }
-
-                // Create and configure the tooltip for the button
-                ToolTip toolTip = new ToolTip();
-                toolTip.AutoPopDelay = 5000;
-                toolTip.InitialDelay = 500;
-                toolTip.ReshowDelay = 200;
-                toolTip.ShowAlways = true;
-                toolTip.SetToolTip(button, favouriteButton.Tooltip);
-
-                // Set the button's position
+                Button button = BuildButton(favouriteButton); // Use helper function to prepare button
                 button.Top = topPosition;
                 button.Left = 10;
                 button.Visible = true;
                 button.BringToFront();
-
-                // Increment the vertical position for the next button
                 topPosition += button.Height + 5;
-
-                // Add the button to the launcherTab
                 favouritesPanel.Controls.Add(button);
             }
 
-            // After adding all buttons, check if scrolling is necessary
             if (favouritesPanel.Controls.Count > 0)
             {
                 int panelHeight = favouritesPanel.Controls[favouritesPanel.Controls.Count - 1].Bottom + 10;
-                favouritesPanel.AutoScroll = panelHeight > favouritesPanel.Height;
+                favouritesPanel.AutoScroll = panelHeight > favouritesPanel.Height; //check if scrolling is necessary
             }
         }
+
+        private Button BuildButton(FavouriteButton favouriteButton)
+        {
+            Button button = new Button();
+            button.Font = new Font("Segoe UI", 7, FontStyle.Regular);
+            button.Text = favouriteButton.Name;
+            button.Tag = favouriteButton; // Store the FavouriteButton instance in the Tag property
+            button.Click += FavouriteButton_Click;
+            button.ContextMenuStrip = rightClickMenu;
+            button.ForeColor = Color.Black;
+
+            button.TextImageRelation = TextImageRelation.ImageBeforeText; // Display image before text
+
+            if (File.Exists(favouriteButton.IconPath))
+            {
+                try
+                {
+                    using (Image originalImage = Image.FromFile(favouriteButton.IconPath))
+                    {
+                        int imageSize = 15;
+                        Image resizedImage = new Bitmap(originalImage, new Size(imageSize, imageSize));
+                        button.Image = resizedImage;
+                        button.ImageAlign = ContentAlignment.MiddleLeft;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error loading or resizing icon: {ex.Message}");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"Icon file not found: {favouriteButton.IconPath}");
+            }
+
+            ToolTip toolTip = new ToolTip();
+            toolTip.AutoPopDelay = 5000;
+            toolTip.InitialDelay = 500;
+            toolTip.ReshowDelay = 200;
+            toolTip.ShowAlways = true;
+            toolTip.SetToolTip(button, favouriteButton.Tooltip);
+            button.Size = new Size(90, 25);
+
+            return button;
+        }
+
 
         private void FavouriteButton_Click(object sender, EventArgs e)
         {
@@ -672,13 +693,10 @@ namespace DynamoTesting
 
         private void RenameMenuItem_Click(object sender, EventArgs e)
         {
-            // TO DO: REFACTOR THIS TO CALL A 'BUILD POP UP BOX' METHOD
             ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;
             ContextMenuStrip contextMenu = (ContextMenuStrip)menuItem.Owner;
             Button buttonToRename = (Button)contextMenu.SourceControl;
             FavouriteButton favouriteButtonToRename = (FavouriteButton)buttonToRename.Tag;
-
-            string selectedSoftware = softwareComboBox.SelectedItem.ToString();
 
             Form dialog = new Form();
             dialog.Text = "Enter new name";
@@ -718,7 +736,7 @@ namespace DynamoTesting
                     viewModel.WriteToFavouriteButtonsJson();
                 }
 
-                RedrawButtons();
+                DrawButtons();
             }
         }
 
@@ -763,7 +781,8 @@ namespace DynamoTesting
                 favouriteButtonToUpdate.ShortcutPath = builtShortcutPath;
                 favouriteButtonToUpdate.Tooltip = favouriteButtonToolTip;
                 favouriteButtonToUpdate.Software = software;
-
+                string iconPath = GetIconPath(software);
+                favouriteButtonToUpdate.IconPath = iconPath;
                 int indexToUpdate = viewModel.favouriteButtons.FindIndex(button => button == favouriteButtonToUpdate);
 
                 if (indexToUpdate != -1)
@@ -771,7 +790,7 @@ namespace DynamoTesting
                     viewModel.favouriteButtons[indexToUpdate] = favouriteButtonToUpdate;
                     viewModel.WriteToFavouriteButtonsJson();
                 }
-                RedrawButtons();
+                DrawButtons();
             }
         }
 
@@ -795,32 +814,11 @@ namespace DynamoTesting
                 viewModel.buttonCount--;
                 viewModel.WriteToFavouriteButtonsJson();
 
-                RedrawButtons();
+                DrawButtons();
             }
         }
 
         #endregion
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

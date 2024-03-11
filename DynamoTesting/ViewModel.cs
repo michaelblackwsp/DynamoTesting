@@ -181,14 +181,16 @@ namespace DynamoTesting
         public string Name { get; set; }
         public string ShortcutPath { get; set; }
         public string Tooltip { get; set; }
-        public string Software { get ; set; }
+        public string Software { get; set; }
+        public string IconPath { get; set; } // Add a property for the icon file path
 
-        public FavouriteButton(string name, string shortcutPath, string tooltip, string software)
+        public FavouriteButton(string name, string shortcutPath, string tooltip, string software, string iconPath)
         {
             Name = name;
             ShortcutPath = shortcutPath;
             Tooltip = tooltip;
             Software = software;
+            IconPath = iconPath;
         }
     }
     #endregion

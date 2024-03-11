@@ -1,26 +1,23 @@
 [
   {
-    "Name": "wefwef",
-    "ShortcutPath": "W:\\1_service\\2_environments\\CofC\\english_software\\c3d_2020_en_cofc.lnk",
-    "Tooltip": "CofC (2020 English)",
-    "Software": "Civil 3D"
-  },
-  {
-    "Name": "WEFWEFWE",
-    "ShortcutPath": "W:\\1_service\\2_environments\\CofC\\english_software\\c3d_2020_en_cofc.lnk",
-    "Tooltip": "CofC (2020 English)",
-    "Software": "Civil 3D"
-  },
-  {
-    "Name": "t",
+    "Name": "TEST",
     "ShortcutPath": "W:\\1_service\\2_environments\\CofC\\english_software\\c3d_2022_en_cofc.lnk",
     "Tooltip": "CofC (2022 English)",
-    "Software": "Civil 3D"
+    "Software": "Civil 3D",
+    "IconPath": "C:\\Users\\CAMB075971\\source\\repos\\WinForms_Sandbox\\DynamoTesting\\Icons\\Civil3D.ico"
   },
   {
-    "Name": "wefwe",
-    "ShortcutPath": "W:\\1_service\\2_environments\\CofC\\english_software\\c3d_2022_en_cofc.lnk",
-    "Tooltip": "CofC (2022 English)",
-    "Software": "Civil 3D"
+    "Name": "USEP",
+    "ShortcutPath": "W:\\1_service\\2_environments\\MX\\english_software\\c3d_2020_en_mx.lnk",
+    "Tooltip": "MX (2020 English)",
+    "Software": "Civil 3D",
+    "IconPath": "C:\\Users\\CAMB075971\\source\\repos\\WinForms_Sandbox\\DynamoTesting\\Icons\\Civil3D.ico"
+  },
+  {
+    "Name": "PSQDA",
+    "ShortcutPath": "C:\\Program Files\\Bentley\\OpenRoads Designer CE 10.11\\OpenRoadsDesigner\\OpenRoadsDesigner.exe",
+    "Tooltip": "MTO [2021 (R2)]",
+    "Software": "OpenRoads Designer",
+    "IconPath": "C:\\Users\\CAMB075971\\source\\repos\\WinForms_Sandbox\\DynamoTesting\\Icons\\OpenRoads.ico"
   }
 ]
