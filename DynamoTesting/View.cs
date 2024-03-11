@@ -360,7 +360,6 @@ namespace DynamoTesting
 
                 List<Civil3DTableRowData> options = null;
 
-                // FIX ME: VDG 2020 SHOULD BE GREY BECAUSE THERE IS NO SELECTABLE RADIO BUTTON
                 if (clientDropdownMenu.SelectedItem != null)
                 {
                     string selectedClient = clientDropdownMenu.SelectedItem?.ToString();
@@ -377,7 +376,7 @@ namespace DynamoTesting
                     int rowIndex = 1;
                     foreach (var option in options)
                     {
-
+                        useGreyText = true;
                         if (option.EnglishOffered)
                         {
                             CreateAndAddRadioButton_Civil3D(2, rowIndex, option.Client, option.Version, "English");
@@ -412,7 +411,7 @@ namespace DynamoTesting
                     }
                 }
 
-                AddCivil3DColumnHeaders(); // TO DO: This really shouldn't come at the end
+                AddCivil3DColumnHeaders();
             }
 
             else if (selectedSoftware == "OpenRoads Designer")
@@ -425,6 +424,8 @@ namespace DynamoTesting
                 tableLayoutPanel.ColumnStyles[2].Width = 40;
 
                 List<OpenRoadsTableRowData> options = null;
+
+                List<string> openRoadsInstallations = openRoadsModel.GetOpenRoadsInstallations();
 
                 if (clientDropdownMenu.SelectedItem != null)
                 {
@@ -442,26 +443,21 @@ namespace DynamoTesting
                     int rowIndex = 1;
                     foreach (var option in options)
                     {
+                        useGreyText = true;
 
-                        if (option != null)
+                        if (openRoadsInstallations.Contains(option.Version))
                         {
+                            useGreyText = false;
                             CreateAndAddRadioButton_OpenRoads(2, rowIndex, option.Client, option.Version);
-                        }
-                        else
-                        {
-                            CreateAndAddlightGrayLabel("--", 2, rowIndex);
-                        }
-
-
-                        if (useGreyText == true)
-                        {
-                            CreateAndAddGrayLabel(option.Client, 0, rowIndex);
-                            CreateAndAddGrayLabel(option.Version, 1, rowIndex);
-                        }
-                        else
-                        {
                             CreateAndAddBlackLabel(option.Client, 0, rowIndex);
                             CreateAndAddBlackLabel(option.Version, 1, rowIndex);
+                        }
+                        else
+                        {
+                            useGreyText = true;
+                            CreateAndAddRadioButton_OpenRoads(2, rowIndex, option.Client, option.Version);
+                            CreateAndAddGrayLabel(option.Client, 0, rowIndex);
+                            CreateAndAddGrayLabel(option.Version, 1, rowIndex);
                         }
 
 
@@ -469,7 +465,7 @@ namespace DynamoTesting
                     }
                 }
 
-                AddOpenRoadsColumnHeaders(); // TO DO: This really shouldn't come at the end
+                AddOpenRoadsColumnHeaders();
             }
 
         }
@@ -541,7 +537,7 @@ namespace DynamoTesting
                 string language = tagTuple.Item3;
 
                 builtShortcutPath = civil3dModel.BuildCivil3DEnvironmentShortcut(client, version, language);
-                favouriteButtonToolTip = client + " [" + version  +" " + language + "]";
+                favouriteButtonToolTip = client + " (" + version  +" " + language + ")";
 
                 launchButton.Enabled = true;
 
@@ -561,7 +557,7 @@ namespace DynamoTesting
                 string version = tagTuple.Item2;
 
                 builtShortcutPath = openRoadsModel.BuildOpenRoadsEnvironmentShortcut(client, version);
-                favouriteButtonToolTip = client + " (" + version + ")";
+                favouriteButtonToolTip = client + " [" + version + "]";
 
                 launchButton.Enabled = true;
 
@@ -608,10 +604,13 @@ namespace DynamoTesting
             {
                 Button button = new Button();
                 button.Font = new Font("Segoe UI", 7, FontStyle.Regular);
+
                 button.Text = favouriteButton.Name;
                 button.Tag = favouriteButton; // Store the FavouriteButton instance in the Tag property
                 button.Click += FavouriteButton_Click;
                 button.ContextMenuStrip = rightClickMenu;
+                button.ForeColor = Color.Black;
+                button.BackColor = Color.LightGray;
 
                 // Create and configure the tooltip for the button
                 ToolTip toolTip = new ToolTip();
@@ -715,35 +714,42 @@ namespace DynamoTesting
             Button buttonToUpdate = (Button)contextMenu.SourceControl;
             FavouriteButton favouriteButtonToUpdate = (FavouriteButton)buttonToUpdate.Tag;
 
-            // Store the original tooltip
+            bool radioButtonSelected = false;
+            foreach (Control control in tableLayoutPanel.Controls)
+            {
+                if (control is RadioButton radioButton && radioButton.Checked)
+                {
+                    radioButtonSelected = true;
+                    break;
+                }
+            }
+
+            if (!radioButtonSelected)
+            {
+                MessageBox.Show("Please select a client environment to update the favourite button with.", "No Environment Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return; // Exit the method if no radio button is selected
+            }
+
             string originalToolTip = favouriteButtonToUpdate.Tooltip;
 
-            // Update the shortcutPath and toolTip for the active button
             favouriteButtonToUpdate.ShortcutPath = builtShortcutPath;
             favouriteButtonToUpdate.Tooltip = favouriteButtonToolTip;
 
             if (originalToolTip != favouriteButtonToolTip)
             {
-                // Show a pop-up message indicating the update
-                MessageBox.Show($"{originalToolTip}\n\nwas uptated to\n\n{favouriteButtonToolTip}", "Update Successful!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show($"{originalToolTip} was uptated to {favouriteButtonToolTip}", "Update Successful!", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
-                // Show a pop-up message indicating no changes
                 MessageBox.Show("No changes made. The selected environment is the same as the original.", "No Changes Made", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
-            // Find the index of the button in the list
             int indexToUpdate = viewModel.favouriteButtons.FindIndex(button => button == favouriteButtonToUpdate);
 
-            // If found, update the object in the list
             if (indexToUpdate != -1)
             {
                 viewModel.favouriteButtons[indexToUpdate] = favouriteButtonToUpdate;
-                // Save changes to persistent storage
                 viewModel.WriteToFavouriteButtonsJson();
-                // Redraw the buttons to reflect the changes
-
             }
             RedrawButtons();
         }
@@ -768,6 +774,8 @@ namespace DynamoTesting
             RedrawButtons();
         }
         #endregion
+
+
 
 
 

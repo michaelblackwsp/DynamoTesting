@@ -60,7 +60,7 @@
             // usernameLabel
             // 
             this.usernameLabel.AutoSize = true;
-            this.usernameLabel.Location = new System.Drawing.Point(6, 428);
+            this.usernameLabel.Location = new System.Drawing.Point(6, 456);
             this.usernameLabel.Name = "usernameLabel";
             this.usernameLabel.Size = new System.Drawing.Size(60, 15);
             this.usernameLabel.TabIndex = 11;
@@ -75,7 +75,7 @@
             this.tabList.Location = new System.Drawing.Point(12, 12);
             this.tabList.Name = "tabList";
             this.tabList.SelectedIndex = 0;
-            this.tabList.Size = new System.Drawing.Size(403, 413);
+            this.tabList.Size = new System.Drawing.Size(403, 441);
             this.tabList.TabIndex = 21;
             // 
             // launcherTab
@@ -96,14 +96,14 @@
             this.launcherTab.Location = new System.Drawing.Point(4, 24);
             this.launcherTab.Name = "launcherTab";
             this.launcherTab.Padding = new System.Windows.Forms.Padding(3);
-            this.launcherTab.Size = new System.Drawing.Size(395, 385);
+            this.launcherTab.Size = new System.Drawing.Size(395, 413);
             this.launcherTab.TabIndex = 1;
             this.launcherTab.Text = "Launcher";
             this.launcherTab.UseVisualStyleBackColor = true;
             // 
             // cancelButton
             // 
-            this.cancelButton.Location = new System.Drawing.Point(312, 354);
+            this.cancelButton.Location = new System.Drawing.Point(312, 378);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(58, 24);
             this.cancelButton.TabIndex = 35;
@@ -114,7 +114,7 @@
             // saveButton
             // 
             this.saveButton.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.saveButton.Location = new System.Drawing.Point(265, 354);
+            this.saveButton.Location = new System.Drawing.Point(265, 378);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(44, 24);
             this.saveButton.TabIndex = 30;
@@ -125,7 +125,7 @@
             // nameTextBox
             // 
             this.nameTextBox.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.nameTextBox.Location = new System.Drawing.Point(265, 330);
+            this.nameTextBox.Location = new System.Drawing.Point(265, 354);
             this.nameTextBox.Name = "nameTextBox";
             this.nameTextBox.Size = new System.Drawing.Size(105, 22);
             this.nameTextBox.TabIndex = 31;
@@ -142,7 +142,7 @@
             this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 26F));
             this.tableLayoutPanel.Location = new System.Drawing.Point(15, 146);
             this.tableLayoutPanel.Name = "tableLayoutPanel";
-            this.tableLayoutPanel.RowCount = 8;
+            this.tableLayoutPanel.RowCount = 9;
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
@@ -151,7 +151,8 @@
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 19F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 19F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel.Size = new System.Drawing.Size(223, 180);
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.Size = new System.Drawing.Size(223, 197);
             this.tableLayoutPanel.TabIndex = 29;
             this.tableLayoutPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel_Paint_1);
             // 
@@ -230,7 +231,7 @@
             // 
             // launchButton
             // 
-            this.launchButton.Location = new System.Drawing.Point(15, 341);
+            this.launchButton.Location = new System.Drawing.Point(15, 365);
             this.launchButton.Name = "launchButton";
             this.launchButton.Size = new System.Drawing.Size(95, 36);
             this.launchButton.TabIndex = 21;
@@ -244,7 +245,7 @@
             this.favouritesPanel.Controls.Add(this.favouritesLabel);
             this.favouritesPanel.Location = new System.Drawing.Point(262, 36);
             this.favouritesPanel.Name = "favouritesPanel";
-            this.favouritesPanel.Size = new System.Drawing.Size(112, 290);
+            this.favouritesPanel.Size = new System.Drawing.Size(112, 307);
             this.favouritesPanel.TabIndex = 34;
             this.favouritesPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.favouritesPanel_Paint);
             // 
@@ -303,7 +304,7 @@
             // languageLabel
             // 
             this.languageLabel.AutoSize = true;
-            this.languageLabel.Location = new System.Drawing.Point(302, 428);
+            this.languageLabel.Location = new System.Drawing.Point(297, 456);
             this.languageLabel.Name = "languageLabel";
             this.languageLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.languageLabel.Size = new System.Drawing.Size(56, 15);
@@ -315,7 +316,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(427, 450);
+            this.ClientSize = new System.Drawing.Size(427, 477);
             this.Controls.Add(this.languageLabel);
             this.Controls.Add(this.usernameLabel);
             this.Controls.Add(this.tabList);
