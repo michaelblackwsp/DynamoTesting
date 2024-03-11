@@ -48,19 +48,27 @@
             this.superLinksTab = new System.Windows.Forms.TabPage();
             this.linksComingSoonLabel = new System.Windows.Forms.Label();
             this.resourcesTab = new System.Windows.Forms.TabPage();
-            this.helpComingSoonLabel = new System.Windows.Forms.Label();
+            this.civil3dRequestForm = new System.Windows.Forms.LinkLabel();
+            this.horizonOracleSupport = new System.Windows.Forms.LinkLabel();
+            this.pans = new System.Windows.Forms.LinkLabel();
+            this.wspServiceNow = new System.Windows.Forms.LinkLabel();
+            this.oracleTimesheet = new System.Windows.Forms.LinkLabel();
+            this.digitalOperationsHomePage = new System.Windows.Forms.LinkLabel();
+            this.aboutTab = new System.Windows.Forms.TabPage();
+            this.eula = new System.Windows.Forms.LinkLabel();
             this.languageLabel = new System.Windows.Forms.Label();
             this.tabList.SuspendLayout();
             this.launcherTab.SuspendLayout();
             this.favouritesPanel.SuspendLayout();
             this.superLinksTab.SuspendLayout();
             this.resourcesTab.SuspendLayout();
+            this.aboutTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // usernameLabel
             // 
             this.usernameLabel.AutoSize = true;
-            this.usernameLabel.Location = new System.Drawing.Point(6, 456);
+            this.usernameLabel.Location = new System.Drawing.Point(12, 456);
             this.usernameLabel.Name = "usernameLabel";
             this.usernameLabel.Size = new System.Drawing.Size(60, 15);
             this.usernameLabel.TabIndex = 11;
@@ -72,6 +80,7 @@
             this.tabList.Controls.Add(this.launcherTab);
             this.tabList.Controls.Add(this.superLinksTab);
             this.tabList.Controls.Add(this.resourcesTab);
+            this.tabList.Controls.Add(this.aboutTab);
             this.tabList.Location = new System.Drawing.Point(12, 12);
             this.tabList.Name = "tabList";
             this.tabList.SelectedIndex = 0;
@@ -266,7 +275,7 @@
             this.superLinksTab.Location = new System.Drawing.Point(4, 24);
             this.superLinksTab.Name = "superLinksTab";
             this.superLinksTab.Padding = new System.Windows.Forms.Padding(3);
-            this.superLinksTab.Size = new System.Drawing.Size(395, 385);
+            this.superLinksTab.Size = new System.Drawing.Size(395, 413);
             this.superLinksTab.TabIndex = 0;
             this.superLinksTab.Text = "Super Links";
             this.superLinksTab.UseVisualStyleBackColor = true;
@@ -275,7 +284,7 @@
             // linksComingSoonLabel
             // 
             this.linksComingSoonLabel.AutoSize = true;
-            this.linksComingSoonLabel.Location = new System.Drawing.Point(142, 159);
+            this.linksComingSoonLabel.Location = new System.Drawing.Point(155, 174);
             this.linksComingSoonLabel.Name = "linksComingSoonLabel";
             this.linksComingSoonLabel.Size = new System.Drawing.Size(83, 15);
             this.linksComingSoonLabel.TabIndex = 2;
@@ -283,28 +292,112 @@
             // 
             // resourcesTab
             // 
-            this.resourcesTab.Controls.Add(this.helpComingSoonLabel);
+            this.resourcesTab.Controls.Add(this.civil3dRequestForm);
+            this.resourcesTab.Controls.Add(this.horizonOracleSupport);
+            this.resourcesTab.Controls.Add(this.pans);
+            this.resourcesTab.Controls.Add(this.wspServiceNow);
+            this.resourcesTab.Controls.Add(this.oracleTimesheet);
+            this.resourcesTab.Controls.Add(this.digitalOperationsHomePage);
             this.resourcesTab.Location = new System.Drawing.Point(4, 24);
             this.resourcesTab.Name = "resourcesTab";
             this.resourcesTab.Padding = new System.Windows.Forms.Padding(3);
-            this.resourcesTab.Size = new System.Drawing.Size(395, 385);
+            this.resourcesTab.Size = new System.Drawing.Size(395, 413);
             this.resourcesTab.TabIndex = 2;
             this.resourcesTab.Text = "Resources";
             this.resourcesTab.UseVisualStyleBackColor = true;
             // 
-            // helpComingSoonLabel
+            // civil3dRequestForm
             // 
-            this.helpComingSoonLabel.AutoSize = true;
-            this.helpComingSoonLabel.Location = new System.Drawing.Point(142, 159);
-            this.helpComingSoonLabel.Name = "helpComingSoonLabel";
-            this.helpComingSoonLabel.Size = new System.Drawing.Size(83, 15);
-            this.helpComingSoonLabel.TabIndex = 1;
-            this.helpComingSoonLabel.Text = "Coming Soon!";
+            this.civil3dRequestForm.AutoSize = true;
+            this.civil3dRequestForm.Location = new System.Drawing.Point(133, 103);
+            this.civil3dRequestForm.Name = "civil3dRequestForm";
+            this.civil3dRequestForm.Size = new System.Drawing.Size(123, 15);
+            this.civil3dRequestForm.TabIndex = 7;
+            this.civil3dRequestForm.TabStop = true;
+            this.civil3dRequestForm.Text = "Civil 3D Request Form";
+            this.civil3dRequestForm.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.civil3dRequestForm_LinkClicked);
+            // 
+            // horizonOracleSupport
+            // 
+            this.horizonOracleSupport.AutoSize = true;
+            this.horizonOracleSupport.Location = new System.Drawing.Point(129, 196);
+            this.horizonOracleSupport.Name = "horizonOracleSupport";
+            this.horizonOracleSupport.Size = new System.Drawing.Size(131, 15);
+            this.horizonOracleSupport.TabIndex = 6;
+            this.horizonOracleSupport.TabStop = true;
+            this.horizonOracleSupport.Text = "Horizon Oracle Support";
+            this.horizonOracleSupport.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.horizonOracleSupport_LinkClicked);
+            // 
+            // pans
+            // 
+            this.pans.AutoSize = true;
+            this.pans.Location = new System.Drawing.Point(178, 281);
+            this.pans.Name = "pans";
+            this.pans.Size = new System.Drawing.Size(35, 15);
+            this.pans.TabIndex = 5;
+            this.pans.TabStop = true;
+            this.pans.Text = "PANs";
+            this.pans.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.pans_LinkClicked);
+            // 
+            // wspServiceNow
+            // 
+            this.wspServiceNow.AutoSize = true;
+            this.wspServiceNow.Location = new System.Drawing.Point(146, 256);
+            this.wspServiceNow.Name = "wspServiceNow";
+            this.wspServiceNow.Size = new System.Drawing.Size(99, 15);
+            this.wspServiceNow.TabIndex = 4;
+            this.wspServiceNow.TabStop = true;
+            this.wspServiceNow.Text = "WSP Service Now";
+            this.wspServiceNow.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.wspServiceNow_LinkClicked);
+            // 
+            // oracleTimesheet
+            // 
+            this.oracleTimesheet.AutoSize = true;
+            this.oracleTimesheet.Location = new System.Drawing.Point(145, 173);
+            this.oracleTimesheet.Name = "oracleTimesheet";
+            this.oracleTimesheet.Size = new System.Drawing.Size(98, 15);
+            this.oracleTimesheet.TabIndex = 3;
+            this.oracleTimesheet.TabStop = true;
+            this.oracleTimesheet.Text = "Oracle Timesheet";
+            this.oracleTimesheet.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.oracleTimesheet_LinkClicked);
+            // 
+            // digitalOperationsHomePage
+            // 
+            this.digitalOperationsHomePage.AutoSize = true;
+            this.digitalOperationsHomePage.Location = new System.Drawing.Point(114, 80);
+            this.digitalOperationsHomePage.Name = "digitalOperationsHomePage";
+            this.digitalOperationsHomePage.Size = new System.Drawing.Size(167, 15);
+            this.digitalOperationsHomePage.TabIndex = 2;
+            this.digitalOperationsHomePage.TabStop = true;
+            this.digitalOperationsHomePage.Text = "Digital Operations Home Page";
+            this.digitalOperationsHomePage.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.digitalOperationsHomePage_LinkClicked);
+            // 
+            // aboutTab
+            // 
+            this.aboutTab.Controls.Add(this.eula);
+            this.aboutTab.Location = new System.Drawing.Point(4, 24);
+            this.aboutTab.Name = "aboutTab";
+            this.aboutTab.Padding = new System.Windows.Forms.Padding(3);
+            this.aboutTab.Size = new System.Drawing.Size(395, 413);
+            this.aboutTab.TabIndex = 3;
+            this.aboutTab.Text = "About";
+            this.aboutTab.UseVisualStyleBackColor = true;
+            // 
+            // eula
+            // 
+            this.eula.AutoSize = true;
+            this.eula.Location = new System.Drawing.Point(97, 80);
+            this.eula.Name = "eula";
+            this.eula.Size = new System.Drawing.Size(198, 15);
+            this.eula.TabIndex = 3;
+            this.eula.TabStop = true;
+            this.eula.Text = "End-User License Agreement (EULA)";
+            this.eula.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.eula_LinkClicked);
             // 
             // languageLabel
             // 
             this.languageLabel.AutoSize = true;
-            this.languageLabel.Location = new System.Drawing.Point(297, 456);
+            this.languageLabel.Location = new System.Drawing.Point(300, 456);
             this.languageLabel.Name = "languageLabel";
             this.languageLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.languageLabel.Size = new System.Drawing.Size(56, 15);
@@ -332,6 +425,8 @@
             this.superLinksTab.PerformLayout();
             this.resourcesTab.ResumeLayout(false);
             this.resourcesTab.PerformLayout();
+            this.aboutTab.ResumeLayout(false);
+            this.aboutTab.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -354,11 +449,18 @@
         private ComboBox versionDropdownMenu;
         private ComboBox clientDropdownMenu;
         private Button launchButton;
-        private Label helpComingSoonLabel;
         private Label linksComingSoonLabel;
         private Label languageLabel;
         private Panel favouritesPanel;
         private Label favouritesLabel;
         private Button cancelButton;
+        private LinkLabel digitalOperationsHomePage;
+        private LinkLabel oracleTimesheet;
+        private LinkLabel wspServiceNow;
+        private LinkLabel pans;
+        private LinkLabel horizonOracleSupport;
+        private LinkLabel civil3dRequestForm;
+        private TabPage aboutTab;
+        private LinkLabel eula;
     }
 }

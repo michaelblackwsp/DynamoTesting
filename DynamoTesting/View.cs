@@ -1,4 +1,5 @@
 using Microsoft.VisualBasic.ApplicationServices;
+using System.Diagnostics;
 using System.Reflection;
 using Button = System.Windows.Forms.Button;
 using ToolTip = System.Windows.Forms.ToolTip;
@@ -48,6 +49,8 @@ namespace DynamoTesting
             PropertyInfo propertyInfo = type.GetProperty("DoubleBuffered", BindingFlags.Instance | BindingFlags.NonPublic);
             propertyInfo?.SetValue(control, true, null);
         }
+
+        // TO DO: ADD DEFAULT (METRIC / IMPERIAL) VERSIONS OF SOFTWARE
 
         private void repconLauncher_Load(object sender, EventArgs e)
         {
@@ -865,8 +868,43 @@ namespace DynamoTesting
         {
 
         }
+
         #endregion
 
+        private void digitalOperationsHomePage_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            utilities.OpenWebsite("https://wsponline.sharepoint.com/sites/CA-CAipmoDpdOps");
+        }
 
+        private void civil3dRequestForm_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            utilities.OpenWebsite("https://apps.powerapps.com/play/e/1cffb129-e912-e209-a2e7-d63404f22af0/a/e9300341-d97a-4f13-9bf0-897f752b7ffa?tenantId=3d234255-e20f-4205-88a5-9658a402999b");
+        }
+
+        private void oracleTimesheet_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            utilities.OpenWebsite("https://emit.fa.ca3.oraclecloud.com/fscmUI/faces/FuseWelcome");
+        }
+
+        private void horizonOracleSupport_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            utilities.OpenWebsite("https://wsponline.sharepoint.com/sites/GBL-Horizon/SitePages/Horizon-Oracle-Support.aspx");
+        }
+
+        private void wspServiceNow_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            utilities.OpenWebsite("https://wsp.service-now.com/wsp");
+        }
+
+        private void pans_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            utilities.OpenWebsite("https://wsponline.sharepoint.com/sites/PAN-Home");
+        }
+
+        private void eula_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            utilities.OpenWebsite("https://wsponline.sharepoint.com/sites/PAN-Home");
+        }
     }
 }
+

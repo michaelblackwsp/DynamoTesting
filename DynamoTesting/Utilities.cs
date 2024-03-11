@@ -23,7 +23,6 @@ namespace DynamoTesting
             try
             {
                 RegistryKey key;
-
                 if (location == "CurrentUser")
                 {
                     key = Registry.CurrentUser.OpenSubKey(path);
@@ -47,7 +46,6 @@ namespace DynamoTesting
 
         public void StartSoftware(string path)
         {
-
             if (System.IO.File.Exists(path))
             {
                 ProcessStartInfo processStartInfo = new ProcessStartInfo
@@ -87,6 +85,18 @@ namespace DynamoTesting
                 return null;
             }
         }
+
+        public void OpenWebsite(string url)
+        {
+            System.Diagnostics.Process.Start(new ProcessStartInfo
+            {
+                FileName = "cmd",
+                Arguments = $"/c start {url}",
+                UseShellExecute = false,
+                CreateNoWindow = true
+            });
+        }
+
     }
 
     public class ActiveDirectoryHelper

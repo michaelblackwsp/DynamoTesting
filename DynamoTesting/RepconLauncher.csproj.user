@@ -2,6 +2,10 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <_LastSelectedProfileId>C:\Users\CAMB075971\source\repos\WinForms_Sandbox\DynamoTesting\Properties\PublishProfiles\FolderProfile.pubxml</_LastSelectedProfileId>
+    <ActiveDebugProfile>DynamoTesting</ActiveDebugProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
   </PropertyGroup>
   <ItemGroup>
     <Compile Update="View.cs">
