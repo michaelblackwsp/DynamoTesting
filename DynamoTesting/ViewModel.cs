@@ -113,14 +113,14 @@ namespace DynamoTesting
 
         public void WriteToFavouriteButtonsJson()
         {
+            //FOR RELEASE: Add logic to create the JSON file if for some reason it doesn't exist on the user's machine
             //string filePath = Path.Combine(Application.StartupPath, "preferences", "favouriteButtons.json");
             string filePath = @"C:\Users\CAMB075971\source\repos\WinForms_Sandbox\DynamoTesting\preferences\favouriteButtons.json";
             var options = new JsonSerializerOptions { WriteIndented = true };
             string jsonString = JsonSerializer.Serialize(favouriteButtons, options);
             File.WriteAllText(filePath, jsonString);
-            
-            // TO DO: Add a catch in case the file doesn't exist
         }
+
         public void ReadFromFavouriteButtonsJson()
         {
             //string filePath = Path.Combine(Application.StartupPath, "preferences", "favouriteButtons.json");
@@ -149,7 +149,6 @@ namespace DynamoTesting
 
         public Civil3DTableRowData(string client, string version, bool englishOffered, bool frenchOffered)
         {
-            // client, version etc. are the parameters passed to the TableRowData object
             Client = client;
             Version = version;
             EnglishOffered = englishOffered;
@@ -167,7 +166,6 @@ namespace DynamoTesting
 
         public OpenRoadsTableRowData(string client, string version)
         {
-            // client, version etc. are the parameters passed to the TableRowData object
             Client = client;
             Version = version;
         }
@@ -175,14 +173,14 @@ namespace DynamoTesting
     #endregion
 
     #region Favourite Button Class
-    // TO DO: Handle removing of environments by colouring buttons / giving warning
     public class FavouriteButton
     {
+        // ONCE RELEASED: Handle removing of environments by colouring buttons / giving warning
         public string Name { get; set; }
         public string ShortcutPath { get; set; }
         public string Tooltip { get; set; }
         public string Software { get; set; }
-        public string IconPath { get; set; } // Add a property for the icon file path
+        public string IconPath { get; set; }
 
         public FavouriteButton(string name, string shortcutPath, string tooltip, string software, string iconPath)
         {

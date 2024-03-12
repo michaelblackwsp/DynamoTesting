@@ -1,1 +1,23 @@
-[]
+[
+  {
+    "Name": "USEP",
+    "ShortcutPath": "W:\\1_service\\2_environments\\MX\\english_software\\c3d_2020_en_mx.lnk",
+    "Tooltip": "MX (2020 English)",
+    "Software": "Civil 3D",
+    "IconPath": "C:\\Users\\CAMB075971\\source\\repos\\WinForms_Sandbox\\DynamoTesting\\Icons\\Civil3D.ico"
+  },
+  {
+    "Name": "PSQDA",
+    "ShortcutPath": "W:\\1_service\\2_environments\\CofC\\english_software\\c3d_2020_en_cofc.lnk",
+    "Tooltip": "CofC (2020 English)",
+    "Software": "Civil 3D",
+    "IconPath": "C:\\Users\\CAMB075971\\source\\repos\\WinForms_Sandbox\\DynamoTesting\\Icons\\Civil3D.ico"
+  },
+  {
+    "Name": "SDQFGS",
+    "ShortcutPath": "C:\\Program Files\\Bentley\\OpenRoads Designer CE 10.11\\OpenRoadsDesigner\\OpenRoadsDesigner.exe",
+    "Tooltip": "MTO [2022 (R1)]",
+    "Software": "OpenRoads Designer",
+    "IconPath": "C:\\Users\\CAMB075971\\source\\repos\\WinForms_Sandbox\\DynamoTesting\\Icons\\OpenRoads.ico"
+  }
+]

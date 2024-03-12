@@ -7,7 +7,7 @@
 
         #region OpenRoads Client Environments
         // TO DO: Add built-in (default) versions for each software
-        public static string[] clientOptions = { "MTO", "MTQ", "WSP_EN" };
+        public static string[] clientOptions = { "MTO", "MTQ", "WSP_EN", "<Standard>" };
         // TO DO: Populate the dropdowns based on the keys of the client/version dictionaries below
         public static string[] versionOptions = { "2020 (R3)", "2021 (R1)", "2021 (R2)", "2022 (R1)", "2022 (R1 U1)", "2022 (R2)", "2022 (R3)", "2022 (R3 U1)" };
 
@@ -17,17 +17,18 @@
             { "MTO", new string[] { "2021 (R1)", "2021 (R2)", "2022 (R1)", "2022 (R1 U1)", "2022 (R2)", "2022 (R3)", "2022 (R3 U1)" } },
             { "MTQ", new string[] { "2020 (R3)", "2021 (R1)", "2021 (R2)", "2022 (R1)", "2022 (R1 U1)", "2022 (R2)", "2022 (R3)", "2022 (R3 U1)" } },
             { "WSP_EN", new string[] { "2022 (R3)", "2022 (R3 U1)" } },
+            { "<Standard>", new string[] { "2020 (R3)", "2021 (R1)", "2021 (R2)", "2022 (R1)", "2022 (R1 U1)", "2022 (R2)", "2022 (R3)", "2022 (R3 U1)" } },
         };
         public Dictionary<string, string[]> clientsBasedOnVersion = new Dictionary<string, string[]>
         {
-            {"2020 (R3)", new string[] { "MTQ" } },
-            {"2021 (R1)", new string[] { "MTO", "MTQ" } },
-            {"2021 (R2)", new string[] { "MTO", "MTQ" } },
-            {"2022 (R1)", new string[] { "MTO", "MTQ" } },
-            {"2022 (R1 U1)", new string[] { "MTO", "MTQ" } },
+            {"2020 (R3)", new string[] { "MTQ", "<Standard>"} },
+            {"2021 (R1)", new string[] { "MTO", "MTQ", "<Standard>" } },
+            {"2021 (R2)", new string[] { "MTO", "MTQ", "<Standard>" } },
+            {"2022 (R1)", new string[] { "MTO", "MTQ", "<Standard>" } },
+            {"2022 (R1 U1)", new string[] { "MTO", "MTQ", "<Standard>" } },
             {"2022 (R2)", new string[] { "MTO" } },
-            {"2022 (R3)", new string[] { "MTO", "MTQ", "WSP_EN" } },
-            {"2022 (R3 U1)", new string[] { "MTO", "MTQ", "WSP_EN" } },
+            {"2022 (R3)", new string[] { "MTO", "MTQ", "WSP_EN", "<Standard>" } },
+            {"2022 (R3 U1)", new string[] { "MTO", "MTQ", "WSP_EN", "<Standard>" } },
         };
         #endregion
 
@@ -67,6 +68,12 @@
         #endregion
 
 
+        public string BuildOpenRoadsStandardShortcut(string client, string version)
+        {
+            string shortcut = "C:\\Program Files\\Bentley\\OpenRoads Designer CE 10.11\\OpenRoadsDesigner\\OpenRoadsDesigner.exe";
+            return shortcut;
+        }
+
         public string BuildOpenRoadsEnvironmentShortcut(string client, string version)
         {
             string shortcut = "C:\\Program Files\\Bentley\\OpenRoads Designer CE 10.11\\OpenRoadsDesigner\\OpenRoadsDesigner.exe";
@@ -74,9 +81,5 @@
         }
 
     }
-
-    // The one-stop shop for all your production needs!
-
-    // ADD: launch default software
 
 }

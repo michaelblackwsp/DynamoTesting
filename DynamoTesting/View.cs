@@ -16,7 +16,7 @@ namespace DynamoTesting
         Utilities utilities = new Utilities();
 
         private string builtShortcutPath = "";
-        string favouriteButtonToolTip = ""; // FIX ME: Why is this needed when it's part of the class?
+        string favouriteButtonToolTip = "";
         bool useGreyText = false;
 
         private ContextMenuStrip rightClickMenu;
@@ -40,6 +40,8 @@ namespace DynamoTesting
             clientDropdownMenu.Enabled = false;
             versionDropdownMenu.Enabled = false;
             resetButton.Enabled = false;
+
+            resetButton.Visible = false;
 
         }
 
@@ -88,8 +90,8 @@ namespace DynamoTesting
         private void InitializeRightClickMenu()
         {
             rightClickMenu = new ContextMenuStrip(); // Create the context menu
-            
-            ToolStripMenuItem renameMenuItem = new ToolStripMenuItem("Rename"); // Create menu items
+
+            ToolStripMenuItem renameMenuItem = new ToolStripMenuItem("Rename");
             renameMenuItem.Click += RenameMenuItem_Click;
             rightClickMenu.Items.Add(renameMenuItem);
 
@@ -107,7 +109,7 @@ namespace DynamoTesting
         #region Draw and Handle Dropdown Menu Events
         private void softwareComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            resetButton.PerformClick(); // Reset the form so it doesn't try to draw the OpenRoads table based on old Civil 3D selection
+            resetButton_ForceClick(null, EventArgs.Empty); // Reset the form so it doesn't try to draw the OpenRoads table based on old Civil 3D selection
             UpdateTableData();
 
             string selectedSoftware = softwareComboBox.SelectedItem.ToString();
@@ -118,23 +120,7 @@ namespace DynamoTesting
             clientDropdownMenu.Items.Clear();
             versionDropdownMenu.Items.Clear();
 
-            if (selectedSoftware == "OpenRoads Designer")
-            {
-                clientDropdownMenu.Items.AddRange(openRoadsModel.clientOptions);
-                string[] clientOptions = openRoadsModel.clientOptions;
-                clientDropdownMenu.DropDownStyle = ComboBoxStyle.DropDownList;
-                clientDropdownMenu.DrawMode = DrawMode.OwnerDrawFixed;
-                clientDropdownMenu.DrawItem += clientDropdownMenu_DrawItem;
-                clientDropdownMenu.SelectedIndexChanged += clientDropdownMenu_SelectedIndexChanged;
-
-                versionDropdownMenu.Items.AddRange(openRoadsModel.versionOptions);
-                string[] versionOptions = openRoadsModel.versionOptions;
-                versionDropdownMenu.DropDownStyle = ComboBoxStyle.DropDownList;
-                versionDropdownMenu.DrawMode = DrawMode.OwnerDrawFixed;
-                versionDropdownMenu.DrawItem += versionDropdownMenu_DrawItem;
-                versionDropdownMenu.SelectedIndexChanged += versionDropdownMenu_SelectedIndexChanged;
-            }
-            else if (selectedSoftware == "Civil 3D")
+            if (selectedSoftware == "Civil 3D")
             {
                 clientDropdownMenu.Items.AddRange(civil3dModel.clientOptions);
                 string[] clientOptions = civil3dModel.clientOptions;
@@ -145,6 +131,23 @@ namespace DynamoTesting
 
                 versionDropdownMenu.Items.AddRange(civil3dModel.versionOptions);
                 string[] versionOptions = civil3dModel.versionOptions;
+                versionDropdownMenu.DropDownStyle = ComboBoxStyle.DropDownList;
+                versionDropdownMenu.DrawMode = DrawMode.OwnerDrawFixed;
+                versionDropdownMenu.DrawItem += versionDropdownMenu_DrawItem;
+                versionDropdownMenu.SelectedIndexChanged += versionDropdownMenu_SelectedIndexChanged;
+
+            }
+            else if (selectedSoftware == "OpenRoads Designer")
+            {
+                clientDropdownMenu.Items.AddRange(openRoadsModel.clientOptions);
+                string[] clientOptions = openRoadsModel.clientOptions;
+                clientDropdownMenu.DropDownStyle = ComboBoxStyle.DropDownList;
+                clientDropdownMenu.DrawMode = DrawMode.OwnerDrawFixed;
+                clientDropdownMenu.DrawItem += clientDropdownMenu_DrawItem;
+                clientDropdownMenu.SelectedIndexChanged += clientDropdownMenu_SelectedIndexChanged;
+
+                versionDropdownMenu.Items.AddRange(openRoadsModel.versionOptions);
+                string[] versionOptions = openRoadsModel.versionOptions;
                 versionDropdownMenu.DropDownStyle = ComboBoxStyle.DropDownList;
                 versionDropdownMenu.DrawMode = DrawMode.OwnerDrawFixed;
                 versionDropdownMenu.DrawItem += versionDropdownMenu_DrawItem;
@@ -173,15 +176,6 @@ namespace DynamoTesting
                     TextRenderer.DrawText(e.Graphics, option, e.Font, e.Bounds, Color.Black, TextFormatFlags.Left);
                 }
             }
-        private void clientDropdownMenu_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            resetButton.Enabled = true;
-            versionDropdownMenu.Enabled = false;
-            launchButton.Enabled = false;
-            saveButton.Enabled = false;
-            UpdateTableData();
-        }
-
         private void versionDropdownMenu_DrawItem(object? sender, DrawItemEventArgs e)
         {   // REFACTOR INTO UTILITY METHOD
             if (e.Index >= 0)
@@ -202,14 +196,46 @@ namespace DynamoTesting
                 TextRenderer.DrawText(e.Graphics, option, e.Font, e.Bounds, Color.Black, TextFormatFlags.Left);
             }
         }
-        private void versionDropdownMenu_SelectedIndexChanged(object sender, EventArgs e)
+
+        private void clientDropdownMenu_SelectedIndexChanged(object sender, EventArgs e)
         {
             resetButton.Enabled = true;
-            clientDropdownMenu.Enabled = false;
+
+            int selectedIndex = clientDropdownMenu.SelectedIndex;
+            if (versionDropdownMenu.SelectedItem != null)
+            {
+                resetButton_ForceClick(null, EventArgs.Empty);
+            }
+            versionDropdownMenu.Enabled = true;
             launchButton.Enabled = false;
             saveButton.Enabled = false;
             UpdateTableData();
+            clientDropdownMenu.SelectedIndex = selectedIndex;
+            clientDropdownMenu.BackColor = SystemColors.Window;
         }
+        private void versionDropdownMenu_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            resetButton.Enabled = true;
+            int selectedIndex = versionDropdownMenu.SelectedIndex;
+            if (clientDropdownMenu.SelectedItem != null )
+            {
+                resetButton_ForceClick(null, EventArgs.Empty);
+            }
+            clientDropdownMenu.Enabled = true; 
+            launchButton.Enabled = false;
+            saveButton.Enabled = false;
+            UpdateTableData();
+            versionDropdownMenu.SelectedIndex = selectedIndex;
+            versionDropdownMenu.BackColor = SystemColors.Window;
+        }
+
+
+        public void resetButton_ForceClick(object sender, EventArgs e)
+        {
+            EventArgs eventArgs = new EventArgs();
+            resetButton_Click(null, EventArgs.Empty);
+        }
+
         #endregion
 
 
@@ -246,6 +272,9 @@ namespace DynamoTesting
 
             nameTextBox.Enabled = false;
             cancelButton.Enabled = false;
+
+            clientDropdownMenu.BackColor = SystemColors.Window;
+            versionDropdownMenu.BackColor = SystemColors.Window;
 
         }
         private void launchButton_Click(object sender, EventArgs e)
@@ -360,7 +389,7 @@ namespace DynamoTesting
                 tableLayoutPanel.Controls.Clear();
                 tableLayoutPanel.ColumnCount = 4;
 
-                tableLayoutPanel.ColumnStyles[0].Width = 40;
+                tableLayoutPanel.ColumnStyles[0].Width = 45;
                 tableLayoutPanel.ColumnStyles[1].Width = 40;
                 tableLayoutPanel.ColumnStyles[2].Width = 40;
                 tableLayoutPanel.ColumnStyles[3].Width = 40;
@@ -412,7 +441,6 @@ namespace DynamoTesting
                             CreateAndAddBlackLabel(option.Client, 0, rowIndex);
                             CreateAndAddBlackLabel(option.Version, 1, rowIndex);
                         }
-
 
                         rowIndex++;
                     }
@@ -543,18 +571,25 @@ namespace DynamoTesting
                 string version = tagTuple.Item2;
                 string language = tagTuple.Item3;
 
-                builtShortcutPath = civil3dModel.BuildCivil3DEnvironmentShortcut(client, version, language);
-                favouriteButtonToolTip = client + " (" + version  +" " + language + ")";
-
-                launchButton.Enabled = true;
+                if(client != "<Metric>" && client != "<Imperial>")
+                {
+                    builtShortcutPath = civil3dModel.BuildCivil3DEnvironmentShortcut(client, version, language);
+                    favouriteButtonToolTip = client + " (" + version + " " + language + ")";
+                    launchButton.Enabled = true;
+                }
+                else
+                {
+                    builtShortcutPath = civil3dModel.BuildCivil3DMetricOrImperialShortcut(client, version, language);
+                    favouriteButtonToolTip = client + " (" + version + " " + language + ")";
+                    launchButton.Enabled = true;
+                }
 
             }
         }
 
-        // REFACTOR EVERYTHING TO DO WITH RADIO BUTTONS, BUT MAKE LANGUAGE NULL WHEN PASSED IN FOR OPEN ROADS
         private void RadioButton_CheckedChanged_OpenRoads(object sender, EventArgs e)
         {
-            RadioButton radioButton = sender as RadioButton;
+            RadioButton radioButton = sender as RadioButton; //CLEAN: REFACTOR EVERYTHING TO DO WITH RADIO BUTTONS, MAKE LANGUAGE NULL FOR OPEN ROADS
             if (radioButton != null && radioButton.Checked)
             {
                 nameTextBox.Enabled = true;
@@ -563,11 +598,18 @@ namespace DynamoTesting
                 string client = tagTuple.Item1;
                 string version = tagTuple.Item2;
 
-                builtShortcutPath = openRoadsModel.BuildOpenRoadsEnvironmentShortcut(client, version);
-                favouriteButtonToolTip = client + " [" + version + "]";
-
-                launchButton.Enabled = true;
-
+                if (client != "<Standard>")
+                {
+                    builtShortcutPath = openRoadsModel.BuildOpenRoadsEnvironmentShortcut(client, version);
+                    favouriteButtonToolTip = client + " [" + version + "]";
+                    launchButton.Enabled = true;
+                }
+                else
+                {
+                    builtShortcutPath = openRoadsModel.BuildOpenRoadsStandardShortcut(client, version);
+                    favouriteButtonToolTip = client + " [" + version + "]";
+                    launchButton.Enabled = true;
+                }
             }
         }
 
@@ -615,7 +657,7 @@ namespace DynamoTesting
                 }
             }
 
-            int topPosition = 30;
+            int topPosition = 10;
             foreach (var favouriteButton in viewModel.favouriteButtons)
             {
                 Button button = BuildButton(favouriteButton); // Use helper function to prepare button
@@ -674,7 +716,7 @@ namespace DynamoTesting
             toolTip.ReshowDelay = 200;
             toolTip.ShowAlways = true;
             toolTip.SetToolTip(button, favouriteButton.Tooltip);
-            button.Size = new Size(90, 25);
+            button.Size = new Size(70, 25);
 
             return button;
         }
@@ -824,6 +866,43 @@ namespace DynamoTesting
         #endregion
 
 
+        #region Resources Hyperlinks
+        private void digitalOperationsHomePage_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            utilities.OpenWebsite("https://wsponline.sharepoint.com/sites/CA-CAipmoDpdOps");
+        }
+
+        private void civil3dRequestForm_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            utilities.OpenWebsite("https://apps.powerapps.com/play/e/1cffb129-e912-e209-a2e7-d63404f22af0/a/e9300341-d97a-4f13-9bf0-897f752b7ffa?tenantId=3d234255-e20f-4205-88a5-9658a402999b");
+        }
+
+        private void oracleTimesheet_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            utilities.OpenWebsite("https://emit.fa.ca3.oraclecloud.com/fscmUI/faces/FuseWelcome");
+        }
+
+        private void horizonOracleSupport_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            utilities.OpenWebsite("https://wsponline.sharepoint.com/sites/GBL-Horizon/SitePages/Horizon-Oracle-Support.aspx");
+        }
+
+        private void wspServiceNow_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            utilities.OpenWebsite("https://wsp.service-now.com/wsp");
+        }
+
+        private void pans_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            utilities.OpenWebsite("https://wsponline.sharepoint.com/sites/PAN-Home");
+        }
+
+        private void eula_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            utilities.OpenWebsite("https://wsponline.sharepoint.com/sites/PAN-Home");
+        }
+        #endregion
+
 
 
 
@@ -869,42 +948,19 @@ namespace DynamoTesting
 
         }
 
+        private void launcherTab_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void clientLabel_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
         #endregion
 
-        private void digitalOperationsHomePage_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            utilities.OpenWebsite("https://wsponline.sharepoint.com/sites/CA-CAipmoDpdOps");
-        }
-
-        private void civil3dRequestForm_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            utilities.OpenWebsite("https://apps.powerapps.com/play/e/1cffb129-e912-e209-a2e7-d63404f22af0/a/e9300341-d97a-4f13-9bf0-897f752b7ffa?tenantId=3d234255-e20f-4205-88a5-9658a402999b");
-        }
-
-        private void oracleTimesheet_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            utilities.OpenWebsite("https://emit.fa.ca3.oraclecloud.com/fscmUI/faces/FuseWelcome");
-        }
-
-        private void horizonOracleSupport_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            utilities.OpenWebsite("https://wsponline.sharepoint.com/sites/GBL-Horizon/SitePages/Horizon-Oracle-Support.aspx");
-        }
-
-        private void wspServiceNow_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            utilities.OpenWebsite("https://wsp.service-now.com/wsp");
-        }
-
-        private void pans_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            utilities.OpenWebsite("https://wsponline.sharepoint.com/sites/PAN-Home");
-        }
-
-        private void eula_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            utilities.OpenWebsite("https://wsponline.sharepoint.com/sites/PAN-Home");
-        }
+        // The one-stop shop for all your production needs!
     }
 }
 

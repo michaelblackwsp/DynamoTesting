@@ -7,7 +7,7 @@
 
         #region Civil 3D Client Environments
         // TO DO: Add built-in (default) versions for each software
-        public static string[] clientOptions = { "BCMoT", "CofC", "MTQ", "MVRD", "MX", "VDG", "VDM", "VDQ", "VIA", "WSP_EN", "WSP_FR" };
+        public static string[] clientOptions = { "BCMoT", "CofC", "MTQ", "MVRD", "MX", "VDG", "VDM", "VDQ", "VIA", "WSP_EN", "WSP_FR", "<Metric>", "<Imperial>" };
         public static string[] languageOptions = { "English", "French" };
         public static string[] versionOptions = { "2019", "2020", "2021", "2022", "2023" };
 
@@ -25,14 +25,16 @@
             { "VIA", new string[] { "2019" } },
             { "WSP_EN", new string[] { "2020", "2021", "2022" } },
             { "WSP_FR", new string[] { "2019", "2020", "2021", "2022" } },
+            { "<Metric>", new string[] { "2019", "2020", "2021", "2022", "2023" } },
+            { "<Imperial>", new string[] { "2019", "2020", "2021", "2022", "2023" } },
         };
         public Dictionary<string, string[]> clientsBasedOnVersion = new Dictionary<string, string[]>
         {
-            { "2019", new string[] {"BCMoT", "MTQ", "VDG", "VDQ", "VIA", "WSP_FR"} },
-            { "2020", new string[] {"CofC", "MTQ", "MVRD", "MX", "VDG", "WSP_EN", "WSP_FR"} },
-            { "2021", new string[] {"WSP_EN", "WSP_FR" } },
-            { "2022", new string[] {"CofC", "MVRD", "MX", "WSP_EN", "WSP_FR" } },
-            { "2023", new string[] { "VDM" } },
+            { "2019", new string[] {"BCMoT", "MTQ", "VDG", "VDQ", "VIA", "WSP_FR", "<Metric>", "<Imperial>" } },
+            { "2020", new string[] {"CofC", "MTQ", "MVRD", "MX", "VDG", "WSP_EN", "WSP_FR", "<Metric>", "<Imperial>" } },
+            { "2021", new string[] {"WSP_EN", "WSP_FR", "<Metric>", "<Imperial>" } },
+            { "2022", new string[] {"CofC", "MVRD", "MX", "WSP_EN", "WSP_FR", "<Metric>", "<Imperial>" } },
+            { "2023", new string[] { "VDM", "<Metric>", "<Imperial>" } },
         };
         public Dictionary<string, List<String>> languageBasedOnClient = new Dictionary<string, List<String>>
         {
@@ -47,6 +49,8 @@
             { "VIA", new List<string> { "English" } },
             { "WSP_EN", new List<string> { "English", "French" } },
             { "WSP_FR", new List<string> { "English", "French" } },
+            { "<Metric>", new List<string> { "English", "French" } },
+            { "<Imperial>", new List<string> { "English", "French" } },
         };
         public List<string> GetLanguagesForSelectedClient(string selectedClient)
         {
@@ -135,7 +139,6 @@
         }
         #endregion
 
-
         public string BuildCivil3DEnvironmentShortcut(string client, string version, string language)
         {
             string shortFormLanguage = null;
@@ -159,6 +162,29 @@
             return shortcut;
         }
 
+        // FIX ME: Is this the best way to build the Imperial shortcut?
+        public string BuildCivil3DMetricOrImperialShortcut(string client, string version, string language)
+        {
+            string shortcut = "";
+            if(client == "<Metric>")
+            {
+                shortcut = "C:\\Program Files\\Autodesk\\AutoCAD " + version + "\\" + "acad.exe";
+            }
+            else
+            {
+                if(language == "English")
+                {
+                    shortcut = "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Autodesk Civil 3D " + version + " - English\\Civil 3D " + version + " Imperial.lnk";
+                }
+                else
+                {
+                    shortcut = "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Autodesk Civil 3D " + version + " - Français (French)\\Civil 3D " + version + " - Français Anglo-saxon (French Imperial).lnk";
+                }
+                
+            }
+
+            return shortcut;
+        }
     }
 
 }
