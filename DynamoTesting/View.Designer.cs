@@ -30,6 +30,8 @@
         {
             this.tabList = new System.Windows.Forms.TabControl();
             this.launcherTab = new System.Windows.Forms.TabPage();
+            this.softwareWarningLabel = new System.Windows.Forms.Label();
+            this.favouritesLabel = new System.Windows.Forms.Label();
             this.launchButton = new System.Windows.Forms.Button();
             this.softwareComboBox = new System.Windows.Forms.ComboBox();
             this.software = new System.Windows.Forms.Label();
@@ -53,6 +55,9 @@
             this.oracleTimesheet = new System.Windows.Forms.LinkLabel();
             this.digitalOperationsHomePage = new System.Windows.Forms.LinkLabel();
             this.aboutTab = new System.Windows.Forms.TabPage();
+            this.upToDateLabel = new System.Windows.Forms.Label();
+            this.versionNumber = new System.Windows.Forms.Label();
+            this.releaseNotes = new System.Windows.Forms.LinkLabel();
             this.languageLabel = new System.Windows.Forms.Label();
             this.usernameLabel = new System.Windows.Forms.Label();
             this.eula = new System.Windows.Forms.LinkLabel();
@@ -79,11 +84,13 @@
             this.tabList.Location = new System.Drawing.Point(11, 12);
             this.tabList.Name = "tabList";
             this.tabList.SelectedIndex = 0;
-            this.tabList.Size = new System.Drawing.Size(401, 490);
+            this.tabList.Size = new System.Drawing.Size(414, 490);
             this.tabList.TabIndex = 21;
             // 
             // launcherTab
             // 
+            this.launcherTab.Controls.Add(this.softwareWarningLabel);
+            this.launcherTab.Controls.Add(this.favouritesLabel);
             this.launcherTab.Controls.Add(this.launchButton);
             this.launcherTab.Controls.Add(this.softwareComboBox);
             this.launcherTab.Controls.Add(this.software);
@@ -100,11 +107,32 @@
             this.launcherTab.Location = new System.Drawing.Point(4, 24);
             this.launcherTab.Name = "launcherTab";
             this.launcherTab.Padding = new System.Windows.Forms.Padding(3);
-            this.launcherTab.Size = new System.Drawing.Size(393, 462);
+            this.launcherTab.Size = new System.Drawing.Size(406, 462);
             this.launcherTab.TabIndex = 1;
             this.launcherTab.Text = "Launcher";
             this.launcherTab.UseVisualStyleBackColor = true;
             this.launcherTab.Click += new System.EventHandler(this.launcherTab_Click_1);
+            // 
+            // softwareWarningLabel
+            // 
+            this.softwareWarningLabel.AutoSize = true;
+            this.softwareWarningLabel.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.softwareWarningLabel.Location = new System.Drawing.Point(17, 390);
+            this.softwareWarningLabel.Name = "softwareWarningLabel";
+            this.softwareWarningLabel.Size = new System.Drawing.Size(129, 15);
+            this.softwareWarningLabel.TabIndex = 39;
+            this.softwareWarningLabel.Text = "* Software not installed";
+            // 
+            // favouritesLabel
+            // 
+            this.favouritesLabel.AutoSize = true;
+            this.favouritesLabel.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.favouritesLabel.Location = new System.Drawing.Point(259, 37);
+            this.favouritesLabel.Name = "favouritesLabel";
+            this.favouritesLabel.Size = new System.Drawing.Size(61, 15);
+            this.favouritesLabel.TabIndex = 38;
+            this.favouritesLabel.Text = "Favourites";
+            this.favouritesLabel.Click += new System.EventHandler(this.favouritesLabel_Click_1);
             // 
             // launchButton
             // 
@@ -114,6 +142,7 @@
             this.launchButton.TabIndex = 37;
             this.launchButton.Text = "Launch";
             this.launchButton.UseVisualStyleBackColor = true;
+            this.launchButton.Click += new System.EventHandler(this.launchButton_Click);
             // 
             // softwareComboBox
             // 
@@ -142,7 +171,7 @@
             // 
             this.versionLabel.AutoSize = true;
             this.versionLabel.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.versionLabel.Location = new System.Drawing.Point(141, 90);
+            this.versionLabel.Location = new System.Drawing.Point(130, 90);
             this.versionLabel.Name = "versionLabel";
             this.versionLabel.Size = new System.Drawing.Size(45, 15);
             this.versionLabel.TabIndex = 25;
@@ -163,9 +192,9 @@
             // 
             this.versionDropdownMenu.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.versionDropdownMenu.FormattingEnabled = true;
-            this.versionDropdownMenu.Location = new System.Drawing.Point(141, 105);
+            this.versionDropdownMenu.Location = new System.Drawing.Point(131, 105);
             this.versionDropdownMenu.Name = "versionDropdownMenu";
-            this.versionDropdownMenu.Size = new System.Drawing.Size(97, 23);
+            this.versionDropdownMenu.Size = new System.Drawing.Size(107, 23);
             this.versionDropdownMenu.TabIndex = 23;
             // 
             // clientDropdownMenu
@@ -175,26 +204,26 @@
             this.clientDropdownMenu.Location = new System.Drawing.Point(15, 105);
             this.clientDropdownMenu.MaxDropDownItems = 20;
             this.clientDropdownMenu.Name = "clientDropdownMenu";
-            this.clientDropdownMenu.Size = new System.Drawing.Size(120, 23);
+            this.clientDropdownMenu.Size = new System.Drawing.Size(110, 23);
             this.clientDropdownMenu.TabIndex = 22;
             this.clientDropdownMenu.SelectedIndexChanged += new System.EventHandler(this.clientDropdownMenu_SelectedIndexChanged_1);
             // 
             // cancelButton
             // 
-            this.cancelButton.Location = new System.Drawing.Point(318, 420);
+            this.cancelButton.Location = new System.Drawing.Point(326, 420);
             this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(58, 24);
+            this.cancelButton.Size = new System.Drawing.Size(67, 24);
             this.cancelButton.TabIndex = 35;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
-            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click_1);
+            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
             // 
             // saveButton
             // 
             this.saveButton.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.saveButton.Location = new System.Drawing.Point(259, 420);
             this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(56, 24);
+            this.saveButton.Size = new System.Drawing.Size(61, 24);
             this.saveButton.TabIndex = 30;
             this.saveButton.Text = "Save";
             this.saveButton.UseVisualStyleBackColor = true;
@@ -203,9 +232,9 @@
             // nameTextBox
             // 
             this.nameTextBox.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.nameTextBox.Location = new System.Drawing.Point(260, 396);
+            this.nameTextBox.Location = new System.Drawing.Point(259, 392);
             this.nameTextBox.Name = "nameTextBox";
-            this.nameTextBox.Size = new System.Drawing.Size(115, 22);
+            this.nameTextBox.Size = new System.Drawing.Size(134, 22);
             this.nameTextBox.TabIndex = 31;
             this.nameTextBox.TextChanged += new System.EventHandler(this.nameTextBox_TextChanged);
             // 
@@ -214,14 +243,14 @@
             this.tableLayoutPanel.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.tableLayoutPanel.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Outset;
             this.tableLayoutPanel.ColumnCount = 4;
-            this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 52.43903F));
-            this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 47.56097F));
-            this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 26F));
-            this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 26F));
+            this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel.Location = new System.Drawing.Point(15, 145);
             this.tableLayoutPanel.Name = "tableLayoutPanel";
             this.tableLayoutPanel.RowCount = 11;
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
@@ -234,7 +263,7 @@
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel.Size = new System.Drawing.Size(223, 241);
             this.tableLayoutPanel.TabIndex = 29;
-            this.tableLayoutPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel_Paint_1);
+            this.tableLayoutPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel_Paint);
             // 
             // resetButton
             // 
@@ -251,7 +280,7 @@
             this.favouritesPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.favouritesPanel.Location = new System.Drawing.Point(259, 52);
             this.favouritesPanel.Name = "favouritesPanel";
-            this.favouritesPanel.Size = new System.Drawing.Size(117, 334);
+            this.favouritesPanel.Size = new System.Drawing.Size(134, 334);
             this.favouritesPanel.TabIndex = 34;
             this.favouritesPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.favouritesPanel_Paint);
             // 
@@ -261,7 +290,7 @@
             this.superLinksTab.Location = new System.Drawing.Point(4, 24);
             this.superLinksTab.Name = "superLinksTab";
             this.superLinksTab.Padding = new System.Windows.Forms.Padding(3);
-            this.superLinksTab.Size = new System.Drawing.Size(393, 462);
+            this.superLinksTab.Size = new System.Drawing.Size(406, 462);
             this.superLinksTab.TabIndex = 0;
             this.superLinksTab.Text = "Super Links";
             this.superLinksTab.UseVisualStyleBackColor = true;
@@ -287,7 +316,7 @@
             this.resourcesTab.Location = new System.Drawing.Point(4, 24);
             this.resourcesTab.Name = "resourcesTab";
             this.resourcesTab.Padding = new System.Windows.Forms.Padding(3);
-            this.resourcesTab.Size = new System.Drawing.Size(393, 462);
+            this.resourcesTab.Size = new System.Drawing.Size(406, 462);
             this.resourcesTab.TabIndex = 2;
             this.resourcesTab.Text = "Resources";
             this.resourcesTab.UseVisualStyleBackColor = true;
@@ -360,21 +389,56 @@
             // 
             // aboutTab
             // 
+            this.aboutTab.Controls.Add(this.upToDateLabel);
+            this.aboutTab.Controls.Add(this.versionNumber);
+            this.aboutTab.Controls.Add(this.releaseNotes);
             this.aboutTab.Controls.Add(this.languageLabel);
             this.aboutTab.Controls.Add(this.usernameLabel);
             this.aboutTab.Controls.Add(this.eula);
             this.aboutTab.Location = new System.Drawing.Point(4, 24);
             this.aboutTab.Name = "aboutTab";
             this.aboutTab.Padding = new System.Windows.Forms.Padding(3);
-            this.aboutTab.Size = new System.Drawing.Size(393, 462);
+            this.aboutTab.Size = new System.Drawing.Size(406, 462);
             this.aboutTab.TabIndex = 3;
             this.aboutTab.Text = "About";
             this.aboutTab.UseVisualStyleBackColor = true;
             // 
+            // upToDateLabel
+            // 
+            this.upToDateLabel.AutoSize = true;
+            this.upToDateLabel.Location = new System.Drawing.Point(3, 444);
+            this.upToDateLabel.Name = "upToDateLabel";
+            this.upToDateLabel.Size = new System.Drawing.Size(70, 15);
+            this.upToDateLabel.TabIndex = 27;
+            this.upToDateLabel.Text = "(Up to date)";
+            this.upToDateLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.upToDateLabel.Click += new System.EventHandler(this.upToDateLabel_Click);
+            // 
+            // versionNumber
+            // 
+            this.versionNumber.AutoSize = true;
+            this.versionNumber.Location = new System.Drawing.Point(3, 427);
+            this.versionNumber.Name = "versionNumber";
+            this.versionNumber.Size = new System.Drawing.Size(63, 15);
+            this.versionNumber.TabIndex = 26;
+            this.versionNumber.Text = "Version 1.0";
+            this.versionNumber.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.versionNumber.Click += new System.EventHandler(this.buildNumber_Click);
+            // 
+            // releaseNotes
+            // 
+            this.releaseNotes.AutoSize = true;
+            this.releaseNotes.Location = new System.Drawing.Point(155, 105);
+            this.releaseNotes.Name = "releaseNotes";
+            this.releaseNotes.Size = new System.Drawing.Size(80, 15);
+            this.releaseNotes.TabIndex = 25;
+            this.releaseNotes.TabStop = true;
+            this.releaseNotes.Text = "Release Notes";
+            // 
             // languageLabel
             // 
             this.languageLabel.AutoSize = true;
-            this.languageLabel.Location = new System.Drawing.Point(293, 442);
+            this.languageLabel.Location = new System.Drawing.Point(275, 444);
             this.languageLabel.Name = "languageLabel";
             this.languageLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.languageLabel.Size = new System.Drawing.Size(56, 15);
@@ -385,12 +449,13 @@
             // usernameLabel
             // 
             this.usernameLabel.AutoSize = true;
-            this.usernameLabel.Location = new System.Drawing.Point(4, 442);
+            this.usernameLabel.Location = new System.Drawing.Point(313, 427);
             this.usernameLabel.Name = "usernameLabel";
             this.usernameLabel.Size = new System.Drawing.Size(60, 15);
             this.usernameLabel.TabIndex = 23;
             this.usernameLabel.Text = "Username";
             this.usernameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.usernameLabel.Click += new System.EventHandler(this.usernameLabel_Click_1);
             // 
             // eula
             // 
@@ -419,7 +484,7 @@
             this.button1.TabIndex = 35;
             this.button1.Text = "Cancel";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.cancelButton_Click_1);
+            this.button1.Click += new System.EventHandler(this.cancelButton_Click);
             // 
             // button2
             // 
@@ -469,7 +534,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(424, 514);
+            this.ClientSize = new System.Drawing.Size(437, 514);
             this.Controls.Add(this.tabList);
             this.Name = "repconLauncher";
             this.Text = "REPCON";
@@ -505,7 +570,6 @@
         private ComboBox versionDropdownMenu;
         private ComboBox clientDropdownMenu;
         private Label linksComingSoonLabel;
-        private Panel favouritesPanel;
         private Button cancelButton;
         private LinkLabel digitalOperationsHomePage;
         private LinkLabel oracleTimesheet;
@@ -524,5 +588,12 @@
         private TableLayoutPanel tableLayoutPanel1;
         private TabPage tabPage1;
         private Button launchButton;
+        private Panel favouritesPanel;
+        private Label versionNumber;
+        private LinkLabel releaseNotes;
+        private Label upToDateLabel;
+        private Label favouritesLabel;
+        private Label label1;
+        private Label softwareWarningLabel;
     }
 }

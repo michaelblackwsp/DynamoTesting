@@ -6,6 +6,8 @@ using ToolTip = System.Windows.Forms.ToolTip;
 
 namespace DynamoTesting
 {
+
+
     public partial class repconLauncher : Form
     {
         #region Initialization
@@ -18,12 +20,14 @@ namespace DynamoTesting
         private string builtShortcutPath = "";
         string favouriteButtonToolTip = "";
         bool useGreyText = false;
+        
 
         private ContextMenuStrip rightClickMenu;
 
         public repconLauncher()
         {
             InitializeComponent();
+            CheckForUpdates();
             InitializeRightClickMenu();
             EnableDoubleBuffering(tableLayoutPanel);
 
@@ -42,8 +46,58 @@ namespace DynamoTesting
             resetButton.Enabled = false;
 
             resetButton.Visible = false;
+            softwareWarningLabel.Visible = false;
 
         }
+
+        private void CheckForUpdates()
+        {
+            try
+            {
+                string filePath = Path.Combine(Application.StartupPath, "latestVersion.txt");
+                string latestVersion = File.ReadAllText(filePath);
+                string currentVersion = "1.1"; // FOR RELEASE: get this from the project
+
+                if (latestVersion == currentVersion)
+                {
+                    upToDateLabel.Text = "(Up to date)";
+                    upToDateLabel.TextAlign = ContentAlignment.MiddleRight;
+
+                    versionNumber.Text = "Version" + currentVersion.ToString();
+                }
+                else
+                {
+                    MessageBox.Show("A new version of REPCON is available. Update from the About tab.", "Update Available!");
+
+                    upToDateLabel.Text = "A new version is available!";
+                    upToDateLabel.TextAlign = ContentAlignment.MiddleRight;
+
+                    upToDateLabel.Cursor = Cursors.Hand;
+                    upToDateLabel.ForeColor = Color.Blue;
+                    upToDateLabel.Font = new Font(upToDateLabel.Font, FontStyle.Underline);
+
+                    upToDateLabel.MouseEnter += (sender, e) => upToDateLabel.Font = new Font(upToDateLabel.Font, FontStyle.Bold);
+                    upToDateLabel.MouseLeave += (sender, e) => upToDateLabel.Font = new Font(upToDateLabel.Font, FontStyle.Regular);
+                    upToDateLabel.Click += (sender, e) => ShowUpdateMessage();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred while checking for updates: " + ex.Message);
+            }
+        }
+
+        private void ShowUpdateMessage()
+        {
+            DialogResult result = MessageBox.Show("Press OK to continue with the update.", "Update Available", MessageBoxButtons.OKCancel);
+            if (result == DialogResult.OK)
+            {
+               
+            }
+        }
+
+
+
 
         private void EnableDoubleBuffering(Control control)
         {
@@ -52,7 +106,6 @@ namespace DynamoTesting
             propertyInfo?.SetValue(control, true, null);
         }
 
-        // TO DO: ADD DEFAULT (METRIC / IMPERIAL) VERSIONS OF SOFTWARE
 
         private void repconLauncher_Load(object sender, EventArgs e)
         {
@@ -85,6 +138,7 @@ namespace DynamoTesting
                 Application.Exit();
             }
 
+
         }
 
         private void InitializeRightClickMenu()
@@ -107,54 +161,49 @@ namespace DynamoTesting
 
 
         #region Draw and Handle Dropdown Menu Events
+        private string previousSelectedSoftware = null;
+
         private void softwareComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            resetButton_ForceClick(null, EventArgs.Empty); // Reset the form so it doesn't try to draw the OpenRoads table based on old Civil 3D selection
-            UpdateTableData();
-
             string selectedSoftware = softwareComboBox.SelectedItem.ToString();
 
+            if (selectedSoftware != previousSelectedSoftware)
+            {
+                resetButton_ForceClick(null, EventArgs.Empty);
+                UpdateTableData();
+            }
+            previousSelectedSoftware = selectedSoftware;
             clientDropdownMenu.Enabled = true;
             versionDropdownMenu.Enabled = true;
-
             clientDropdownMenu.Items.Clear();
             versionDropdownMenu.Items.Clear();
 
             if (selectedSoftware == "Civil 3D")
             {
                 clientDropdownMenu.Items.AddRange(civil3dModel.clientOptions);
-                string[] clientOptions = civil3dModel.clientOptions;
-                clientDropdownMenu.DropDownStyle = ComboBoxStyle.DropDownList;
-                clientDropdownMenu.DrawMode = DrawMode.OwnerDrawFixed;
-                clientDropdownMenu.DrawItem += clientDropdownMenu_DrawItem;
-                clientDropdownMenu.SelectedIndexChanged += clientDropdownMenu_SelectedIndexChanged;
-
                 versionDropdownMenu.Items.AddRange(civil3dModel.versionOptions);
-                string[] versionOptions = civil3dModel.versionOptions;
-                versionDropdownMenu.DropDownStyle = ComboBoxStyle.DropDownList;
-                versionDropdownMenu.DrawMode = DrawMode.OwnerDrawFixed;
-                versionDropdownMenu.DrawItem += versionDropdownMenu_DrawItem;
-                versionDropdownMenu.SelectedIndexChanged += versionDropdownMenu_SelectedIndexChanged;
-
             }
             else if (selectedSoftware == "OpenRoads Designer")
             {
                 clientDropdownMenu.Items.AddRange(openRoadsModel.clientOptions);
-                string[] clientOptions = openRoadsModel.clientOptions;
-                clientDropdownMenu.DropDownStyle = ComboBoxStyle.DropDownList;
-                clientDropdownMenu.DrawMode = DrawMode.OwnerDrawFixed;
-                clientDropdownMenu.DrawItem += clientDropdownMenu_DrawItem;
-                clientDropdownMenu.SelectedIndexChanged += clientDropdownMenu_SelectedIndexChanged;
-
                 versionDropdownMenu.Items.AddRange(openRoadsModel.versionOptions);
-                string[] versionOptions = openRoadsModel.versionOptions;
-                versionDropdownMenu.DropDownStyle = ComboBoxStyle.DropDownList;
-                versionDropdownMenu.DrawMode = DrawMode.OwnerDrawFixed;
-                versionDropdownMenu.DrawItem += versionDropdownMenu_DrawItem;
-                versionDropdownMenu.SelectedIndexChanged += versionDropdownMenu_SelectedIndexChanged;
             }
 
+            // Set dropdown menu properties
+            clientDropdownMenu.DropDownStyle = ComboBoxStyle.DropDownList;
+            clientDropdownMenu.DrawMode = DrawMode.OwnerDrawFixed;
+            clientDropdownMenu.DrawItem += clientDropdownMenu_DrawItem;
+            clientDropdownMenu.SelectedIndexChanged += clientDropdownMenu_SelectedIndexChanged;
+
+            versionDropdownMenu.DropDownStyle = ComboBoxStyle.DropDownList;
+            versionDropdownMenu.DrawMode = DrawMode.OwnerDrawFixed;
+            versionDropdownMenu.DrawItem += versionDropdownMenu_DrawItem;
+            versionDropdownMenu.SelectedIndexChanged += versionDropdownMenu_SelectedIndexChanged;
         }
+
+
+
+
 
         private void clientDropdownMenu_DrawItem(object? sender, DrawItemEventArgs e)
             {   // REFACTOR INTO UTILITY METHOD
@@ -199,7 +248,8 @@ namespace DynamoTesting
 
         private void clientDropdownMenu_SelectedIndexChanged(object sender, EventArgs e)
         {
-            resetButton.Enabled = true;
+            resetButton.Enabled = true; // TO DO: Remove all reset stuff
+            softwareWarningLabel.Visible = false;
 
             int selectedIndex = clientDropdownMenu.SelectedIndex;
             if (versionDropdownMenu.SelectedItem != null)
@@ -216,6 +266,8 @@ namespace DynamoTesting
         private void versionDropdownMenu_SelectedIndexChanged(object sender, EventArgs e)
         {
             resetButton.Enabled = true;
+            softwareWarningLabel.Visible = false;
+
             int selectedIndex = versionDropdownMenu.SelectedIndex;
             if (clientDropdownMenu.SelectedItem != null )
             {
@@ -277,6 +329,7 @@ namespace DynamoTesting
             versionDropdownMenu.BackColor = SystemColors.Window;
 
         }
+
         private void launchButton_Click(object sender, EventArgs e)
         {
             utilities.StartSoftware(builtShortcutPath);
@@ -284,26 +337,56 @@ namespace DynamoTesting
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            string software = softwareComboBox.SelectedItem.ToString();
-            string iconPath = GetIconPath(software);
+            // BUG?: After an environment is saved, the User can't save it again without clicking a new radio button, then going back
+            string selectedSoftware = softwareComboBox.SelectedItem.ToString();
+            string version = ""; // Initialize version string
 
-            // FIX ME: buttonCount is not being recognized after switching to JSON
+            bool radioButtonSelected = false;
+
+            foreach (Control control in tableLayoutPanel.Controls)
+            {
+                if (control is RadioButton radioButton && radioButton.Checked)
+                {
+                    if (selectedSoftware == "Civil 3D")
+                    {
+                        radioButtonSelected = true;
+                        var tag = (Tuple<string, string, string>)radioButton.Tag;
+                        version = tag.Item2;
+                        break;
+                    }
+                } 
+                else 
+                {
+                    radioButtonSelected = true;
+                    version = null;
+                }
+
+            }
+
+            if (!radioButtonSelected)
+            {
+                MessageBox.Show("Please select a client environment to save the favourite button with.", "No Environment Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string iconPath = GetIconPath(selectedSoftware, version);
+
+            // BUG: buttonCount is not being recognized after switching to JSON
             if (viewModel.buttonCount >= 100)
             {
                 MessageBox.Show("You can only save up to 5 client environments.");
                 return;
             }
 
-            CreateFavouriteButton(nameTextBox.Text, builtShortcutPath, favouriteButtonToolTip, software, iconPath);
+            CreateFavouriteButton(nameTextBox.Text, builtShortcutPath, favouriteButtonToolTip, selectedSoftware, iconPath);
 
             nameTextBox.Clear();
             nameTextBox.Enabled = false;
             cancelButton.Enabled = false;
             saveButton.Enabled = false;
         }
-        private void cancelButton_Click_1(object sender, EventArgs e)
+        private void cancelButton_Click(object sender, EventArgs e)
         {
-            // TO DO: Get rid of _1
             nameTextBox.Clear();
             nameTextBox.Text = "Enter name to save";
             nameTextBox.ForeColor = Color.Gray;
@@ -334,23 +417,32 @@ namespace DynamoTesting
         }
         private void nameTextBox_TextChanged(object sender, EventArgs e)
         {
-            if (nameTextBox.Text.Length >= 1 && nameTextBox.Text != "Enter name to save")
+            int maxCharacters = 7;
+
+            if (nameTextBox.Text != "Enter name to save")
             {
-                saveButton.Enabled = true;
+                saveButton.Enabled = nameTextBox.Text.Length >= 1 && nameTextBox.Text.Length <= maxCharacters;
+                if (nameTextBox.Text.Length > maxCharacters)
+                {
+                    nameTextBox.Text = nameTextBox.Text.Substring(0, maxCharacters);
+                    nameTextBox.SelectionStart = maxCharacters;
+                }
             }
             else
             {
                 saveButton.Enabled = false;
             }
         }
+
+
         #endregion
 
 
         #region Client Environment Table
         private void AddCivil3DColumnHeaders()
         {
-            tableLayoutPanel.ColumnStyles[0].Width = 40;
-            tableLayoutPanel.ColumnStyles[1].Width = 40;
+            tableLayoutPanel.ColumnStyles[0].Width = 80;
+            tableLayoutPanel.ColumnStyles[1].Width = 60;
             tableLayoutPanel.ColumnStyles[2].Width = 40;
             tableLayoutPanel.ColumnStyles[3].Width = 40;
 
@@ -362,8 +454,9 @@ namespace DynamoTesting
         }
         private void AddOpenRoadsColumnHeaders()
         {
-            tableLayoutPanel.ColumnStyles[0].Width = 40;
-            tableLayoutPanel.ColumnStyles[1].Width = 40;
+            tableLayoutPanel.ColumnStyles[0].Width = 90;
+            tableLayoutPanel.ColumnStyles[1].Width = 85;
+            tableLayoutPanel.ColumnStyles[2].Width = 34;
 
             CreateColumnHeader("Client", 0);
             CreateColumnHeader("Version", 1);
@@ -382,17 +475,13 @@ namespace DynamoTesting
         {
             tableLayoutPanel.Visible = true;
             useGreyText = true;
+            bool hasUninstalledSoftware = false;
 
             string selectedSoftware = softwareComboBox.SelectedItem.ToString();
             if (selectedSoftware == "Civil 3D")
             {
                 tableLayoutPanel.Controls.Clear();
                 tableLayoutPanel.ColumnCount = 4;
-
-                tableLayoutPanel.ColumnStyles[0].Width = 45;
-                tableLayoutPanel.ColumnStyles[1].Width = 40;
-                tableLayoutPanel.ColumnStyles[2].Width = 40;
-                tableLayoutPanel.ColumnStyles[3].Width = 40;
 
                 List<Civil3DTableRowData> options = null;
 
@@ -407,12 +496,16 @@ namespace DynamoTesting
                     options = viewModel.Civil3dOptionsBasedOnVersion(selectedVersion);
                 }
 
+
+                softwareWarningLabel.Visible = false;
+
                 if (options != null)
                 {
                     int rowIndex = 1;
                     foreach (var option in options)
                     {
                         useGreyText = true;
+                        
                         if (option.EnglishOffered)
                         {
                             CreateAndAddRadioButton_Civil3D(2, rowIndex, option.Client, option.Version, "English");
@@ -434,7 +527,9 @@ namespace DynamoTesting
                         if (useGreyText == true)
                         {
                             CreateAndAddGrayLabel(option.Client, 0, rowIndex);
-                            CreateAndAddGrayLabel(option.Version, 1, rowIndex);
+                            CreateAndAddGrayLabel(option.Version + "*", 1, rowIndex);
+                            softwareWarningLabel.Visible = true;
+                            softwareWarningLabel.Text = "* Software not installed";
                         }
                         else
                         {
@@ -442,8 +537,11 @@ namespace DynamoTesting
                             CreateAndAddBlackLabel(option.Version, 1, rowIndex);
                         }
 
+
                         rowIndex++;
                     }
+
+
                 }
 
                 AddCivil3DColumnHeaders();
@@ -453,10 +551,6 @@ namespace DynamoTesting
             {
                 tableLayoutPanel.Controls.Clear();
                 tableLayoutPanel.ColumnCount = 3;
-
-                tableLayoutPanel.ColumnStyles[0].Width = 40;
-                tableLayoutPanel.ColumnStyles[1].Width = 40;
-                tableLayoutPanel.ColumnStyles[2].Width = 40;
 
                 List<OpenRoadsTableRowData> options = null;
 
@@ -492,7 +586,9 @@ namespace DynamoTesting
                             useGreyText = true;
                             CreateAndAddRadioButton_OpenRoads(2, rowIndex, option.Client, option.Version);
                             CreateAndAddGrayLabel(option.Client, 0, rowIndex);
-                            CreateAndAddGrayLabel(option.Version, 1, rowIndex);
+                            CreateAndAddGrayLabel(option.Version + "*", 1, rowIndex);
+                            softwareWarningLabel.Visible = true;
+                            softwareWarningLabel.Text = "* Software not installed";
                         }
 
 
@@ -517,7 +613,7 @@ namespace DynamoTesting
             if (radioButton.Enabled)
             {
                 useGreyText = false;
-            }
+            } 
         }
 
         private void CreateAndAddRadioButton_OpenRoads(int column, int row, string client, string version)
@@ -589,7 +685,7 @@ namespace DynamoTesting
 
         private void RadioButton_CheckedChanged_OpenRoads(object sender, EventArgs e)
         {
-            RadioButton radioButton = sender as RadioButton; //CLEAN: REFACTOR EVERYTHING TO DO WITH RADIO BUTTONS, MAKE LANGUAGE NULL FOR OPEN ROADS
+            RadioButton radioButton = sender as RadioButton; //CLEAN: REFACTOR EVERYTHING WITH RADIO BUTTONS, MAKE LANGUAGE NULL FOR OPEN ROADS
             if (radioButton != null && radioButton.Checked)
             {
                 nameTextBox.Enabled = true;
@@ -622,16 +718,31 @@ namespace DynamoTesting
 
 
         #region Favourite Buttons
-        private string GetIconPath(string software)
+        private string GetIconPath(string software, string version)
         {
+            string iconPath = "";
+
             if (software == "Civil 3D")
             {
-                return "C:\\Users\\CAMB075971\\source\\repos\\WinForms_Sandbox\\DynamoTesting\\Icons\\Civil3D.ico";
+                if (version == "2023")
+                {
+                    iconPath = "C:\\Users\\CAMB075971\\source\\repos\\WinForms_Sandbox\\DynamoTesting\\Icons\\Civil3D2023.ico";
+                    //iconPath = Path.Combine(Application.StartupPath, "icons", "Civil3D2023.ico");
+                }
+                else
+                {
+                    iconPath = "C:\\Users\\CAMB075971\\source\\repos\\WinForms_Sandbox\\DynamoTesting\\Icons\\Civil3D.ico";
+                    //iconPath = Path.Combine(Application.StartupPath, "icons", "Civil3D.ico");
+                }
+                
             }
-            else if (software == "OpenRoads Designer") ;
+            else if (software == "OpenRoads Designer")
             {
-                return "C:\\Users\\CAMB075971\\source\\repos\\WinForms_Sandbox\\DynamoTesting\\Icons\\OpenRoads.ico";
+                // "C:\\Users\\CAMB075971\\source\\repos\\WinForms_Sandbox\\DynamoTesting\\Icons\\OpenRoads.ico";
+                iconPath = Path.Combine(Application.StartupPath, "icons", "OpenRoads.ico");
             }
+
+            return iconPath;
         }
 
         private void CreateFavouriteButton(string name, string shortcutPath, string tooltip, string software, string iconPath)
@@ -716,7 +827,7 @@ namespace DynamoTesting
             toolTip.ReshowDelay = 200;
             toolTip.ShowAlways = true;
             toolTip.SetToolTip(button, favouriteButton.Tooltip);
-            button.Size = new Size(70, 25);
+            button.Size = new Size(95, 25);
 
             return button;
         }
@@ -755,6 +866,16 @@ namespace DynamoTesting
             nameTextBox.Text = favouriteButtonToRename.Name.ToString(); // Set placeholder text
             dialog.Controls.Add(nameTextBox);
 
+            nameTextBox.TextChanged += (s, ev) =>
+            {
+                if (nameTextBox.Text.Length > 7)
+                {
+                    int selectionStart = nameTextBox.SelectionStart;
+                    nameTextBox.Text = nameTextBox.Text.Substring(0, 7);
+                    nameTextBox.SelectionStart = Math.Min(selectionStart, 7);
+                }
+            };
+
             Button okButton = new Button();
             okButton.Text = "OK";
             okButton.DialogResult = DialogResult.OK;
@@ -787,7 +908,6 @@ namespace DynamoTesting
 
         private void UpdateMenuItem_Click(object sender, EventArgs e)
         {
-            // BUG: SOFTWARE MIGHT NOT BE SELECTED AT START
             string software = softwareComboBox.SelectedItem?.ToString();
 
             ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;
@@ -796,11 +916,16 @@ namespace DynamoTesting
             FavouriteButton favouriteButtonToUpdate = (FavouriteButton)buttonToUpdate.Tag;
 
             bool radioButtonSelected = false;
+            string version = ""; // Initialize version string
+
             foreach (Control control in tableLayoutPanel.Controls)
             {
                 if (control is RadioButton radioButton && radioButton.Checked)
                 {
                     radioButtonSelected = true;
+                    // Extract version from the checked radio button's Tag
+                    var tag = (Tuple<string, string, string>)radioButton.Tag;
+                    version = tag.Item2;
                     break;
                 }
             }
@@ -826,7 +951,7 @@ namespace DynamoTesting
                 favouriteButtonToUpdate.ShortcutPath = builtShortcutPath;
                 favouriteButtonToUpdate.Tooltip = favouriteButtonToolTip;
                 favouriteButtonToUpdate.Software = software;
-                string iconPath = GetIconPath(software);
+                string iconPath = GetIconPath(software, version); // Use the extracted version here
                 favouriteButtonToUpdate.IconPath = iconPath;
                 int indexToUpdate = viewModel.favouriteButtons.FindIndex(button => button == favouriteButtonToUpdate);
 
@@ -839,6 +964,7 @@ namespace DynamoTesting
             }
         }
 
+
         private void RemoveMenuItem_Click(object sender, EventArgs e)
         {
             ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;                         // Get the MenuItem that triggered the event
@@ -846,7 +972,7 @@ namespace DynamoTesting
             Button buttonToRemove = (Button)contextMenu.SourceControl;                      // Get the Button associated with the ContextMenuStrip
             FavouriteButton favouriteButtonToRemove = (FavouriteButton)buttonToRemove.Tag;  // Get the FavouriteButton object corresponding to the button
 
-            DialogResult result = MessageBox.Show("Are you sure you want to remove this button?", "Remove button", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult result = MessageBox.Show(this, "Are you sure you want to remove this button?", "Remove button", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (result == DialogResult.Yes)
             {
@@ -862,6 +988,7 @@ namespace DynamoTesting
                 DrawButtons();
             }
         }
+
 
         #endregion
 
@@ -958,9 +1085,31 @@ namespace DynamoTesting
 
         }
 
+        private void buildNumber_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void upToDateLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void usernameLabel_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void favouritesLabel_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
         #endregion
 
         // The one-stop shop for all your production needs!
     }
+
+
 }
 

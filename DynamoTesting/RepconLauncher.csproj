@@ -24,6 +24,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Icons\Civil3D.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Icons\Civil3D2023.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Icons\OpenRoads.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="latestVersion.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="preferences\favouriteButtons.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

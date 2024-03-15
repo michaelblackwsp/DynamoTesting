@@ -478,3 +478,7 @@ C:\Users\CAMB075971\source\repos\WinForms_Sandbox\DynamoTesting\obj\Release\net7
 C:\Users\CAMB075971\source\repos\WinForms_Sandbox\DynamoTesting\obj\Release\net7.0-windows\win-x64\RepconLauncher.genruntimeconfig.cache
 C:\Users\CAMB075971\source\repos\WinForms_Sandbox\DynamoTesting\obj\Release\net7.0-windows\win-x64\ref\RepconLauncher.dll
 C:\Users\CAMB075971\source\repos\WinForms_Sandbox\DynamoTesting\bin\Release\net7.0-windows\win-x64\preferences\favouriteButtons.json
+C:\Users\CAMB075971\source\repos\WinForms_Sandbox\DynamoTesting\bin\Release\net7.0-windows\win-x64\Icons\Civil3D.ico
+C:\Users\CAMB075971\source\repos\WinForms_Sandbox\DynamoTesting\bin\Release\net7.0-windows\win-x64\Icons\OpenRoads.ico
+C:\Users\CAMB075971\source\repos\WinForms_Sandbox\DynamoTesting\bin\Release\net7.0-windows\win-x64\latestVersion.txt
+C:\Users\CAMB075971\source\repos\WinForms_Sandbox\DynamoTesting\bin\Release\net7.0-windows\win-x64\Icons\Civil3D2023.ico

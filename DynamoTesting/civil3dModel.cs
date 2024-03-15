@@ -6,12 +6,12 @@
         public List<(string year, string language)> installedVersionsOfCivil3D = null;
 
         #region Civil 3D Client Environments
-        // TO DO: Add built-in (default) versions for each software
+        // CLEAN: Add built-in (default) versions for each software
         public static string[] clientOptions = { "BCMoT", "CofC", "MTQ", "MVRD", "MX", "VDG", "VDM", "VDQ", "VIA", "WSP_EN", "WSP_FR", "<Metric>", "<Imperial>" };
         public static string[] languageOptions = { "English", "French" };
         public static string[] versionOptions = { "2019", "2020", "2021", "2022", "2023" };
 
-        // TO DO: Change these 3 dictionaries to be a single matrix, single source of truth
+        // CLEAN: Change these 3 dictionaries to be a single matrix, single source of truth
         public Dictionary<string, string[]> versionsBasedOnClient = new Dictionary<string, string[]>
         {
             { "BCMoT", new string[] { "2019" } },

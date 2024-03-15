@@ -132,7 +132,7 @@ namespace DynamoTesting
             }
             else
             {
-                MessageBox.Show("Preferences file cannot be found. Please contact Digital Operations.");
+                MessageBox.Show("Favourites file was not found. REPCON has created it. You can now save favourite buttons.");
             }
         }
         #endregion
