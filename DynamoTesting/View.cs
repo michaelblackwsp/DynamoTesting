@@ -454,9 +454,9 @@ namespace DynamoTesting
         }
         private void AddOpenRoadsColumnHeaders()
         {
-            tableLayoutPanel.ColumnStyles[0].Width = 90;
-            tableLayoutPanel.ColumnStyles[1].Width = 85;
-            tableLayoutPanel.ColumnStyles[2].Width = 34;
+            tableLayoutPanel.ColumnStyles[0].Width = 80;
+            tableLayoutPanel.ColumnStyles[1].Width = 110;
+            tableLayoutPanel.ColumnStyles[2].Width = 30;
 
             CreateColumnHeader("Client", 0);
             CreateColumnHeader("Version", 1);
@@ -591,7 +591,6 @@ namespace DynamoTesting
                             softwareWarningLabel.Text = "* Software not installed";
                         }
 
-
                         rowIndex++;
                     }
                 }
@@ -607,7 +606,7 @@ namespace DynamoTesting
             radioButton.Tag = new Tuple<string, string, string>(client, version, language);
             radioButton.Enabled = civil3dModel.installedVersionsOfCivil3D.Contains((version, language));
             radioButton.CheckedChanged += RadioButton_CheckedChanged_Civil3D;
-            radioButton.Margin = new Padding(13, 1, 0, 0);
+            radioButton.Margin = new Padding(15, 1, 0, 0);
             tableLayoutPanel.Controls.Add(radioButton, column, row);
 
             if (radioButton.Enabled)
@@ -622,7 +621,7 @@ namespace DynamoTesting
             radioButton.Tag = new Tuple<string, string>(client, version);
             radioButton.Enabled = openRoadsModel.GetOpenRoadsInstallations().Contains(version);
             radioButton.CheckedChanged += RadioButton_CheckedChanged_OpenRoads;
-            radioButton.Margin = new Padding(13, 1, 0, 0);
+            radioButton.Margin = new Padding(9, 1, 0, 0);
             tableLayoutPanel.Controls.Add(radioButton, column, row);
 
             if (radioButton.Enabled)

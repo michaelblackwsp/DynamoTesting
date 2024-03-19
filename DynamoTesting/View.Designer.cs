@@ -81,6 +81,7 @@
             this.tabList.Controls.Add(this.superLinksTab);
             this.tabList.Controls.Add(this.resourcesTab);
             this.tabList.Controls.Add(this.aboutTab);
+            this.tabList.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.tabList.Location = new System.Drawing.Point(11, 12);
             this.tabList.Name = "tabList";
             this.tabList.SelectedIndex = 0;
@@ -104,10 +105,11 @@
             this.launcherTab.Controls.Add(this.tableLayoutPanel);
             this.launcherTab.Controls.Add(this.resetButton);
             this.launcherTab.Controls.Add(this.favouritesPanel);
-            this.launcherTab.Location = new System.Drawing.Point(4, 24);
+            this.launcherTab.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.launcherTab.Location = new System.Drawing.Point(4, 22);
             this.launcherTab.Name = "launcherTab";
             this.launcherTab.Padding = new System.Windows.Forms.Padding(3);
-            this.launcherTab.Size = new System.Drawing.Size(406, 462);
+            this.launcherTab.Size = new System.Drawing.Size(406, 464);
             this.launcherTab.TabIndex = 1;
             this.launcherTab.Text = "Launcher";
             this.launcherTab.UseVisualStyleBackColor = true;
@@ -116,10 +118,11 @@
             // softwareWarningLabel
             // 
             this.softwareWarningLabel.AutoSize = true;
+            this.softwareWarningLabel.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.softwareWarningLabel.ForeColor = System.Drawing.SystemColors.GrayText;
             this.softwareWarningLabel.Location = new System.Drawing.Point(17, 390);
             this.softwareWarningLabel.Name = "softwareWarningLabel";
-            this.softwareWarningLabel.Size = new System.Drawing.Size(129, 15);
+            this.softwareWarningLabel.Size = new System.Drawing.Size(129, 13);
             this.softwareWarningLabel.TabIndex = 39;
             this.softwareWarningLabel.Text = "* Software not installed";
             // 
@@ -129,7 +132,7 @@
             this.favouritesLabel.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.favouritesLabel.Location = new System.Drawing.Point(259, 37);
             this.favouritesLabel.Name = "favouritesLabel";
-            this.favouritesLabel.Size = new System.Drawing.Size(61, 15);
+            this.favouritesLabel.Size = new System.Drawing.Size(60, 13);
             this.favouritesLabel.TabIndex = 38;
             this.favouritesLabel.Text = "Favourites";
             this.favouritesLabel.Click += new System.EventHandler(this.favouritesLabel_Click_1);
@@ -147,13 +150,14 @@
             // softwareComboBox
             // 
             this.softwareComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.softwareComboBox.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.softwareComboBox.FormattingEnabled = true;
             this.softwareComboBox.Items.AddRange(new object[] {
             "Civil 3D",
             "OpenRoads Designer"});
             this.softwareComboBox.Location = new System.Drawing.Point(15, 52);
             this.softwareComboBox.Name = "softwareComboBox";
-            this.softwareComboBox.Size = new System.Drawing.Size(223, 23);
+            this.softwareComboBox.Size = new System.Drawing.Size(220, 21);
             this.softwareComboBox.TabIndex = 28;
             this.softwareComboBox.SelectedIndexChanged += new System.EventHandler(this.softwareComboBox_SelectedIndexChanged);
             // 
@@ -163,7 +167,7 @@
             this.software.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.software.Location = new System.Drawing.Point(15, 37);
             this.software.Name = "software";
-            this.software.Size = new System.Drawing.Size(53, 15);
+            this.software.Size = new System.Drawing.Size(53, 13);
             this.software.TabIndex = 27;
             this.software.Text = "Software";
             // 
@@ -171,9 +175,9 @@
             // 
             this.versionLabel.AutoSize = true;
             this.versionLabel.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.versionLabel.Location = new System.Drawing.Point(130, 90);
+            this.versionLabel.Location = new System.Drawing.Point(110, 90);
             this.versionLabel.Name = "versionLabel";
-            this.versionLabel.Size = new System.Drawing.Size(45, 15);
+            this.versionLabel.Size = new System.Drawing.Size(45, 13);
             this.versionLabel.TabIndex = 25;
             this.versionLabel.Text = "Version";
             // 
@@ -183,7 +187,7 @@
             this.clientLabel.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.clientLabel.Location = new System.Drawing.Point(15, 90);
             this.clientLabel.Name = "clientLabel";
-            this.clientLabel.Size = new System.Drawing.Size(38, 15);
+            this.clientLabel.Size = new System.Drawing.Size(37, 13);
             this.clientLabel.TabIndex = 24;
             this.clientLabel.Text = "Client";
             this.clientLabel.Click += new System.EventHandler(this.clientLabel_Click_1);
@@ -191,20 +195,22 @@
             // versionDropdownMenu
             // 
             this.versionDropdownMenu.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.versionDropdownMenu.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.versionDropdownMenu.FormattingEnabled = true;
-            this.versionDropdownMenu.Location = new System.Drawing.Point(131, 105);
+            this.versionDropdownMenu.Location = new System.Drawing.Point(111, 105);
             this.versionDropdownMenu.Name = "versionDropdownMenu";
-            this.versionDropdownMenu.Size = new System.Drawing.Size(107, 23);
+            this.versionDropdownMenu.Size = new System.Drawing.Size(124, 21);
             this.versionDropdownMenu.TabIndex = 23;
             // 
             // clientDropdownMenu
             // 
             this.clientDropdownMenu.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.clientDropdownMenu.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.clientDropdownMenu.FormattingEnabled = true;
             this.clientDropdownMenu.Location = new System.Drawing.Point(15, 105);
             this.clientDropdownMenu.MaxDropDownItems = 20;
             this.clientDropdownMenu.Name = "clientDropdownMenu";
-            this.clientDropdownMenu.Size = new System.Drawing.Size(110, 23);
+            this.clientDropdownMenu.Size = new System.Drawing.Size(90, 21);
             this.clientDropdownMenu.TabIndex = 22;
             this.clientDropdownMenu.SelectedIndexChanged += new System.EventHandler(this.clientDropdownMenu_SelectedIndexChanged_1);
             // 
@@ -220,7 +226,7 @@
             // 
             // saveButton
             // 
-            this.saveButton.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.saveButton.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.saveButton.Location = new System.Drawing.Point(259, 420);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(61, 24);
@@ -247,21 +253,22 @@
             this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel.Font = new System.Drawing.Font("Segoe UI Symbol", 7.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.tableLayoutPanel.Location = new System.Drawing.Point(15, 145);
             this.tableLayoutPanel.Name = "tableLayoutPanel";
             this.tableLayoutPanel.RowCount = 11;
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 19F));
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 19F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel.Size = new System.Drawing.Size(223, 241);
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.Size = new System.Drawing.Size(220, 240);
             this.tableLayoutPanel.TabIndex = 29;
             this.tableLayoutPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel_Paint);
             // 
@@ -287,10 +294,10 @@
             // superLinksTab
             // 
             this.superLinksTab.Controls.Add(this.linksComingSoonLabel);
-            this.superLinksTab.Location = new System.Drawing.Point(4, 24);
+            this.superLinksTab.Location = new System.Drawing.Point(4, 22);
             this.superLinksTab.Name = "superLinksTab";
             this.superLinksTab.Padding = new System.Windows.Forms.Padding(3);
-            this.superLinksTab.Size = new System.Drawing.Size(406, 462);
+            this.superLinksTab.Size = new System.Drawing.Size(406, 464);
             this.superLinksTab.TabIndex = 0;
             this.superLinksTab.Text = "Super Links";
             this.superLinksTab.UseVisualStyleBackColor = true;
@@ -301,7 +308,7 @@
             this.linksComingSoonLabel.AutoSize = true;
             this.linksComingSoonLabel.Location = new System.Drawing.Point(149, 174);
             this.linksComingSoonLabel.Name = "linksComingSoonLabel";
-            this.linksComingSoonLabel.Size = new System.Drawing.Size(83, 15);
+            this.linksComingSoonLabel.Size = new System.Drawing.Size(80, 13);
             this.linksComingSoonLabel.TabIndex = 2;
             this.linksComingSoonLabel.Text = "Coming Soon!";
             // 
@@ -313,10 +320,10 @@
             this.resourcesTab.Controls.Add(this.wspServiceNow);
             this.resourcesTab.Controls.Add(this.oracleTimesheet);
             this.resourcesTab.Controls.Add(this.digitalOperationsHomePage);
-            this.resourcesTab.Location = new System.Drawing.Point(4, 24);
+            this.resourcesTab.Location = new System.Drawing.Point(4, 22);
             this.resourcesTab.Name = "resourcesTab";
             this.resourcesTab.Padding = new System.Windows.Forms.Padding(3);
-            this.resourcesTab.Size = new System.Drawing.Size(406, 462);
+            this.resourcesTab.Size = new System.Drawing.Size(406, 464);
             this.resourcesTab.TabIndex = 2;
             this.resourcesTab.Text = "Resources";
             this.resourcesTab.UseVisualStyleBackColor = true;
@@ -326,7 +333,7 @@
             this.civil3dRequestForm.AutoSize = true;
             this.civil3dRequestForm.Location = new System.Drawing.Point(127, 103);
             this.civil3dRequestForm.Name = "civil3dRequestForm";
-            this.civil3dRequestForm.Size = new System.Drawing.Size(123, 15);
+            this.civil3dRequestForm.Size = new System.Drawing.Size(119, 13);
             this.civil3dRequestForm.TabIndex = 7;
             this.civil3dRequestForm.TabStop = true;
             this.civil3dRequestForm.Text = "Civil 3D Request Form";
@@ -337,7 +344,7 @@
             this.horizonOracleSupport.AutoSize = true;
             this.horizonOracleSupport.Location = new System.Drawing.Point(123, 196);
             this.horizonOracleSupport.Name = "horizonOracleSupport";
-            this.horizonOracleSupport.Size = new System.Drawing.Size(131, 15);
+            this.horizonOracleSupport.Size = new System.Drawing.Size(129, 13);
             this.horizonOracleSupport.TabIndex = 6;
             this.horizonOracleSupport.TabStop = true;
             this.horizonOracleSupport.Text = "Horizon Oracle Support";
@@ -348,7 +355,7 @@
             this.pans.AutoSize = true;
             this.pans.Location = new System.Drawing.Point(172, 281);
             this.pans.Name = "pans";
-            this.pans.Size = new System.Drawing.Size(35, 15);
+            this.pans.Size = new System.Drawing.Size(32, 13);
             this.pans.TabIndex = 5;
             this.pans.TabStop = true;
             this.pans.Text = "PANs";
@@ -359,7 +366,7 @@
             this.wspServiceNow.AutoSize = true;
             this.wspServiceNow.Location = new System.Drawing.Point(140, 256);
             this.wspServiceNow.Name = "wspServiceNow";
-            this.wspServiceNow.Size = new System.Drawing.Size(99, 15);
+            this.wspServiceNow.Size = new System.Drawing.Size(95, 13);
             this.wspServiceNow.TabIndex = 4;
             this.wspServiceNow.TabStop = true;
             this.wspServiceNow.Text = "WSP Service Now";
@@ -370,7 +377,7 @@
             this.oracleTimesheet.AutoSize = true;
             this.oracleTimesheet.Location = new System.Drawing.Point(139, 173);
             this.oracleTimesheet.Name = "oracleTimesheet";
-            this.oracleTimesheet.Size = new System.Drawing.Size(98, 15);
+            this.oracleTimesheet.Size = new System.Drawing.Size(95, 13);
             this.oracleTimesheet.TabIndex = 3;
             this.oracleTimesheet.TabStop = true;
             this.oracleTimesheet.Text = "Oracle Timesheet";
@@ -381,7 +388,7 @@
             this.digitalOperationsHomePage.AutoSize = true;
             this.digitalOperationsHomePage.Location = new System.Drawing.Point(108, 80);
             this.digitalOperationsHomePage.Name = "digitalOperationsHomePage";
-            this.digitalOperationsHomePage.Size = new System.Drawing.Size(167, 15);
+            this.digitalOperationsHomePage.Size = new System.Drawing.Size(163, 13);
             this.digitalOperationsHomePage.TabIndex = 2;
             this.digitalOperationsHomePage.TabStop = true;
             this.digitalOperationsHomePage.Text = "Digital Operations Home Page";
@@ -395,10 +402,10 @@
             this.aboutTab.Controls.Add(this.languageLabel);
             this.aboutTab.Controls.Add(this.usernameLabel);
             this.aboutTab.Controls.Add(this.eula);
-            this.aboutTab.Location = new System.Drawing.Point(4, 24);
+            this.aboutTab.Location = new System.Drawing.Point(4, 22);
             this.aboutTab.Name = "aboutTab";
             this.aboutTab.Padding = new System.Windows.Forms.Padding(3);
-            this.aboutTab.Size = new System.Drawing.Size(406, 462);
+            this.aboutTab.Size = new System.Drawing.Size(406, 464);
             this.aboutTab.TabIndex = 3;
             this.aboutTab.Text = "About";
             this.aboutTab.UseVisualStyleBackColor = true;
@@ -408,7 +415,7 @@
             this.upToDateLabel.AutoSize = true;
             this.upToDateLabel.Location = new System.Drawing.Point(3, 444);
             this.upToDateLabel.Name = "upToDateLabel";
-            this.upToDateLabel.Size = new System.Drawing.Size(70, 15);
+            this.upToDateLabel.Size = new System.Drawing.Size(68, 13);
             this.upToDateLabel.TabIndex = 27;
             this.upToDateLabel.Text = "(Up to date)";
             this.upToDateLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -419,7 +426,7 @@
             this.versionNumber.AutoSize = true;
             this.versionNumber.Location = new System.Drawing.Point(3, 427);
             this.versionNumber.Name = "versionNumber";
-            this.versionNumber.Size = new System.Drawing.Size(63, 15);
+            this.versionNumber.Size = new System.Drawing.Size(63, 13);
             this.versionNumber.TabIndex = 26;
             this.versionNumber.Text = "Version 1.0";
             this.versionNumber.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -430,7 +437,7 @@
             this.releaseNotes.AutoSize = true;
             this.releaseNotes.Location = new System.Drawing.Point(155, 105);
             this.releaseNotes.Name = "releaseNotes";
-            this.releaseNotes.Size = new System.Drawing.Size(80, 15);
+            this.releaseNotes.Size = new System.Drawing.Size(79, 13);
             this.releaseNotes.TabIndex = 25;
             this.releaseNotes.TabStop = true;
             this.releaseNotes.Text = "Release Notes";
@@ -441,7 +448,7 @@
             this.languageLabel.Location = new System.Drawing.Point(275, 444);
             this.languageLabel.Name = "languageLabel";
             this.languageLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.languageLabel.Size = new System.Drawing.Size(56, 15);
+            this.languageLabel.Size = new System.Drawing.Size(56, 13);
             this.languageLabel.TabIndex = 24;
             this.languageLabel.Text = "language";
             this.languageLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -451,7 +458,7 @@
             this.usernameLabel.AutoSize = true;
             this.usernameLabel.Location = new System.Drawing.Point(313, 427);
             this.usernameLabel.Name = "usernameLabel";
-            this.usernameLabel.Size = new System.Drawing.Size(60, 15);
+            this.usernameLabel.Size = new System.Drawing.Size(58, 13);
             this.usernameLabel.TabIndex = 23;
             this.usernameLabel.Text = "Username";
             this.usernameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -462,7 +469,7 @@
             this.eula.AutoSize = true;
             this.eula.Location = new System.Drawing.Point(100, 80);
             this.eula.Name = "eula";
-            this.eula.Size = new System.Drawing.Size(198, 15);
+            this.eula.Size = new System.Drawing.Size(188, 13);
             this.eula.TabIndex = 3;
             this.eula.TabStop = true;
             this.eula.Text = "End-User License Agreement (EULA)";
