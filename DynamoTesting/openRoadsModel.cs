@@ -1,6 +1,4 @@
-﻿using static System.Net.Mime.MediaTypeNames;
-
-namespace DynamoTesting
+﻿namespace DynamoTesting
 {
     public class openRoadsModel
     {
@@ -74,9 +72,18 @@ namespace DynamoTesting
 
         public string BuildOpenRoadsStandardShortcut(string client, string version)
         {
-            string shortcut = "C:\\Program Files\\Bentley\\OpenRoads Designer CE 10.11\\OpenRoadsDesigner\\OpenRoadsDesigner.exe";
+            string installationFolder = OpenRoadsInstallationLocations[version];
+            string shortcut = "C:\\Program Files\\Bentley\\" + installationFolder + "\\OpenRoadsDesigner\\OpenRoadsDesigner.exe";
             return shortcut;
         }
+
+        public Dictionary<string, string> OpenRoadsInstallationLocations = new Dictionary<string, string>
+        {
+            { "2020 R3", "OpenRoads Designer CE 10.9" },
+            { "2021 R2", "OpenRoads Designer CE 10.10" },
+            { "2022 R1", "OpenRoads Designer CE 10.11" },
+            { "2022 R3", "OpenRoads Designer CE 10.12" },
+        };
 
         public string BuildOpenRoadsEnvironmentShortcut(string client, string version)
         {
@@ -91,7 +98,9 @@ namespace DynamoTesting
             string shortcut = mainFolder + modifiedShortut;
             return shortcut;
         }
-
     }
-
 }
+
+
+
+
