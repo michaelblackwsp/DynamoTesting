@@ -1,93 +1,23 @@
 [
   {
-    "Name": "fewfwef",
-    "ShortcutPath": "W:\\1_service\\2_environments\\MTQ\\english_software\\c3d_2020_en_mtq.lnk",
-    "Tooltip": "MTQ (2020 English)",
-    "Software": "Civil 3D",
-    "IconPath": "C:\\Users\\CAMB075971\\source\\repos\\WinForms_Sandbox\\DynamoTesting\\Icons\\Civil3D.ico"
-  },
-  {
-    "Name": "ef",
+    "Name": "1",
     "ShortcutPath": "W:\\1_service\\2_environments\\CofC\\english_software\\c3d_2020_en_cofc.lnk",
     "Tooltip": "CofC (2020 English)",
     "Software": "Civil 3D",
     "IconPath": "C:\\Users\\CAMB075971\\source\\repos\\WinForms_Sandbox\\DynamoTesting\\Icons\\Civil3D.ico"
   },
   {
-    "Name": "wefw",
-    "ShortcutPath": "W:\\1_service\\2_environments\\MX\\english_software\\c3d_2020_en_mx.lnk",
-    "Tooltip": "MX (2020 English)",
-    "Software": "Civil 3D",
-    "IconPath": "C:\\Users\\CAMB075971\\source\\repos\\WinForms_Sandbox\\DynamoTesting\\Icons\\Civil3D.ico"
+    "Name": "2",
+    "ShortcutPath": "C:\\Program Files\\Bentley\\OpenRoads Designer CE 10.11\\OpenRoadsDesigner\\OpenRoadsDesigner.exe",
+    "Tooltip": "MTQ [2021 (R1, R2)]",
+    "Software": "OpenRoads Designer",
+    "IconPath": "C:\\Users\\CAMB075971\\source\\repos\\WinForms_Sandbox\\DynamoTesting\\bin\\Debug\\net7.0-windows\\icons\\OpenRoads.ico"
   },
   {
-    "Name": "efwe",
-    "ShortcutPath": "W:\\1_service\\2_environments\\MVRD\\english_software\\c3d_2020_en_mvrd.lnk",
-    "Tooltip": "MVRD (2020 English)",
+    "Name": "3",
+    "ShortcutPath": "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Autodesk Civil 3D 2023 - Fran\u00E7ais (French)\\Civil 3D 2023 - Fran\u00E7ais Anglo-saxon (French Imperial).lnk",
+    "Tooltip": "\u003CImperial\u003E (2023 French)",
     "Software": "Civil 3D",
-    "IconPath": "C:\\Users\\CAMB075971\\source\\repos\\WinForms_Sandbox\\DynamoTesting\\Icons\\Civil3D.ico"
-  },
-  {
-    "Name": "efwe",
-    "ShortcutPath": "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Autodesk Civil 3D 2020 - English\\Civil 3D 2020 Imperial.lnk",
-    "Tooltip": "\u003CImperial\u003E (2020 English)",
-    "Software": "Civil 3D",
-    "IconPath": "C:\\Users\\CAMB075971\\source\\repos\\WinForms_Sandbox\\DynamoTesting\\Icons\\Civil3D.ico"
-  },
-  {
-    "Name": "ewfwe",
-    "ShortcutPath": "W:\\1_service\\2_environments\\WSP_EN\\english_software\\c3d_2020_en_wsp_en.lnk",
-    "Tooltip": "WSP_EN (2020 English)",
-    "Software": "Civil 3D",
-    "IconPath": "C:\\Users\\CAMB075971\\source\\repos\\WinForms_Sandbox\\DynamoTesting\\Icons\\Civil3D.ico"
-  },
-  {
-    "Name": "ewfwe",
-    "ShortcutPath": "W:\\1_service\\2_environments\\WSP_FR\\english_software\\c3d_2020_en_wsp_fr.lnk",
-    "Tooltip": "WSP_FR (2020 English)",
-    "Software": "Civil 3D",
-    "IconPath": "C:\\Users\\CAMB075971\\source\\repos\\WinForms_Sandbox\\DynamoTesting\\Icons\\Civil3D.ico"
-  },
-  {
-    "Name": "ewfwe",
-    "ShortcutPath": "W:\\1_service\\2_environments\\MVRD\\english_software\\c3d_2020_en_mvrd.lnk",
-    "Tooltip": "MVRD (2020 English)",
-    "Software": "Civil 3D",
-    "IconPath": "C:\\Users\\CAMB075971\\source\\repos\\WinForms_Sandbox\\DynamoTesting\\Icons\\Civil3D.ico"
-  },
-  {
-    "Name": "wefwe",
-    "ShortcutPath": "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Autodesk Civil 3D 2020 - English\\Civil 3D 2020 Imperial.lnk",
-    "Tooltip": "\u003CImperial\u003E (2020 English)",
-    "Software": "Civil 3D",
-    "IconPath": "C:\\Users\\CAMB075971\\source\\repos\\WinForms_Sandbox\\DynamoTesting\\Icons\\Civil3D.ico"
-  },
-  {
-    "Name": "wefwef",
-    "ShortcutPath": "W:\\1_service\\2_environments\\WSP_FR\\english_software\\c3d_2020_en_wsp_fr.lnk",
-    "Tooltip": "WSP_FR (2020 English)",
-    "Software": "Civil 3D",
-    "IconPath": "C:\\Users\\CAMB075971\\source\\repos\\WinForms_Sandbox\\DynamoTesting\\Icons\\Civil3D.ico"
-  },
-  {
-    "Name": "wefewf",
-    "ShortcutPath": "W:\\1_service\\2_environments\\MX\\english_software\\c3d_2020_en_mx.lnk",
-    "Tooltip": "MX (2020 English)",
-    "Software": "Civil 3D",
-    "IconPath": "C:\\Users\\CAMB075971\\source\\repos\\WinForms_Sandbox\\DynamoTesting\\Icons\\Civil3D.ico"
-  },
-  {
-    "Name": "34t34t",
-    "ShortcutPath": "W:\\1_service\\2_environments\\CofC\\english_software\\c3d_2020_en_cofc.lnk",
-    "Tooltip": "CofC (2020 English)",
-    "Software": "Civil 3D",
-    "IconPath": "C:\\Users\\CAMB075971\\source\\repos\\WinForms_Sandbox\\DynamoTesting\\Icons\\Civil3D.ico"
-  },
-  {
-    "Name": "34t34t",
-    "ShortcutPath": "W:\\1_service\\2_environments\\MTQ\\english_software\\c3d_2020_en_mtq.lnk",
-    "Tooltip": "MTQ (2020 English)",
-    "Software": "Civil 3D",
-    "IconPath": "C:\\Users\\CAMB075971\\source\\repos\\WinForms_Sandbox\\DynamoTesting\\Icons\\Civil3D.ico"
+    "IconPath": "C:\\Users\\CAMB075971\\source\\repos\\WinForms_Sandbox\\DynamoTesting\\Icons\\Civil3D2023.ico"
   }
 ]

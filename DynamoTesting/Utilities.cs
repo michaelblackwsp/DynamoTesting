@@ -44,6 +44,37 @@ namespace DynamoTesting
             }
         }
 
+        public string GetOpenRoadsVersionDataValue(string registryKeyPath, string valueName)
+        {
+            try
+            {
+                using (RegistryKey registryKey = Registry.LocalMachine.OpenSubKey(registryKeyPath))
+                {
+                    if (registryKey != null)
+                    {
+                        object registryValue = registryKey.GetValue(valueName);
+
+                        if (registryValue != null)
+                        {
+                            return registryValue.ToString();
+                        }
+                        else
+                        {
+                            throw new ArgumentException($"Value '{valueName}' not found in registry key '{registryKeyPath}'");
+                        }
+                    }
+                    else
+                    {
+                        throw new ArgumentException($"Registry key '{registryKeyPath}' not found under CurrentUser hive");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public void StartSoftware(string path)
         {
             if (System.IO.File.Exists(path))

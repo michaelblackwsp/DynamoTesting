@@ -685,13 +685,15 @@ namespace DynamoTesting
         private void RadioButton_CheckedChanged_OpenRoads(object sender, EventArgs e)
         {
             RadioButton radioButton = sender as RadioButton; //CLEAN: REFACTOR EVERYTHING WITH RADIO BUTTONS, MAKE LANGUAGE NULL FOR OPEN ROADS
+
             if (radioButton != null && radioButton.Checked)
             {
-                nameTextBox.Enabled = true;
-
+      
                 var tagTuple = radioButton.Tag as Tuple<string, string>;
                 string client = tagTuple.Item1;
                 string version = tagTuple.Item2;
+
+                nameTextBox.Enabled = true;
 
                 if (client != "<Standard>")
                 {
@@ -705,6 +707,16 @@ namespace DynamoTesting
                     favouriteButtonToolTip = client + " [" + version + "]";
                     launchButton.Enabled = true;
                 }
+
+                string registryKey = openRoadsModel.OpenRoadsRegistryKeyList[version];
+                string registryPath = $@"SOFTWARE\Bentley\OpenRoadsDesigner\" + registryKey;
+                string valueName = "Version";
+                string openRoadsReleaseVersionCode = utilities.GetOpenRoadsVersionDataValue(registryPath, valueName);
+
+                string openRoadsReleaseName = openRoadsModel.OpenRoadsVersionData[openRoadsReleaseVersionCode];
+
+                softwareWarningLabel.Visible = true;
+                softwareWarningLabel.Text = "† " + openRoadsReleaseName + " (" + openRoadsReleaseVersionCode + ")";
             }
         }
 
