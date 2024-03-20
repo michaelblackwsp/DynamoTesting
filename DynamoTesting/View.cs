@@ -145,6 +145,12 @@ namespace DynamoTesting
         {
             rightClickMenu = new ContextMenuStrip(); // Create the context menu
 
+            ToolStripMenuItem launchMenuItem = new ToolStripMenuItem("Launch");
+            launchMenuItem.Click += FavouriteButton_Click;
+            rightClickMenu.Items.Add(launchMenuItem);
+
+            rightClickMenu.Items.Add(new ToolStripSeparator()); // ---------------------------------
+
             ToolStripMenuItem renameMenuItem = new ToolStripMenuItem("Rename");
             renameMenuItem.Click += RenameMenuItem_Click;
             rightClickMenu.Items.Add(renameMenuItem);
@@ -156,6 +162,12 @@ namespace DynamoTesting
             ToolStripMenuItem removeMenuItem = new ToolStripMenuItem("Remove");
             removeMenuItem.Click += RemoveMenuItem_Click;
             rightClickMenu.Items.Add(removeMenuItem);
+
+            rightClickMenu.Items.Add(new ToolStripSeparator()); // ---------------------------------
+
+            ToolStripMenuItem removeAllMenuItem = new ToolStripMenuItem("Remove All");
+            removeAllMenuItem.Click += RemoveAllMenuItem_Click;
+            rightClickMenu.Items.Add(removeAllMenuItem);
         }
         #endregion
 
@@ -339,7 +351,7 @@ namespace DynamoTesting
         {
             // BUG?: After an environment is saved, the User can't save it again without clicking a new radio button, then going back
             string selectedSoftware = softwareComboBox.SelectedItem.ToString();
-            string version = ""; // Initialize version string
+            string version = "";
 
             bool radioButtonSelected = false;
 
@@ -347,6 +359,7 @@ namespace DynamoTesting
             {
                 if (control is RadioButton radioButton && radioButton.Checked)
                 {
+                    // INVESTIGATE: Why is this filter for Civil 3D here?!
                     if (selectedSoftware == "Civil 3D")
                     {
                         radioButtonSelected = true;
@@ -354,13 +367,12 @@ namespace DynamoTesting
                         version = tag.Item2;
                         break;
                     }
-                } 
-                else 
-                {
-                    radioButtonSelected = true;
-                    version = null;
+                    else 
+                    {
+                        radioButtonSelected = true;
+                        version = null; // TO DO: OpenRoads logic goes here
+                    }
                 }
-
             }
 
             if (!radioButtonSelected)
@@ -385,6 +397,7 @@ namespace DynamoTesting
             cancelButton.Enabled = false;
             saveButton.Enabled = false;
         }
+
         private void cancelButton_Click(object sender, EventArgs e)
         {
             nameTextBox.Clear();
@@ -454,8 +467,8 @@ namespace DynamoTesting
         }
         private void AddOpenRoadsColumnHeaders()
         {
-            tableLayoutPanel.ColumnStyles[0].Width = 80;
-            tableLayoutPanel.ColumnStyles[1].Width = 110;
+            tableLayoutPanel.ColumnStyles[0].Width = 95;
+            tableLayoutPanel.ColumnStyles[1].Width = 95;
             tableLayoutPanel.ColumnStyles[2].Width = 30;
 
             CreateColumnHeader("Client", 0);
@@ -846,14 +859,34 @@ namespace DynamoTesting
 
         private void FavouriteButton_Click(object sender, EventArgs e)
         {
-            Button clickedButton = sender as Button;
-            if (clickedButton != null)
+            if (sender is ToolStripMenuItem menuItem) // Check if the event is raised from the context menu
             {
-                FavouriteButton favorite = clickedButton.Tag as FavouriteButton;
-                if (favorite != null)
+                ContextMenuStrip menu = menuItem.Owner as ContextMenuStrip;
+                if (menu != null)
                 {
-                    string shortcutPath = favorite.ShortcutPath;
-                    utilities.StartSoftware(shortcutPath);
+                    Button clickedButton = menu.SourceControl as Button;
+                    if (clickedButton != null)
+                    {
+                        FavouriteButton favorite = clickedButton.Tag as FavouriteButton;
+                        if (favorite != null)
+                        {
+                            string shortcutPath = favorite.ShortcutPath;
+                            utilities.StartSoftware(shortcutPath);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                Button clickedButton = sender as Button;
+                if (clickedButton != null)
+                {
+                    FavouriteButton favorite = clickedButton.Tag as FavouriteButton;
+                    if (favorite != null)
+                    {
+                        string shortcutPath = favorite.ShortcutPath;
+                        utilities.StartSoftware(shortcutPath);
+                    }
                 }
             }
         }
@@ -866,10 +899,10 @@ namespace DynamoTesting
             FavouriteButton favouriteButtonToRename = (FavouriteButton)buttonToRename.Tag;
 
             Form dialog = new Form();
-            dialog.Text = "Enter new name";
+            dialog.Text = "Enter New Name";
             dialog.FormBorderStyle = FormBorderStyle.FixedDialog;
             dialog.StartPosition = FormStartPosition.CenterParent;
-            dialog.Size = new Size(250, 115);
+            dialog.Size = new Size(260, 115);
 
             TextBox nameTextBox = new TextBox();
             nameTextBox.Location = new Point(10, 10); // Location of window
@@ -929,6 +962,7 @@ namespace DynamoTesting
             bool radioButtonSelected = false;
             string version = ""; // Initialize version string
 
+            // BUG: Updating Civil 3D button to OpenRoads makes it crash
             foreach (Control control in tableLayoutPanel.Controls)
             {
                 if (control is RadioButton radioButton && radioButton.Checked)
@@ -951,11 +985,11 @@ namespace DynamoTesting
 
             if (originalToolTip == favouriteButtonToolTip)
             {
-                MessageBox.Show("The selected environment is the same as the original.", "Nothing to update", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("The selected environment is the same as the original.", "Nothing to Update", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
-            DialogResult result = MessageBox.Show("Are you sure you want to update this button?", "Update button", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult result = MessageBox.Show("Are you sure you want to update this button?", "Update Button", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (result == DialogResult.Yes)
             {
@@ -983,7 +1017,7 @@ namespace DynamoTesting
             Button buttonToRemove = (Button)contextMenu.SourceControl;                      // Get the Button associated with the ContextMenuStrip
             FavouriteButton favouriteButtonToRemove = (FavouriteButton)buttonToRemove.Tag;  // Get the FavouriteButton object corresponding to the button
 
-            DialogResult result = MessageBox.Show(this, "Are you sure you want to remove this button?", "Remove button", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult result = MessageBox.Show(this, "Are you sure you want to remove this button?", "Remove Button", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (result == DialogResult.Yes)
             {
@@ -1000,7 +1034,23 @@ namespace DynamoTesting
             }
         }
 
+        private void RemoveAllMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;                         // Get the MenuItem that triggered the event
+            ContextMenuStrip contextMenu = (ContextMenuStrip)menuItem.Owner;                // Get the ContextMenuStrip that contains the MenuItem
+            Button buttonToRemove = (Button)contextMenu.SourceControl;                      // Get the Button associated with the ContextMenuStrip
 
+            DialogResult result = MessageBox.Show(this, "Are you sure you want to remove all buttons?", "Remove All", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                viewModel.favouriteButtons.Clear(); // Clear all items from the list
+                viewModel.buttonCount = 0; // Reset the count to 0
+                viewModel.WriteToFavouriteButtonsJson(); // Write changes to the JSON file
+
+                DrawButtons(); // Redraw buttons or update UI as needed
+            }
+        }
         #endregion
 
 
@@ -1117,10 +1167,19 @@ namespace DynamoTesting
         }
 
         #endregion
-
-        // The one-stop shop for all your production needs!
     }
 
 
 }
 
+
+// TO DO: Move buttons up / down
+/*ToolStripMenuItem moveUpMenuItem = new ToolStripMenuItem("Move Up");
+moveUpMenuItem.Click += MoveUpMenuItem_Click;
+rightClickMenu.Items.Add(moveUpMenuItem);
+
+ToolStripMenuItem moveDownMenuItem = new ToolStripMenuItem("Move Down");
+moveDownMenuItem.Click += MoveDownMenuItem_Click;
+rightClickMenu.Items.Add(moveDownMenuItem);
+
+rightClickMenu.Items.Add(new ToolStripSeparator()); // ---------------------------------*/

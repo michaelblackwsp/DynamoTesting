@@ -31,6 +31,7 @@
             this.tabList = new System.Windows.Forms.TabControl();
             this.launcherTab = new System.Windows.Forms.TabPage();
             this.softwareWarningLabel = new System.Windows.Forms.Label();
+            this.resetButton = new System.Windows.Forms.Button();
             this.favouritesLabel = new System.Windows.Forms.Label();
             this.launchButton = new System.Windows.Forms.Button();
             this.softwareComboBox = new System.Windows.Forms.ComboBox();
@@ -43,7 +44,6 @@
             this.saveButton = new System.Windows.Forms.Button();
             this.nameTextBox = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.resetButton = new System.Windows.Forms.Button();
             this.favouritesPanel = new System.Windows.Forms.Panel();
             this.superLinksTab = new System.Windows.Forms.TabPage();
             this.linksComingSoonLabel = new System.Windows.Forms.Label();
@@ -85,12 +85,13 @@
             this.tabList.Location = new System.Drawing.Point(11, 12);
             this.tabList.Name = "tabList";
             this.tabList.SelectedIndex = 0;
-            this.tabList.Size = new System.Drawing.Size(414, 490);
+            this.tabList.Size = new System.Drawing.Size(414, 485);
             this.tabList.TabIndex = 21;
             // 
             // launcherTab
             // 
             this.launcherTab.Controls.Add(this.softwareWarningLabel);
+            this.launcherTab.Controls.Add(this.resetButton);
             this.launcherTab.Controls.Add(this.favouritesLabel);
             this.launcherTab.Controls.Add(this.launchButton);
             this.launcherTab.Controls.Add(this.softwareComboBox);
@@ -103,13 +104,12 @@
             this.launcherTab.Controls.Add(this.saveButton);
             this.launcherTab.Controls.Add(this.nameTextBox);
             this.launcherTab.Controls.Add(this.tableLayoutPanel);
-            this.launcherTab.Controls.Add(this.resetButton);
             this.launcherTab.Controls.Add(this.favouritesPanel);
             this.launcherTab.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.launcherTab.Location = new System.Drawing.Point(4, 22);
             this.launcherTab.Name = "launcherTab";
             this.launcherTab.Padding = new System.Windows.Forms.Padding(3);
-            this.launcherTab.Size = new System.Drawing.Size(406, 464);
+            this.launcherTab.Size = new System.Drawing.Size(406, 459);
             this.launcherTab.TabIndex = 1;
             this.launcherTab.Text = "Launcher";
             this.launcherTab.UseVisualStyleBackColor = true;
@@ -120,11 +120,21 @@
             this.softwareWarningLabel.AutoSize = true;
             this.softwareWarningLabel.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.softwareWarningLabel.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.softwareWarningLabel.Location = new System.Drawing.Point(17, 390);
+            this.softwareWarningLabel.Location = new System.Drawing.Point(16, 386);
             this.softwareWarningLabel.Name = "softwareWarningLabel";
             this.softwareWarningLabel.Size = new System.Drawing.Size(129, 13);
             this.softwareWarningLabel.TabIndex = 39;
             this.softwareWarningLabel.Text = "* Software not installed";
+            // 
+            // resetButton
+            // 
+            this.resetButton.Location = new System.Drawing.Point(358, 0);
+            this.resetButton.Name = "resetButton";
+            this.resetButton.Size = new System.Drawing.Size(48, 24);
+            this.resetButton.TabIndex = 26;
+            this.resetButton.Text = "Reset";
+            this.resetButton.UseVisualStyleBackColor = true;
+            this.resetButton.Click += new System.EventHandler(this.resetButton_Click);
             // 
             // favouritesLabel
             // 
@@ -175,7 +185,7 @@
             // 
             this.versionLabel.AutoSize = true;
             this.versionLabel.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.versionLabel.Location = new System.Drawing.Point(110, 90);
+            this.versionLabel.Location = new System.Drawing.Point(130, 90);
             this.versionLabel.Name = "versionLabel";
             this.versionLabel.Size = new System.Drawing.Size(45, 13);
             this.versionLabel.TabIndex = 25;
@@ -197,9 +207,9 @@
             this.versionDropdownMenu.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.versionDropdownMenu.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.versionDropdownMenu.FormattingEnabled = true;
-            this.versionDropdownMenu.Location = new System.Drawing.Point(111, 105);
+            this.versionDropdownMenu.Location = new System.Drawing.Point(131, 105);
             this.versionDropdownMenu.Name = "versionDropdownMenu";
-            this.versionDropdownMenu.Size = new System.Drawing.Size(124, 21);
+            this.versionDropdownMenu.Size = new System.Drawing.Size(104, 21);
             this.versionDropdownMenu.TabIndex = 23;
             // 
             // clientDropdownMenu
@@ -210,7 +220,7 @@
             this.clientDropdownMenu.Location = new System.Drawing.Point(15, 105);
             this.clientDropdownMenu.MaxDropDownItems = 20;
             this.clientDropdownMenu.Name = "clientDropdownMenu";
-            this.clientDropdownMenu.Size = new System.Drawing.Size(90, 21);
+            this.clientDropdownMenu.Size = new System.Drawing.Size(110, 21);
             this.clientDropdownMenu.TabIndex = 22;
             this.clientDropdownMenu.SelectedIndexChanged += new System.EventHandler(this.clientDropdownMenu_SelectedIndexChanged_1);
             // 
@@ -272,16 +282,6 @@
             this.tableLayoutPanel.TabIndex = 29;
             this.tableLayoutPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel_Paint);
             // 
-            // resetButton
-            // 
-            this.resetButton.Location = new System.Drawing.Point(190, 420);
-            this.resetButton.Name = "resetButton";
-            this.resetButton.Size = new System.Drawing.Size(48, 24);
-            this.resetButton.TabIndex = 26;
-            this.resetButton.Text = "Reset";
-            this.resetButton.UseVisualStyleBackColor = true;
-            this.resetButton.Click += new System.EventHandler(this.resetButton_Click);
-            // 
             // favouritesPanel
             // 
             this.favouritesPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
@@ -297,7 +297,7 @@
             this.superLinksTab.Location = new System.Drawing.Point(4, 22);
             this.superLinksTab.Name = "superLinksTab";
             this.superLinksTab.Padding = new System.Windows.Forms.Padding(3);
-            this.superLinksTab.Size = new System.Drawing.Size(406, 464);
+            this.superLinksTab.Size = new System.Drawing.Size(406, 459);
             this.superLinksTab.TabIndex = 0;
             this.superLinksTab.Text = "Super Links";
             this.superLinksTab.UseVisualStyleBackColor = true;
@@ -323,7 +323,7 @@
             this.resourcesTab.Location = new System.Drawing.Point(4, 22);
             this.resourcesTab.Name = "resourcesTab";
             this.resourcesTab.Padding = new System.Windows.Forms.Padding(3);
-            this.resourcesTab.Size = new System.Drawing.Size(406, 464);
+            this.resourcesTab.Size = new System.Drawing.Size(406, 459);
             this.resourcesTab.TabIndex = 2;
             this.resourcesTab.Text = "Resources";
             this.resourcesTab.UseVisualStyleBackColor = true;
@@ -405,7 +405,7 @@
             this.aboutTab.Location = new System.Drawing.Point(4, 22);
             this.aboutTab.Name = "aboutTab";
             this.aboutTab.Padding = new System.Windows.Forms.Padding(3);
-            this.aboutTab.Size = new System.Drawing.Size(406, 464);
+            this.aboutTab.Size = new System.Drawing.Size(406, 459);
             this.aboutTab.TabIndex = 3;
             this.aboutTab.Text = "About";
             this.aboutTab.UseVisualStyleBackColor = true;
@@ -541,7 +541,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(437, 514);
+            this.ClientSize = new System.Drawing.Size(437, 510);
             this.Controls.Add(this.tabList);
             this.Name = "repconLauncher";
             this.Text = "REPCON";

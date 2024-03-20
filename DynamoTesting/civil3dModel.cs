@@ -6,7 +6,6 @@
         public List<(string year, string language)> installedVersionsOfCivil3D = null;
 
         #region Civil 3D Client Environments
-        // CLEAN: Add built-in (default) versions for each software
         public static string[] clientOptions = { "BCMoT", "CofC", "MTQ", "MVRD", "MX", "VDG", "VDM", "VDQ", "VIA", "WSP_EN", "WSP_FR", "<Metric>", "<Imperial>" };
         public static string[] languageOptions = { "English", "French" };
         public static string[] versionOptions = { "2019", "2020", "2021", "2022", "2023" };
