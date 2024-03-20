@@ -1,4 +1,6 @@
-﻿namespace DynamoTesting
+﻿using static System.Net.Mime.MediaTypeNames;
+
+namespace DynamoTesting
 {
     public class openRoadsModel
     {
@@ -78,7 +80,15 @@
 
         public string BuildOpenRoadsEnvironmentShortcut(string client, string version)
         {
-            string shortcut = "C:\\Program Files\\Bentley\\OpenRoads Designer CE 10.11\\OpenRoadsDesigner\\OpenRoadsDesigner.exe";
+            string clientNoSpaces = client.Replace(" ", "");
+
+            int indexOfV = client.IndexOf('v');
+            string clientWithoutLetterVandAfter = clientNoSpaces.Substring(0, indexOfV);
+
+            string mainFolder = "Y:\\1_service\\2_environments\\" + clientWithoutLetterVandAfter + "\\ORD\\";
+
+            string modifiedShortut = "ORD" + version.Replace(" ", "") + "_" + client.Replace(" ", "") + ".lnk";
+            string shortcut = mainFolder + modifiedShortut;
             return shortcut;
         }
 

@@ -177,6 +177,7 @@
                 }
                 else
                 {
+                    // CHECK FOR RELEASE: Is this correct?
                     shortcut = "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Autodesk Civil 3D " + version + " - Français (French)\\Civil 3D " + version + " - Français Anglo-saxon (French Imperial).lnk";
                 }
                 
