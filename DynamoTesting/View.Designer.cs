@@ -468,7 +468,7 @@
             // eula
             // 
             this.eula.AutoSize = true;
-            this.eula.Location = new System.Drawing.Point(106, 80);
+            this.eula.Location = new System.Drawing.Point(109, 80);
             this.eula.Name = "eula";
             this.eula.Size = new System.Drawing.Size(188, 13);
             this.eula.TabIndex = 3;

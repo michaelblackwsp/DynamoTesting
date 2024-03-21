@@ -1,13 +1,9 @@
-using Microsoft.VisualBasic.ApplicationServices;
-using System.Diagnostics;
 using System.Reflection;
 using Button = System.Windows.Forms.Button;
 using ToolTip = System.Windows.Forms.ToolTip;
 
 namespace DynamoTesting
 {
-
-
     public partial class repconLauncher : Form
     {
         #region Initialization
@@ -96,16 +92,12 @@ namespace DynamoTesting
             }
         }
 
-
-
-
         private void EnableDoubleBuffering(Control control)
         {
             Type type = control.GetType();
             PropertyInfo propertyInfo = type.GetProperty("DoubleBuffered", BindingFlags.Instance | BindingFlags.NonPublic);
             propertyInfo?.SetValue(control, true, null);
         }
-
 
         private void repconLauncher_Load(object sender, EventArgs e)
         {
@@ -223,10 +215,6 @@ namespace DynamoTesting
             versionDropdownMenu.SelectedIndexChanged += versionDropdownMenu_SelectedIndexChanged;
         }
 
-
-
-
-
         private void clientDropdownMenu_DrawItem(object? sender, DrawItemEventArgs e)
             {   // REFACTOR INTO UTILITY METHOD
             if (e.Index >= 0)
@@ -309,7 +297,6 @@ namespace DynamoTesting
             EventArgs eventArgs = new EventArgs();
             resetButton_Click(null, EventArgs.Empty);
         }
-
         #endregion
 
 
@@ -359,7 +346,6 @@ namespace DynamoTesting
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            // BUG?: After an environment is saved, the User can't save it again without clicking a new radio button, then going back
             string selectedSoftware = softwareComboBox.SelectedItem.ToString();
             string version = "";
 
@@ -369,7 +355,6 @@ namespace DynamoTesting
             {
                 if (control is RadioButton radioButton && radioButton.Checked)
                 {
-                    // INVESTIGATE: Why is this filter for Civil 3D here?!
                     if (selectedSoftware == "Civil 3D")
                     {
                         radioButtonSelected = true;
@@ -380,7 +365,9 @@ namespace DynamoTesting
                     else 
                     {
                         radioButtonSelected = true;
-                        version = null; // TO DO: OpenRoads logic goes here
+                        var tag = (Tuple<string, string>)radioButton.Tag; // Client, Version
+                        version = tag.Item2;
+                        break;
                     }
                 }
             }
@@ -393,7 +380,7 @@ namespace DynamoTesting
 
             string iconPath = GetIconPath(selectedSoftware, version);
 
-            // BUG: buttonCount is not being recognized after switching to JSON
+            // FOR RELEASE: buttonCount is not being recognized after switching to JSON
             if (viewModel.buttonCount >= 100)
             {
                 MessageBox.Show("You can only save up to 100 client environments.");
@@ -453,8 +440,6 @@ namespace DynamoTesting
                 saveButton.Enabled = false;
             }
         }
-
-
         #endregion
 
 
@@ -1005,18 +990,26 @@ namespace DynamoTesting
             FavouriteButton favouriteButtonToUpdate = (FavouriteButton)buttonToUpdate.Tag;
 
             bool radioButtonSelected = false;
-            string version = ""; // Initialize version string
+            string version = "";
 
-            // BUG: Updating Civil 3D button to OpenRoads makes it crash
             foreach (Control control in tableLayoutPanel.Controls)
             {
                 if (control is RadioButton radioButton && radioButton.Checked)
                 {
-                    radioButtonSelected = true;
-                    // Extract version from the checked radio button's Tag
-                    var tag = (Tuple<string, string, string>)radioButton.Tag;
-                    version = tag.Item2;
-                    break;
+                    if (software == "Civil 3D")
+                    {
+                        radioButtonSelected = true;
+                        var tag = (Tuple<string, string, string>)radioButton.Tag;
+                        version = tag.Item2;
+                        break;
+                    }
+                    else
+                    {
+                        radioButtonSelected = true;
+                        var tag = (Tuple<string, string>)radioButton.Tag;
+                        version = tag.Item2;
+                        break;
+                    }
                 }
             }
 
@@ -1219,8 +1212,6 @@ namespace DynamoTesting
         #endregion
 
     }
-
-
 }
 
 
