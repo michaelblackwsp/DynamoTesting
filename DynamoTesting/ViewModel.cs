@@ -114,8 +114,8 @@ namespace DynamoTesting
         public void WriteToFavouriteButtonsJson()
         {
             //FOR RELEASE: Add logic to create the JSON file if for some reason it doesn't exist on the user's machine
-            //string filePath = Path.Combine(Application.StartupPath, "preferences", "favouriteButtons.json");
-            string filePath = @"C:\Users\CAMB075971\source\repos\WinForms_Sandbox\DynamoTesting\preferences\favouriteButtons.json";
+            string filePath = Path.Combine(Application.StartupPath, "preferences", "favouriteButtons.json");
+            //string filePath = @"C:\Users\CAMB075971\source\repos\WinForms_Sandbox\DynamoTesting\preferences\favouriteButtons.json";
             var options = new JsonSerializerOptions { WriteIndented = true };
             string jsonString = JsonSerializer.Serialize(favouriteButtons, options);
             File.WriteAllText(filePath, jsonString);
@@ -123,8 +123,8 @@ namespace DynamoTesting
 
         public void ReadFromFavouriteButtonsJson()
         {
-            //string filePath = Path.Combine(Application.StartupPath, "preferences", "favouriteButtons.json");
-            string filePath = @"C:\Users\CAMB075971\source\repos\WinForms_Sandbox\DynamoTesting\preferences\favouriteButtons.json";
+            string filePath = Path.Combine(Application.StartupPath, "preferences", "favouriteButtons.json");
+            //string filePath = @"C:\Users\CAMB075971\source\repos\WinForms_Sandbox\DynamoTesting\preferences\favouriteButtons.json";
             if (File.Exists(filePath))
             {
                 string jsonString = File.ReadAllText(filePath);

@@ -170,15 +170,16 @@ namespace DynamoTesting
             ToolStripMenuItem removeAllMenuItem = new ToolStripMenuItem("Remove All");
             removeAllMenuItem.Click += RemoveAllMenuItem_Click;
             rightClickMenu.Items.Add(removeAllMenuItem);
-        }
-        #endregion
 
+        }// TO DO: Grey out menu items that can't be selected
+        #endregion
 
         #region Draw and Handle Dropdown Menu Events
         private string previousSelectedSoftware = null;
 
         private void softwareComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            softwareWarningLabel.Visible = false;
             string selectedSoftware = softwareComboBox.SelectedItem.ToString();
 
             if (selectedSoftware != previousSelectedSoftware)
@@ -213,6 +214,7 @@ namespace DynamoTesting
             versionDropdownMenu.DrawMode = DrawMode.OwnerDrawFixed;
             versionDropdownMenu.DrawItem += versionDropdownMenu_DrawItem;
             versionDropdownMenu.SelectedIndexChanged += versionDropdownMenu_SelectedIndexChanged;
+
         }
 
         private void clientDropdownMenu_DrawItem(object? sender, DrawItemEventArgs e)
@@ -742,19 +744,19 @@ namespace DynamoTesting
             {
                 if (version == "2023")
                 {
-                    iconPath = "C:\\Users\\CAMB075971\\source\\repos\\WinForms_Sandbox\\DynamoTesting\\Icons\\Civil3D2023.ico";
-                    //iconPath = Path.Combine(Application.StartupPath, "icons", "Civil3D2023.ico");
+                    //iconPath = "C:\\Users\\CAMB075971\\source\\repos\\WinForms_Sandbox\\DynamoTesting\\Icons\\Civil3D2023.ico";
+                    iconPath = Path.Combine(Application.StartupPath, "icons", "Civil3D2023.ico");
                 }
                 else
                 {
-                    iconPath = "C:\\Users\\CAMB075971\\source\\repos\\WinForms_Sandbox\\DynamoTesting\\Icons\\Civil3D.ico";
-                    //iconPath = Path.Combine(Application.StartupPath, "icons", "Civil3D.ico");
+                    //iconPath = "C:\\Users\\CAMB075971\\source\\repos\\WinForms_Sandbox\\DynamoTesting\\Icons\\Civil3D.ico";
+                    iconPath = Path.Combine(Application.StartupPath, "icons", "Civil3D.ico");
                 }
                 
             }
             else if (software == "OpenRoads Designer")
             {
-                // "C:\\Users\\CAMB075971\\source\\repos\\WinForms_Sandbox\\DynamoTesting\\Icons\\OpenRoads.ico";
+                //"C:\\Users\\CAMB075971\\source\\repos\\WinForms_Sandbox\\DynamoTesting\\Icons\\OpenRoads.ico";
                 iconPath = Path.Combine(Application.StartupPath, "icons", "OpenRoads.ico");
             }
 
