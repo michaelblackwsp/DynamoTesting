@@ -151,6 +151,16 @@ namespace DynamoTesting
 
             rightClickMenu.Items.Add(new ToolStripSeparator()); // ---------------------------------
 
+            ToolStripMenuItem moveUpMenuItem = new ToolStripMenuItem("Move Up");
+            moveUpMenuItem.Click += MoveUpMenuItem_Click;
+            rightClickMenu.Items.Add(moveUpMenuItem);
+
+            ToolStripMenuItem moveDownMenuItem = new ToolStripMenuItem("Move Down");
+            moveDownMenuItem.Click += MoveDownMenuItem_Click;
+            rightClickMenu.Items.Add(moveDownMenuItem);
+
+            rightClickMenu.Items.Add(new ToolStripSeparator()); // ---------------------------------
+
             ToolStripMenuItem renameMenuItem = new ToolStripMenuItem("Rename");
             renameMenuItem.Click += RenameMenuItem_Click;
             rightClickMenu.Items.Add(renameMenuItem);
@@ -386,16 +396,13 @@ namespace DynamoTesting
             // BUG: buttonCount is not being recognized after switching to JSON
             if (viewModel.buttonCount >= 100)
             {
-                MessageBox.Show("You can only save up to 5 client environments.");
+                MessageBox.Show("You can only save up to 100 client environments.");
                 return;
             }
 
             CreateFavouriteButton(nameTextBox.Text, builtShortcutPath, favouriteButtonToolTip, selectedSoftware, iconPath);
 
             nameTextBox.Clear();
-            nameTextBox.Enabled = false;
-            cancelButton.Enabled = false;
-            saveButton.Enabled = false;
         }
 
         private void cancelButton_Click(object sender, EventArgs e)
@@ -891,6 +898,44 @@ namespace DynamoTesting
             }
         }
 
+        private void MoveUpMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;
+            ContextMenuStrip contextMenu = (ContextMenuStrip)menuItem.Owner;
+            Button buttonToMove = (Button)contextMenu.SourceControl;
+            FavouriteButton favouriteButtonToMove = (FavouriteButton)buttonToMove.Tag;
+
+            int currentIndex = viewModel.favouriteButtons.IndexOf(favouriteButtonToMove);
+            if (currentIndex > 0)
+            {
+                // Swap with the button above
+                viewModel.favouriteButtons[currentIndex] = viewModel.favouriteButtons[currentIndex - 1];
+                viewModel.favouriteButtons[currentIndex - 1] = favouriteButtonToMove;
+
+                viewModel.WriteToFavouriteButtonsJson();
+                DrawButtons();
+            }
+        }
+
+        private void MoveDownMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;
+            ContextMenuStrip contextMenu = (ContextMenuStrip)menuItem.Owner;
+            Button buttonToMove = (Button)contextMenu.SourceControl;
+            FavouriteButton favouriteButtonToMove = (FavouriteButton)buttonToMove.Tag;
+
+            int currentIndex = viewModel.favouriteButtons.IndexOf(favouriteButtonToMove);
+            if (currentIndex < viewModel.favouriteButtons.Count - 1)
+            {
+                // Swap with the button below
+                viewModel.favouriteButtons[currentIndex] = viewModel.favouriteButtons[currentIndex + 1];
+                viewModel.favouriteButtons[currentIndex + 1] = favouriteButtonToMove;
+
+                viewModel.WriteToFavouriteButtonsJson();
+                DrawButtons();
+            }
+        }
+
         private void RenameMenuItem_Click(object sender, EventArgs e)
         {
             ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;
@@ -1166,20 +1211,16 @@ namespace DynamoTesting
 
         }
 
+
+        private void aboutTab_Click(object sender, EventArgs e)
+        {
+
+        }
         #endregion
+
     }
 
 
 }
 
 
-// TO DO: Move buttons up / down
-/*ToolStripMenuItem moveUpMenuItem = new ToolStripMenuItem("Move Up");
-moveUpMenuItem.Click += MoveUpMenuItem_Click;
-rightClickMenu.Items.Add(moveUpMenuItem);
-
-ToolStripMenuItem moveDownMenuItem = new ToolStripMenuItem("Move Down");
-moveDownMenuItem.Click += MoveDownMenuItem_Click;
-rightClickMenu.Items.Add(moveDownMenuItem);
-
-rightClickMenu.Items.Add(new ToolStripSeparator()); // ---------------------------------*/

@@ -1,1 +1,65 @@
-[]
+[
+  {
+    "Name": "2",
+    "ShortcutPath": "W:\\1_service\\2_environments\\CofC\\english_software\\c3d_2022_en_cofc.lnk",
+    "Tooltip": "CofC (2022 English)",
+    "Software": "Civil 3D",
+    "IconPath": "C:\\Users\\CAMB075971\\source\\repos\\WinForms_Sandbox\\DynamoTesting\\Icons\\Civil3D.ico"
+  },
+  {
+    "Name": "1",
+    "ShortcutPath": "W:\\1_service\\2_environments\\CofC\\english_software\\c3d_2020_en_cofc.lnk",
+    "Tooltip": "CofC (2020 English)",
+    "Software": "Civil 3D",
+    "IconPath": "C:\\Users\\CAMB075971\\source\\repos\\WinForms_Sandbox\\DynamoTesting\\Icons\\Civil3D.ico"
+  },
+  {
+    "Name": "6",
+    "ShortcutPath": "Y:\\1_service\\2_environments\\MTQv\\ORD\\ORD2021R2_MTQv2021.lnk",
+    "Tooltip": "MTQ v2021 [2021 R2]",
+    "Software": "OpenRoads Designer",
+    "IconPath": "C:\\Users\\CAMB075971\\source\\repos\\WinForms_Sandbox\\DynamoTesting\\bin\\Debug\\net7.0-windows\\icons\\OpenRoads.ico"
+  },
+  {
+    "Name": "3",
+    "ShortcutPath": "C:\\Program Files\\Autodesk\\AutoCAD 2023\\acad.exe",
+    "Tooltip": "\u003CMetric\u003E (2023 French)",
+    "Software": "Civil 3D",
+    "IconPath": "C:\\Users\\CAMB075971\\source\\repos\\WinForms_Sandbox\\DynamoTesting\\Icons\\Civil3D2023.ico"
+  },
+  {
+    "Name": "4",
+    "ShortcutPath": "Y:\\1_service\\2_environments\\MTQv\\ORD\\ORD2021R2_MTQv2021.lnk",
+    "Tooltip": "MTQ v2021 [2021 R2]",
+    "Software": "OpenRoads Designer",
+    "IconPath": "C:\\Users\\CAMB075971\\source\\repos\\WinForms_Sandbox\\DynamoTesting\\bin\\Debug\\net7.0-windows\\icons\\OpenRoads.ico"
+  },
+  {
+    "Name": "7",
+    "ShortcutPath": "C:\\Program Files\\Autodesk\\AutoCAD 2021\\acad.exe",
+    "Tooltip": "\u003CMetric\u003E (2021 French)",
+    "Software": "Civil 3D",
+    "IconPath": "C:\\Users\\CAMB075971\\source\\repos\\WinForms_Sandbox\\DynamoTesting\\Icons\\Civil3D.ico"
+  },
+  {
+    "Name": "10",
+    "ShortcutPath": "Y:\\1_service\\2_environments\\MTQ\\ORD\\ORD2021R2_MTQv2021.lnk",
+    "Tooltip": "MTQ v2021 [2021 R2]",
+    "Software": "OpenRoads Designer",
+    "IconPath": "C:\\Users\\CAMB075971\\source\\repos\\WinForms_Sandbox\\DynamoTesting\\bin\\Debug\\net7.0-windows\\icons\\OpenRoads.ico"
+  },
+  {
+    "Name": "5",
+    "ShortcutPath": "W:\\1_service\\2_environments\\MX\\english_software\\c3d_2020_en_mx.lnk",
+    "Tooltip": "MX (2020 English)",
+    "Software": "Civil 3D",
+    "IconPath": "C:\\Users\\CAMB075971\\source\\repos\\WinForms_Sandbox\\DynamoTesting\\Icons\\Civil3D.ico"
+  },
+  {
+    "Name": "8",
+    "ShortcutPath": "W:\\1_service\\2_environments\\CofC\\english_software\\c3d_2020_en_cofc.lnk",
+    "Tooltip": "CofC (2020 English)",
+    "Software": "Civil 3D",
+    "IconPath": "C:\\Users\\CAMB075971\\source\\repos\\WinForms_Sandbox\\DynamoTesting\\Icons\\Civil3D.ico"
+  }
+]

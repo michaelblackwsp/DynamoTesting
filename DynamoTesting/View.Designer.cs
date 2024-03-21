@@ -409,11 +409,12 @@
             this.aboutTab.TabIndex = 3;
             this.aboutTab.Text = "About";
             this.aboutTab.UseVisualStyleBackColor = true;
+            this.aboutTab.Click += new System.EventHandler(this.aboutTab_Click);
             // 
             // upToDateLabel
             // 
             this.upToDateLabel.AutoSize = true;
-            this.upToDateLabel.Location = new System.Drawing.Point(3, 444);
+            this.upToDateLabel.Location = new System.Drawing.Point(167, 209);
             this.upToDateLabel.Name = "upToDateLabel";
             this.upToDateLabel.Size = new System.Drawing.Size(68, 13);
             this.upToDateLabel.TabIndex = 27;
@@ -424,7 +425,7 @@
             // versionNumber
             // 
             this.versionNumber.AutoSize = true;
-            this.versionNumber.Location = new System.Drawing.Point(3, 427);
+            this.versionNumber.Location = new System.Drawing.Point(168, 193);
             this.versionNumber.Name = "versionNumber";
             this.versionNumber.Size = new System.Drawing.Size(63, 13);
             this.versionNumber.TabIndex = 26;
@@ -435,7 +436,7 @@
             // releaseNotes
             // 
             this.releaseNotes.AutoSize = true;
-            this.releaseNotes.Location = new System.Drawing.Point(155, 105);
+            this.releaseNotes.Location = new System.Drawing.Point(163, 227);
             this.releaseNotes.Name = "releaseNotes";
             this.releaseNotes.Size = new System.Drawing.Size(79, 13);
             this.releaseNotes.TabIndex = 25;
@@ -445,29 +446,29 @@
             // languageLabel
             // 
             this.languageLabel.AutoSize = true;
-            this.languageLabel.Location = new System.Drawing.Point(275, 444);
+            this.languageLabel.Location = new System.Drawing.Point(3, 439);
             this.languageLabel.Name = "languageLabel";
             this.languageLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.languageLabel.Size = new System.Drawing.Size(56, 13);
             this.languageLabel.TabIndex = 24;
             this.languageLabel.Text = "language";
-            this.languageLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.languageLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // usernameLabel
             // 
             this.usernameLabel.AutoSize = true;
-            this.usernameLabel.Location = new System.Drawing.Point(313, 427);
+            this.usernameLabel.Location = new System.Drawing.Point(3, 424);
             this.usernameLabel.Name = "usernameLabel";
             this.usernameLabel.Size = new System.Drawing.Size(58, 13);
             this.usernameLabel.TabIndex = 23;
             this.usernameLabel.Text = "Username";
-            this.usernameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.usernameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.usernameLabel.Click += new System.EventHandler(this.usernameLabel_Click_1);
             // 
             // eula
             // 
             this.eula.AutoSize = true;
-            this.eula.Location = new System.Drawing.Point(100, 80);
+            this.eula.Location = new System.Drawing.Point(106, 80);
             this.eula.Name = "eula";
             this.eula.Size = new System.Drawing.Size(188, 13);
             this.eula.TabIndex = 3;
